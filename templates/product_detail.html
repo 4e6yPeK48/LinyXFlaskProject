@@ -1,19 +1,37 @@
-<!-- product_detail.html -->
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en" class="detail-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <title>{% block title %}LinyX{% endblock %}</title>
+</head>
+<body>
+<div>
+    <div>
+        <h3>{{ product_info['response']['name'] }}</h3>
+    </div>
 
-{% block title %}Информация о товаре{% endblock %}
+    <div>
+        <p><strong>Цена:</strong> {{ product_info['response']['price'] }}</p>
+    </div>
 
-{% block content %}
-    <h1>{{ product_info }}</h1>
-    <p><strong>Цена:</strong> {{ product_info.price }}</p>
-    <p><strong>Длительность:</strong> {{ product_info.duration }}</p>
-
-    <form method="POST">
-        {% if current_user.is_authenticated %}
-            <button type="submit" class="btn btn-primary">Купить</button>
-        {% else %}
-            <p>Чтобы совершить покупку, войдите в свой аккаунт.</p>
-            <a href="{{ url_for('login') }}" class="btn btn-primary">Войти</a>
-        {% endif %}
-    </form>
-{% endblock %}
+    <div>
+        <form method="POST">
+            {% if current_user.is_authenticated %}
+                <button id="buyButton" class="btn btn-primary" onclick="closeProductDialog()">Купить</button>
+            {% else %}
+                <p>Чтобы совершить покупку, войдите в свой аккаунт.</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+<script>
+    function closeProductDialog() {
+        let dialog = document.getElementById('productDialog');
+        dialog.close();
+    }
+</script>
+</body>
+</html>

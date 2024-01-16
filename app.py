@@ -133,7 +133,7 @@ def product_detail(product_id):
 
             if payment_info and payment_info.get('success'):
                 payment_url = payment_info['response']['url']
-                return redirect(payment_url)
+                return f'<script>window.top.location.href = "{payment_url}";</script>'
             else:
                 flash('Ошибка при создании платежа', 'error')
                 return abort(500)
@@ -190,7 +190,7 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()  # Предполагается, что у вас есть форма LoginForm для входа
+    form = LoginForm()
 
     if form.validate_on_submit():
         player_name = form.name.data
@@ -201,6 +201,7 @@ def login():
             password_entry = Password.query.filter_by(player_name=player_name).first().password
             if password_entry == entered_password:
                 login_user(player, remember=form.remember_me.data)
+                flash('Вы успешно вошли в аккаунт.', 'success')
                 return redirect(url_for('index'))
 
     return render_template('login.html', form=form)

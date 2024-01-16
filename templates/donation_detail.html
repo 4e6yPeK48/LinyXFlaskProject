@@ -6,6 +6,5 @@
     <h1>{{ donation.name }}</h1>
     <p>Цена: {{ donation.price }}</p>
     <p>Длительность: {{ donation.duration }}</p>
-    <!-- Здесь может быть описание доната -->
     <a href="{{ url_for('purchase', id=donation.id) }}" class="btn btn-primary">Купить</a>
 {% endblock %}

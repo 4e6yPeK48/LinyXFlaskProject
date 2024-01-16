@@ -7,18 +7,18 @@
     <h1>Личный кабинет</h1>
     <table class="table">
         <thead>
-            <tr>
-                <th>Название доната</th>
-                <th>Дата покупки</th>
-            </tr>
+        <tr>
+            <th>Название доната</th>
+            <th>Дата покупки</th>
+        </tr>
         </thead>
         <tbody>
-            {% for purchase in purchases %}
-                <tr>
-                    <td>{{ purchase.donation_name }}</td>
-                    <td>{{ purchase.purchase_date }}</td>
-                </tr>
-            {% endfor %}
+        {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.donation_name }}</td>
+                <td>{{ purchase.purchase_date }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}
