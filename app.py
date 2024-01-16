@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_wtf.csrf import CSRFProtect
@@ -71,7 +73,7 @@ class Purchase(db.Model):
 
 
 def easydonate_get_shop_info():
-    easydonate_url = 'https://easydonate.ru/api/v3/shop'  # Замените на фактический URL API EasyDonate
+    easydonate_url = 'https://easydonate.ru/api/v3/shop'
 
     headers = {'Shop-key': EASYDONATE_KEY}
 
@@ -127,10 +129,14 @@ def product_detail(product_id):
         if request.method == 'POST':
             customer = current_user.name if current_user.is_authenticated else 'Anonymous'
             payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
-                                                     {str(product_id): 1})
-            print(payment_info)
+                                                     {product_id: 1})
 
-            return render_template('payment_success.html', payment_info=payment_info)
+            if payment_info and payment_info.get('success'):
+                payment_url = payment_info['response']['url']
+                return redirect(payment_url)
+            else:
+                flash('Ошибка при создании платежа', 'error')
+                return abort(500)
 
         return render_template('product_detail.html', product_info=product_info)
     else:
@@ -145,7 +151,7 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
     payload = {
         'customer': customer,
         'server_id': server_id,
-        'products': products,
+        'products': json.dumps(products),
         'email': email,
         'coupon': coupon,
         'success_url': success_url,
