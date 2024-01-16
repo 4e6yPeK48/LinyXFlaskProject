@@ -1,0 +1,19 @@
+<!-- product_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Информация о товаре{% endblock %}
+
+{% block content %}
+    <h1>{{ product_info }}</h1>
+    <p><strong>Цена:</strong> {{ product_info.price }}</p>
+    <p><strong>Длительность:</strong> {{ product_info.duration }}</p>
+
+    <form method="POST">
+        {% if current_user.is_authenticated %}
+            <button type="submit" class="btn btn-primary">Купить</button>
+        {% else %}
+            <p>Чтобы совершить покупку, войдите в свой аккаунт.</p>
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Войти</a>
+        {% endif %}
+    </form>
+{% endblock %}

@@ -7,7 +7,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Название доната</th>
                 <th>Дата покупки</th>
             </tr>
@@ -15,7 +14,6 @@
         <tbody>
             {% for purchase in purchases %}
                 <tr>
-                    <td>{{ purchase.id }}</td>
                     <td>{{ purchase.donation_name }}</td>
                     <td>{{ purchase.purchase_date }}</td>
                 </tr>
