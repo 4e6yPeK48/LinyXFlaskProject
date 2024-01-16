@@ -7,7 +7,8 @@
         <h1>Донаты</h1>
         <div class="grid">
             {% for product in products_info['response'] %}
-                <div class="card">
+                <div class="card"
+                     onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')">
                     <span class="icon">
                         <svg
                                 viewBox="0 0 24 24"
@@ -26,8 +27,7 @@
                     <p>
                         {{ product['price'] }}
                     </p>
-                    <button type="button" class="btn btn-primary"
-                            onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')">
+                    <button type="button" class="btn btn-outline-secondary">
                         Подробнее
                     </button>
                     <div class="shine"></div>
