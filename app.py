@@ -1,17 +1,17 @@
 import json
+from urllib.parse import quote_plus
 
+import requests
 from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
-from flask_wtf.csrf import CSRFProtect
-from urllib.parse import quote_plus
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, func
 from sqlalchemy.orm import relationship
-import requests
-
-# TODO: from werkzeug.security import check_password_hash
 
 from forms.login import LoginForm
+
+# TODO: from werkzeug.security import check_password_hash
 
 csrf = CSRFProtect()
 password = 'SbDwFqC@+iD5erM7QAYHE@Jo'
@@ -124,6 +124,7 @@ def easydonate_get_product(product_id):
 @app.route('/product/<int:product_id>', methods=['GET', 'POST'])
 def product_detail(product_id):
     product_info = easydonate_get_product(product_id)
+    print(product_info)
 
     if product_info:
         if request.method == 'POST':

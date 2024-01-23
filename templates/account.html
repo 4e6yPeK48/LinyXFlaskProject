@@ -4,19 +4,22 @@
 {% block title %}Личный кабинет{% endblock %}
 
 {% block content %}
-    <h1>Личный кабинет</h1>
+    <div class="black-white-text">
+        <h1>Личный кабинет</h1>
+    </div>
+
     <table class="table">
         <thead>
         <tr>
-            <th>Название доната</th>
-            <th>Дата покупки</th>
+            <th class="black-white-text">Название доната</th>
+            <th class="black-white-text">Дата покупки</th>
         </tr>
         </thead>
         <tbody>
         {% for purchase in purchases %}
             <tr>
-                <td>{{ purchase.donation_name }}</td>
-                <td>{{ purchase.purchase_date }}</td>
+                <td class="black-white-text">{{ purchase.donation_name }}</td>
+                <td class="black-white-text">{{ purchase.purchase_date }}</td>
             </tr>
         {% endfor %}
         </tbody>

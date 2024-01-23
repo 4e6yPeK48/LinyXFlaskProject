@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/main.css">
-    <title>{% block title %}LinyX{% endblock %}</title>
+    <title>{% block title %}{{ product_info['response']['name'] }}{% endblock %}</title>
 </head>
 <body>
 <div>
-    <div>
+    <div class="black-white-text">
         <h3>{{ product_info['response']['name'] }}</h3>
     </div>
 
-    <div>
-        <p><strong>Цена:</strong> {{ product_info['response']['price'] }}</p>
+    <div class="black-white-text">
+        <p><strong>Цена:</strong> {{ product_info['response']['price'] }} рублей</p>
+    </div>
+
+    <div class="black-white-text">
+        <p><strong>Описание:</strong> {{ product_info['response']['description'] }} </p>
     </div>
 
     <div>
         <form method="POST">
             {% if current_user.is_authenticated %}
-                <button id="buyButton" class="btn btn-primary" onclick="closeProductDialog()">Купить</button>
+                <button id="buyButton" class="btn btn-outline-light" onclick="closeProductDialog()">Купить</button>
             {% else %}
-                <p>Чтобы совершить покупку, войдите в свой аккаунт.</p>
+                <p class="black-white-text">Чтобы совершить покупку, войдите в свой аккаунт.</p>
             {% endif %}
         </form>
     </div>

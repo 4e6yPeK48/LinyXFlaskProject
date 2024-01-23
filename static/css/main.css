@@ -12,6 +12,15 @@ dialog[open]::backdrop {
     background: transparent;
 }
 
+.day-night-check {
+    width: 40px;
+    height: 40px;
+}
+
+.alert {
+    border-radius: 15px;
+}
+
 .dialog-iframe {
     background: transparent;
     border: 1px black;
@@ -20,8 +29,726 @@ dialog[open]::backdrop {
 
 .navbar {
     height: 80px;
+    z-index: 2;
+    width: 70%;
+    margin: auto;
 }
-.detail-html{
+
+.detail-html {
     padding: 20px
+}
+
+.black-white-text {
+    color: var(--card-label-color);
+}
+
+body {
+    --background-color: #18181B;
+    --text-color: #A1A1AA;
+
+    --card-background-color: rgba(255, 255, 255, .015);
+    --navbar-background-color: #0c0c0e;
+    --blur-color: rgba(15, 15, 15, 0.8);
+    --form-input-color: rgba(255, 255, 255, 0.07);
+    --linyx-color: rgba(196, 186, 255, 1);
+
+    --card-border-color: rgba(255, 255, 255, 0.1);
+    --card-box-shadow-1: rgba(0, 0, 0, 0.05);
+    --card-box-shadow-1-y: 3px;
+    --card-box-shadow-1-blur: 6px;
+    --card-box-shadow-2: rgba(0, 0, 0, 0.1);
+    --card-box-shadow-2-y: 8px;
+    --card-box-shadow-2-blur: 15px;
+    --card-label-color: #FFFFFF;
+    --card-icon-color: #D4D4D8;
+    --card-icon-background-color: rgba(255, 255, 255, 0.08);
+    --card-icon-border-color: rgba(255, 255, 255, 0.12);
+    --card-shine-opacity: .1;
+    --card-shine-gradient: conic-gradient(from 205deg at 50% 50%, rgba(186, 17, 181, 0) 0deg, #cd90d9 25deg, rgba(186, 17, 181, 0.18) 295deg, rgba(186, 17, 181, 0) 360deg);
+    --card-line-color: #2A2B2C;
+    --card-tile-color: rgba(186, 17, 181, 0.05);
+    --card-hover-border-color: rgba(255, 255, 255, 0.2);
+    --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
+    --card-hover-box-shadow-1-y: 5px;
+    --card-hover-box-shadow-1-blur: 10px;
+    --card-hover-box-shadow-2: rgba(0, 0, 0, 0.3);
+    --card-hover-box-shadow-2-y: 15px;
+    --card-hover-box-shadow-2-blur: 25px;
+    --card-hover-icon-color: #cd90d9;
+    --card-hover-icon-background-color: rgba(251, 0, 255, 0.1);
+    --card-hover-icon-border-color: rgba(251, 0, 255, 0.2);
+    --blur-opacity: .01;
+}
+
+body.light {
+    --background-color: #FAFAFA;
+    --text-color: #52525B;
+
+    --navbar-background-color: #ededed;
+    --blur-color: rgba(255, 255, 255, 0.8);
+    --form-input-color: rgba(0, 0, 0, 0.1);
+    --linyx-color: rgba(196, 186, 255, 1);
+    /*--linyx-color: rgba(146, 56, 175, 1);*/
+
+    --card-border-color: rgba(24, 24, 27, 0.08);
+    --card-box-shadow-1: rgba(24, 24, 27, 0.02);
+    --card-box-shadow-1-y: 3px;
+    --card-box-shadow-1-blur: 6px;
+    --card-box-shadow-2: rgba(24, 24, 27, 0.04);
+    --card-box-shadow-2-y: 2px;
+    --card-box-shadow-2-blur: 7px;
+    --card-label-color: #18181B;
+    --card-icon-color: #18181B;
+    --card-icon-background-color: rgba(24, 24, 27, 0.04);
+    --card-icon-border-color: rgba(24, 24, 27, 0.1);
+    --card-shine-opacity: .3;
+    --card-shine-gradient: conic-gradient(from 225deg at 50% 50%, rgba(186, 17, 181, 0) 0deg, #cd90d9 25deg, #EDFAF6 285deg, #FFFFFF 345deg, rgba(16, 185, 129, 0) 360deg);
+    --card-line-color: rgba(186, 17, 181, 0.3);
+    --card-tile-color: rgba(186, 17, 181, 0.3);
+    --card-hover-border-color: rgba(186, 17, 181, 0.3);
+    --card-hover-box-shadow-1: rgba(24, 24, 27, 0.05);
+    --card-hover-box-shadow-1-y: 3px;
+    --card-hover-box-shadow-1-blur: 6px;
+    --card-hover-box-shadow-2: rgba(24, 24, 27, 0.1);
+    --card-hover-box-shadow-2-y: 8px;
+    --card-hover-box-shadow-2-blur: 15px;
+    --card-hover-icon-color: #18181B;
+    --card-hover-icon-background-color: rgba(24, 24, 27, 0.04);
+    --card-hover-icon-border-color: rgba(24, 24, 27, 0.34);
+    --blur-opacity: .1;
+}
+
+body.toggle .grid * {
+    transition-duration: 0s !important;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+}
+
+.card {
+    background-color: var(--background-color);
+    box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2), 0 0 0 1px var(--card-border-color);
+    padding: 56px 16px 16px 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    position: relative;
+    transition: box-shadow 0.25s;
+}
+
+.card .icon {
+    z-index: 2;
+    position: relative;
+    display: table;
+    padding: 8px;
+}
+
+.card .icon::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--card-icon-background-color);
+    border: 1px solid var(--card-icon-border-color);
+    backdrop-filter: blur(2px);
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.card .icon svg {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 24px;
+    height: 24px;
+    transform: translateZ(0);
+    color: var(--card-icon-color);
+    transition: color 0.25s;
+}
+
+.card h4 {
+    z-index: 2;
+    position: relative;
+    margin: 12px 0 4px 0;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--card-label-color);
+}
+
+.card p {
+    z-index: 2;
+    position: relative;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+.card .shine {
+    border-radius: inherit;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.card .shine:before {
+    content: "";
+    width: 150%;
+    padding-bottom: 150%;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    bottom: 55%;
+    filter: blur(35px);
+    opacity: var(--card-shine-opacity);
+    transform: translateX(-50%);
+    background-image: var(--card-shine-gradient);
+}
+
+.card .background {
+    border-radius: inherit;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    mask-image: radial-gradient(circle at 60% 5%, black 0%, black 15%, transparent 60%);
+}
+
+.card .background .tiles {
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.card .background .tiles .tile {
+    position: absolute;
+    background-color: var(--card-tile-color);
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    opacity: 0;
+}
+
+.card .background .tiles .tile.tile-4, .card .background .tiles .tile.tile-6, .card .background .tiles .tile.tile-10 {
+    animation-delay: -2s;
+}
+
+.card .background .tiles .tile.tile-3, .card .background .tiles .tile.tile-5, .card .background .tiles .tile.tile-8 {
+    animation-delay: -4s;
+}
+
+.card .background .tiles .tile.tile-2, .card .background .tiles .tile.tile-9 {
+    animation-delay: -6s;
+}
+
+.card .background .tiles .tile.tile-1 {
+    top: 0;
+    left: 0;
+    height: 10%;
+    width: 22.5%;
+}
+
+.card .background .tiles .tile.tile-2 {
+    top: 0;
+    left: 22.5%;
+    height: 10%;
+    width: 27.5%;
+}
+
+.card .background .tiles .tile.tile-3 {
+    top: 0;
+    left: 50%;
+    height: 10%;
+    width: 27.5%;
+}
+
+.card .background .tiles .tile.tile-4 {
+    top: 0;
+    left: 77.5%;
+    height: 10%;
+    width: 22.5%;
+}
+
+.card .background .tiles .tile.tile-5 {
+    top: 10%;
+    left: 0;
+    height: 22.5%;
+    width: 22.5%;
+}
+
+.card .background .tiles .tile.tile-6 {
+    top: 10%;
+    left: 22.5%;
+    height: 22.5%;
+    width: 27.5%;
+}
+
+.card .background .tiles .tile.tile-7 {
+    top: 10%;
+    left: 50%;
+    height: 22.5%;
+    width: 27.5%;
+}
+
+.card .background .tiles .tile.tile-8 {
+    top: 10%;
+    left: 77.5%;
+    height: 22.5%;
+    width: 22.5%;
+}
+
+.card .background .tiles .tile.tile-9 {
+    top: 32.5%;
+    left: 50%;
+    height: 22.5%;
+    width: 27.5%;
+}
+
+.card .background .tiles .tile.tile-10 {
+    top: 32.5%;
+    left: 77.5%;
+    height: 22.5%;
+    width: 22.5%;
+}
+
+@keyframes tile {
+    0%, 12.5%, 100% {
+        opacity: 1;
+    }
+    25%, 82.5% {
+        opacity: 0;
+    }
+}
+
+.card .background .line {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s;
+}
+
+.card .background .line:before, .card .background .line:after {
+    content: "";
+    position: absolute;
+    background-color: var(--card-line-color);
+    transition: transform 0.35s;
+}
+
+.card .background .line:before {
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+}
+
+.card .background .line:after {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform-origin: 50% 0;
+    transform: scaleY(0);
+}
+
+.card .background .line.line-1:before {
+    top: 10%;
+}
+
+.card .background .line.line-1:after {
+    left: 22.5%;
+}
+
+.card .background .line.line-1:before, .card .background .line.line-1:after {
+    transition-delay: 0.3s;
+}
+
+.card .background .line.line-2:before {
+    top: 32.5%;
+}
+
+.card .background .line.line-2:after {
+    left: 50%;
+}
+
+.card .background .line.line-2:before, .card .background .line.line-2:after {
+    transition-delay: 0.15s;
+}
+
+.card .background .line.line-3:before {
+    top: 55%;
+}
+
+.card .background .line.line-3:after {
+    right: 22.5%;
+}
+
+.card:hover {
+    box-shadow: 0 3px 6px var(--card-hover-box-shadow-1), 0 var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2), 0 0 0 1px var(--card-hover-border-color);
+}
+
+.card:hover .icon::after {
+    background-color: var(--card-hover-icon-background-color);
+    border-color: var(--card-hover-icon-border-color);
+}
+
+.card:hover .icon svg {
+    color: var(--card-hover-icon-color);
+}
+
+.card:hover .shine {
+    opacity: 1;
+    transition-duration: 0.5s;
+    transition-delay: 0s;
+}
+
+.card:hover .background .tiles {
+    opacity: 1;
+    transition-delay: 0.25s;
+}
+
+.card:hover .background .tiles .tile {
+    animation-name: tile;
+}
+
+.card:hover .background .line {
+    opacity: 1;
+    transition-duration: 0.15s;
+}
+
+.card:hover .background .line:before {
+    transform: scaleX(1);
+}
+
+.card:hover .background .line:after {
+    transform: scaleY(1);
+}
+
+.card:hover .background .line.line-1:before, .card:hover .background .line.line-1:after {
+    transition-delay: 0s;
+}
+
+.card:hover .background .line.line-2:before, .card:hover .background .line.line-2:after {
+    transition-delay: 0.15s;
+}
+
+.card:hover .background .line.line-3:before, .card:hover .background .line.line-3:after {
+    transition-delay: 0.3s;
+}
+
+.day-night {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.day-night input {
+    display: none;
+}
+
+.day-night input + div {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    box-shadow: inset 8px -8px 0 0 var(--text-color);
+    transform: scale(1) rotate(-2deg);
+    transition: box-shadow 0.5s ease 0s, transform 0.4s ease 0.1s;
+}
+
+.day-night input + div:before {
+    content: "";
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: background-color 0.3s ease;
+}
+
+.day-night input + div:after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: -3px 0 0 -3px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 -23px 0 var(--text-color), 0 23px 0 var(--text-color), 23px 0 0 var(--text-color), -23px 0 0 var(--text-color), 15px 15px 0 var(--text-color), -15px 15px 0 var(--text-color), 15px -15px 0 var(--text-color), -15px -15px 0 var(--text-color);
+    transform: scale(0);
+    transition: all 0.3s ease;
+}
+
+.day-night input:checked + div {
+    box-shadow: inset 20px -20px 0 0 var(--text-color);
+    transform: scale(0.5) rotate(0deg);
+    transition: transform 0.3s ease 0.1s, box-shadow 0.2s ease 0s;
+}
+
+.day-night input:checked + div:before {
+    background: var(--text-color);
+    transition: background-color 0.3s ease 0.1s;
+}
+
+.day-night input:checked + div:after {
+    transform: scale(1);
+    transition: transform 0.5s ease 0.15s;
+}
+
+body .navbar {
+    background-color: rgba(255, 255, 255, 0.13);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 15px 35px;
+}
+
+.hi-text {
+    margin-top: 65px;
+    height: fit-content;
+}
+
+.left-div {
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+}
+
+.right-div {
+    background-color: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    margin-left: 10px;
+    padding: 0;
+    border-radius: 20px;
+}
+
+.navbar-brand {
+    color: var(--card-label-color);
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: var(--card-label-color);
+    text-decoration: none;
+}
+
+.navbar-shapes {
+    position: absolute;
+    width: 60%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.navbar-shape {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.navbar-shape:nth-child(1) {
+    background: linear-gradient(#7d57c5, #cd90d9);
+    left: 70vh;
+    top: 2vh;
+}
+
+.navbar-shape:nth-child(2) {
+    background: linear-gradient(to right, #7d57c5, #cd90d9);
+    left: 35vh;
+    top: 3.2vh;
+}
+
+
+.navbar-shape:nth-child(3) {
+    background: linear-gradient(to right, #8a359c, #cd90d9);
+    left: 110vh;
+    top: 0.5vh;
+}
+
+.navbar-shape:nth-child(6) {
+    background: linear-gradient(to right, #8a359c, #cd90d9);
+    left: 140vh;
+    top: 2.5vh;
+}
+
+
+.navbar-shape:nth-child(4) {
+    background: linear-gradient(#8a359c, #cd90d9);
+    left: 160vh;
+    top: 3vh;
+}
+
+.navbar-shape:nth-child(5) {
+    background: linear-gradient(to right, #7d57c5, #cd90d9);
+    left: 85vh;
+    top: 1vh;
+}
+
+#linyx {
+    font-family: 'Monoton', cursive;
+    font-size: 55px;
+    animation: glow 3s infinite;
+    color: var(--linyx-color);
+
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(196, 105, 255, 0.7);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(196, 105, 255, 1),
+        0 0 30px rgba(196, 105, 255, 0.7);
+    }
+}
+
+.intro-block {
+    height: 100vh;
+    position: relative;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.intro-block button {
+    font-size: 24px;
+}
+
+body {
+    font-family: "Inter", Arial, serif;
+    background-color: var(--background-color);
+    overflow-x: hidden;
+    user-select: none;
+    scroll-behavior: smooth;
+    min-height: 100vh;
+}
+
+.parallax {
+    background-attachment: fixed;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 100vh;
+    top: -80px;
+    z-index: 1;
+}
+
+.hi-div {
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    background-color: var(--blur-color);
+    position: relative;
+}
+
+.community-choice {
+    width: fit-content;
+}
+
+.stick-light {
+    width: 260px;
+    height: 4px;
+    box-shadow: 0 0 50px #ffffff;
+    background-color: #7d57c5;
+    margin-bottom: 30px;
+}
+
+.product-table {
+    margin-bottom: 50px;
+}
+
+.all-products-button {
+    margin-bottom: 50px;
+}
+
+.cart-button {
+    width: 50px;
+    height: 50px;
+}
+
+.cart-button svg:hover {
+    stroke: #cd90d9;
+    filter: drop-shadow(0px 0px 4px #cd90d9);
+}
+
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+
+
+.popup.success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.popup.error {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+.alerts, .day-night-check {
+    position: fixed;
+    z-index: 2;
+}
+
+.day-night-check {
+    top: 25px;
+    left: 25px;
+}
+
+footer li a {
+    color: var(--card-label-color);
+}
+
+.icon-link {
+    width: 50px;
+    height: 50px;
+}
+
+.tg svg:hover {
+    stroke: #0088cc;
+}
+
+.ds svg:hover {
+    stroke: #7289da;
+}
+
+.tg svg, .ds svg, .cart-button svg {
+    transition: all .3s ease;
 }
 
