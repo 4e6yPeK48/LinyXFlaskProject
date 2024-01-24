@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg aria-label="Minecraft" role="img" viewBox="0 0 512 512" stroke-linecap="square" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <g id="a" transform="matrix(19 11 0 22 76 142)">
+    <path fill="#432" d="M.5.5h9v9h-9"/>
+    <path stroke="#864" d="M2 8v1h2V8h5V7 H7V5"/>
+    <path stroke="#643" d="M1 5zM2 9zM1 8V7h2V6h1M5 9h2V8H6V4M7 6h1v1M9 9zM9 4v1"/>
+    <path stroke="#a75" d="M1 7h1M4 7h1M9 6z"/>
+    <path stroke="#555" d="M5 5z"/>
+    <path stroke="#593" d="M4 4V1h4v2H7V2H4v1H2v1"/>
+    <path stroke="#6a4" d="M2 1h1M6 1zM7 2zM9 1v1"/>
+    <path stroke="#7c5" d="M5 3zM3 2h1"/>
+    <path stroke="#9c6" d="M1 1v1h1M8 1z"/>
+  </g>
+  <path d="M 427.38 159.019 L 427.38 257.794 L 256.585 257.794 L 427.38 159.019 Z" style="paint-order: stroke; stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(0, 0, 0);" bx:shape="triangle 256.585 159.019 170.795 98.775 1 0 1@3d75da5d"/>
+  <path d="M 426.372 357.447 L 426.372 456.389 L 255.916 456.389 L 426.372 357.447 Z" style="stroke: rgb(0, 0, 0); stroke-width: 0px; transform-box: fill-box; transform-origin: 50% 50%; fill: rgb(0, 0, 0);" transform="matrix(-0.999999, -0.001197, 0, -1.000001, 0.447702, -1.25466)" bx:shape="triangle 255.916 357.447 170.456 98.942 1 0 1@27cb8546"/>
+  <rect x="256.498" y="256.73" width="170.87" height="100.478" style="stroke: rgb(0, 0, 0); stroke-width: 0px; fill: rgb(0, 0, 0);"/>
+  <g transform="matrix(-19, 11, 0, 22, 437, 142)" opacity=".5">
+    <path fill="#432" d="M.5.5h9v9h-9"/>
+    <path stroke="#864" d="M2 8v1h2V8h5V7 H7V5"/>
+    <path stroke="#643" d="M1 5zM2 9zM1 8V7h2V6h1M5 9h2V8H6V4M7 6h1v1M9 9zM9 4v1"/>
+    <path stroke="#a75" d="M1 7h1M4 7h1M9 6z"/>
+    <path stroke="#555" d="M5 5z"/>
+    <path stroke="#593" d="M4 4V1h4v2H7V2H4v1H2v1"/>
+    <path stroke="#6a4" d="M2 1h1M6 1zM7 2zM9 1v1"/>
+    <path stroke="#7c5" d="M5 3zM3 2h1"/>
+    <path stroke="#9c6" d="M1 1v1h1M8 1z"/>
+  </g>
+  <g transform="matrix(-19 11-19-11 447 159)">
+    <path fill="#7b4" d="M.5.5h9v9h-9"/>
+    <path stroke="#8c5" d="M1 1zM3 1zM4 7zM3 4v2H1v2h3v1h2V7M2 3h4V1H5v1h3M7 4v1H4M9 4v2H8v3"/>
+    <path stroke="#ad7" d="M1 3v2M1 7zM1 9zM3 3zM4 4zM5 1zM5 3zM5 5v1M5 8v1M7 2v1M8 7h1"/>
+  </g>
+</svg>

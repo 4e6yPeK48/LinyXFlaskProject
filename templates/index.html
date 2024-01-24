@@ -2,20 +2,33 @@
 {% extends 'base.html' %}
 
 {% block parallax %}
-    <div class="parallax d-flex justify-content-center align-items-center"
+    <div class="parallax"
          style="background-image: url('../static/img/linyx.png');">
-        <div class="hi-div rounded p-4 hi-text ">
-            <div class="black-white-text">
-                <h2>Лучшая анархия в СНГ</h2>
-                <p>Вы ваще ахуеете</p>
-            </div>
-
-
-            <div class="buttons-row d-flex justify-content-between mt-3">
-                <button class="change-color btn btn-outline-light" onclick="scrollToDonation()">Купить донат</button>
-                <button class="change-color btn btn-outline-light" id="copy-ip" onclick="copyToClipboard()">IP:
-                    play.linyx.ru
-                </button>
+        <div class="background-blur d-flex justify-content-center align-items-center">
+            <div class="hi-box d-flex justify-content-center p-5 align-items-stretch">
+                <div class="hi-text d-flex align-items-start flex-column">
+                    {#rounded p-4  hi-div#}
+                    <div class="black-white-text mb-auto">
+                        <h2>Лучшая анархия в СНГ</h2>
+                        <p>Вы ваще ахуеете</p>
+                    </div>
+                    <div class="buttons-row d-flex justify-content-between mt-3">
+                        <button class="change-color btn btn-outline-light flex-fil" id="copy-ip"
+                                onclick="copyToClipboard()">
+                            <span class="ip-text" id="ip-text">
+                                IP: play.linyx.ru
+                            </span>
+                        </button>
+                        <button class="change-color btn btn-outline-light ml-1 flex-fil" onclick="scrollToDonation()">
+                            К донату
+                        </button>
+                    </div>
+                </div>
+                <div class="hi-pic rounded">
+                    <img src="static/img/fox.png"
+                         class="img-fluid rounded"
+                         alt="Картинка">
+                </div>
             </div>
         </div>
     </div>
