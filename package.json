@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "coffeescript": "^2.7.0"
+    "coffeescript": "^2.7.0",
+    "gsap": "^3.12.5"
   }
 }

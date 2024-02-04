@@ -1,0 +1,287 @@
+{
+  'success': True,
+  'response': [
+    {
+      'id': 630767,
+      'name': 'Eola',
+      'price': 129,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add eola '
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Eola',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-16 15:56:19',
+      'updated_at': '2024-01-23 21:58:34',
+      'sort_index': 0,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 630767,
+            'server_id': 79936
+          }
+        }
+      ]
+    },
+    {
+      'id': 631896,
+      'name': 'Vega',
+      'price': 99,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add vega'
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Vega',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-17 20:31:22',
+      'updated_at': '2024-01-23 22:00:12',
+      'sort_index': 1,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 631896,
+            'server_id': 79936
+          }
+        }
+      ]
+    },
+    {
+      'id': 631897,
+      'name': 'Hydra',
+      'price': 849,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add hydra'
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Hydra',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-17 20:31:53',
+      'updated_at': '2024-01-23 21:59:33',
+      'sort_index': 2,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 631897,
+            'server_id': 79936
+          }
+        }
+      ]
+    },
+    {
+      'id': 631898,
+      'name': 'Fenix',
+      'price': 1099,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add fenix'
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Fenix',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-17 20:32:28',
+      'updated_at': '2024-01-23 21:59:26',
+      'sort_index': 3,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 631898,
+            'server_id': 79936
+          }
+        }
+      ]
+    },
+    {
+      'id': 631900,
+      'name': 'Leviathan',
+      'price': 1299,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add leviathan'
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Leviathan',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-17 20:32:52',
+      'updated_at': '2024-01-23 21:59:17',
+      'sort_index': 4,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 631900,
+            'server_id': 79936
+          }
+        }
+      ]
+    },
+    {
+      'id': 631902,
+      'name': 'Satira',
+      'price': 2999,
+      'old_price': None,
+      'type': 'group',
+      'number': 1,
+      'is_hidden': 0,
+      'commands': [
+        'lp user {user} parent add satira'
+      ],
+      'withdraw_commands': None,
+      'withdraw_commands_days': None,
+      'additional_fields': None,
+      'description': 'Привилегия Satira',
+      'category_id': 64908,
+      'image': 'http://cp.easydonate.ru/storage/app/media/Diamond%20Sword-min.png',
+      'first_delete': 0,
+      'shop_id': 90888,
+      'group_id': None,
+      'created_at': '2024-01-17 20:33:15',
+      'updated_at': '2024-01-23 21:59:11',
+      'sort_index': 5,
+      'servers': [
+        {
+          'id': 79936,
+          'name': 'LinyX Anarchy #1',
+          'ip': 'd5.aurorix.net',
+          'port': '25707',
+          'version': '1.20.1',
+          'is_port_hidden': 0,
+          'hide_ip': 0,
+          'is_hidden': 0,
+          'is_plugin_installed': 0,
+          'shop_id': 90888,
+          'is_verified': 0,
+          'created_at': '2024-01-16 16:06:35',
+          'updated_at': '2024-01-16 16:06:35',
+          'sort_index': None,
+          'disable_payments': 0,
+          'pivot': {
+            'product_id': 631902,
+            'server_id': 79936
+          }
+        }
+      ]
+    }
+  ]
+}

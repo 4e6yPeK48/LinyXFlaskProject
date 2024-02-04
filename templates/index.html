@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block parallax %}
-    <div class="parallax"
+    <div class="parallax section"
          style="background-image: url('../static/img/linyx.png');">
         <div class="background-blur d-flex justify-content-center align-items-center">
             <div class="hi-box d-flex justify-content-center p-5 align-items-stretch">
@@ -19,8 +19,8 @@
                                 IP: play.linyx.ru
                             </span>
                         </button>
-                        <button class="change-color btn btn-outline-light ml-1 flex-fil" onclick="scrollToDonation()">
-                            К донату
+                        <button class="change-color btn btn-outline-light ml-1 flex-fil"
+                                onclick="window.location.href='{{ url_for('products') }}'">К донату
                         </button>
                     </div>
                 </div>
@@ -35,19 +35,20 @@
 {% endblock %}
 
 {% block content %}
-    <div class="product-table">
-        <div class="black-white-text community-choice rounded p-1">
-            <h3 class="text-start">Выбор сообщества</h3>
-        </div>
-        <div class="stick-light rounded"></div>
+    <div class="container product-container section ">
+        <div class="product-table">
+            <div class="black-white-text community-choice rounded p-1">
+                <h3 class="text-start">Выбор сообщества</h3>
+            </div>
+            <div class="stick-light rounded"></div>
 
-        <div class="grid">
+            <div class="grid">
 
 
-            {% for product in products_info['response'] %}
-                {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
-                    <div class="card"
-                         onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')">
+                {% for product in products_info['response'] %}
+                    {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
+                        <div class="card"
+                             onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')">
                     <span class="icon">
                         <svg
                                 viewBox="0 0 24 24"
@@ -61,46 +62,46 @@
                             <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
                         </svg>
                     </span>
-                        <h4>{{ product['name'] }}</h4>
-                        <p>
-                            {{ product['price'] }} рублей
-                        </p>
-                        <button type="button" class="btn btn-outline-secondary">
-                            Подробнее
-                        </button>
-                        <div class="shine"></div>
-                        <div class="background">
-                            <div class="tiles">
-                                <div class="tile tile-1"></div>
-                                <div class="tile tile-2"></div>
-                                <div class="tile tile-3"></div>
-                                <div class="tile tile-4"></div>
+                            <h4>{{ product['name'] }}</h4>
+                            <p>
+                                {{ product['price'] }} рублей
+                            </p>
+                            <button type="button" class="btn btn-outline-secondary">
+                                Подробнее
+                            </button>
+                            <div class="shine"></div>
+                            <div class="background">
+                                <div class="tiles">
+                                    <div class="tile tile-1"></div>
+                                    <div class="tile tile-2"></div>
+                                    <div class="tile tile-3"></div>
+                                    <div class="tile tile-4"></div>
 
-                                <div class="tile tile-5"></div>
-                                <div class="tile tile-6"></div>
-                                <div class="tile tile-7"></div>
-                                <div class="tile tile-8"></div>
+                                    <div class="tile tile-5"></div>
+                                    <div class="tile tile-6"></div>
+                                    <div class="tile tile-7"></div>
+                                    <div class="tile tile-8"></div>
 
-                                <div class="tile tile-9"></div>
-                                <div class="tile tile-10"></div>
+                                    <div class="tile tile-9"></div>
+                                    <div class="tile tile-10"></div>
+                                </div>
+
+                                <div class="line line-1"></div>
+                                <div class="line line-2"></div>
+                                <div class="line line-3"></div>
                             </div>
-
-                            <div class="line line-1"></div>
-                            <div class="line line-2"></div>
-                            <div class="line line-3"></div>
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="all-products-button">
+            <button class="nav-link change-color btn btn-outline-light mx-auto btn-lg"
+                    onclick="window.location.href='{{ url_for('products') }}'">Ко всем товарам
+            </button>
         </div>
     </div>
-
-    <div class="all-products-button">
-        <button class="nav-link change-color btn btn-outline-light mx-auto btn-lg"
-                onclick="window.location.href='{{ url_for('account') }}'">Ко всем товарам
-        </button>
-    </div>
-
 {% endblock %}
 
 {% block footer %}

@@ -513,15 +513,6 @@ body .navbar {
     box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
 }
 
-/*.right-div {*/
-/*    background-color: rgba(255, 255, 255, 0.13);*/
-/*    backdrop-filter: blur(10px);*/
-/*    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);*/
-/*    margin-left: 10px;*/
-/*    padding: 0;*/
-/*    border-radius: 20px;*/
-/*}*/
-
 .navbar-brand {
     color: var(--card-label-color);
     text-decoration: none;
@@ -609,7 +600,6 @@ body .navbar {
     height: 100vh;
     position: relative;
     width: 100%;
-    overflow-y: scroll;
     overflow-x: hidden;
 }
 
@@ -622,12 +612,6 @@ body {
     background-color: var(--background-color);
     overflow-x: hidden;
     user-select: none;
-    scroll-behavior: smooth;
-    min-height: 100vh;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 .parallax {
@@ -694,7 +678,13 @@ html {
 }
 
 .all-products-button {
-    margin-bottom: 1050px;
+}
+
+.product-container {
+    padding-top: 20px;
+    height: 100vh;
+    top: -80px;
+    position: relative;
 }
 
 .cart-button {
@@ -814,4 +804,12 @@ footer li a {
 }
 
 .detail-html {
+}
+
+.product-table-list {
+    margin-top: 80px;
+}
+
+.btn-more {
+    width: fit-content;
 }

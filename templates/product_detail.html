@@ -24,7 +24,9 @@
     <div>
         <form method="POST">
             {% if current_user.is_authenticated %}
-                <button id="buyButton" class="btn btn-outline-light" onclick="closeProductDialog()">Купить</button>
+                <button id="buyButton" class="change-color btn btn-outline-light" onclick="closeProductDialog()">
+                    Купить
+                </button>
             {% else %}
                 <p class="black-white-text">Чтобы совершить покупку, войдите в свой аккаунт.</p>
             {% endif %}
@@ -37,5 +39,111 @@
         dialog.close();
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bodyElement = document.querySelector("body");
+        const toggleCheckbox = document.querySelector(".day-night input");
+
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || isDarkMode) {
+                updateTheme(isDarkMode);
+            }
+        });
+
+        updateTheme(isDarkMode);
+
+        function showPopup() {
+            const popup = document.querySelector('.popup');
+            popup.style.display = 'block';
+
+            setTimeout(function () {
+                popup.style.display = 'none';
+            }, 3000);
+        }
+
+        const messages = document.querySelectorAll('.popup');
+        if (messages.length > 0) {
+            showPopup();
+        }
+
+        toggleCheckbox.addEventListener("change", () => {
+            const newMode = toggleCheckbox.checked;
+            updateTheme(newMode);
+
+            localStorage.setItem('darkMode', newMode);
+
+            // Передаем информацию о режиме в iframe
+            const iframe = document.getElementById('productIframe');
+            if (iframe) {
+                iframe.contentWindow.postMessage({darkMode: newMode}, '*');
+            }
+        });
+
+        function updateTheme(isDark) {
+            bodyElement.classList.add("toggle");
+
+            setTimeout(() => {
+                bodyElement.classList.toggle("dark", isDark);
+                bodyElement.classList.toggle("light", !isDark);
+
+                const changeColorElements = document.querySelectorAll(".change-color");
+                changeColorElements.forEach(element => {
+                    element.classList.toggle("btn-outline-dark", !isDark);
+                    element.classList.toggle("btn-outline-light", isDark);
+                });
+
+                setTimeout(() => {
+                    bodyElement.classList.remove("toggle");
+                }, 10);
+            }, 5);
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadingMessage = document.getElementById('loading-message');
+        const iframeContent = document.getElementById('productIframe');
+
+        let isFirstLoad = true;
+
+        function showLoadingMessage() {
+            loadingMessage.style.display = 'block';
+        }
+
+        function hideLoadingMessage() {
+            loadingMessage.style.display = 'none';
+        }
+
+        // Отображаем сообщение о загрузке при начале загрузки страницы
+        iframeContent.addEventListener('loadstart', function () {
+            if (isFirstLoad) {
+                showLoadingMessage();
+            }
+        });
+
+        // Скрываем сообщение о загрузке после полной загрузки страницы
+        iframeContent.addEventListener('load', function () {
+            hideLoadingMessage();
+            isFirstLoad = false; // После первой загрузки устанавливаем флаг в false
+        });
+
+        // Обработка ошибок загрузки
+        iframeContent.addEventListener('error', function () {
+            loadingMessage.innerText = 'Ошибка загрузки. Попробуйте еще раз.';
+        });
+
+        // При открытии диалога вновь покажем сообщение, если это первая загрузка
+        window.addEventListener('message', function (event) {
+            if (event.data === 'dialogOpened') {
+                if (isFirstLoad) {
+                    showLoadingMessage();
+                }
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

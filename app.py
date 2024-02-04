@@ -1,3 +1,4 @@
+import datetime
 import json
 from urllib.parse import quote_plus
 
@@ -98,6 +99,18 @@ def index():
         return render_template('index.html')
 
 
+@app.route('/products')
+def products():
+    shop_info = easydonate_get_shop_info()
+    products_info = easydonate_get_products()
+    print(products_info)
+    if shop_info and products_info:
+        return render_template('products.html', shop_info=shop_info, products_info=products_info)
+    else:
+        flash('Ошибка при получении информации о магазине или товарах', 'error')
+        return render_template('index.html')
+
+
 def easydonate_get_product(product_id):
     easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
     headers = {'Shop-key': EASYDONATE_KEY}
@@ -127,7 +140,8 @@ def product_detail(product_id):
                 flash('Ошибка при создании платежа', 'error')
                 return abort(500)
 
-        return render_template('product_detail.html', product_info=product_info)
+        print(datetime.datetime.now())
+        return render_template('product_detail.html', product_info=product_info, date=datetime.datetime.now())
     else:
         flash('Ошибка при получении информации о товаре', 'error')
         return redirect(url_for('index'))

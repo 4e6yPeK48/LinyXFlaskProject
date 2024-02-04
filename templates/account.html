@@ -4,31 +4,36 @@
 {% block title %}Личный кабинет{% endblock %}
 
 {% block content %}
-    <div class="black-white-text">
-        <h1>Личный кабинет</h1>
+    <div class="container">
+        <div class="black-white-text mt-2">
+            <h1>Личный кабинет</h1>
+        </div>
+        <div class="black-white-text mt-2">
+            <h4>Список покупок</h4>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="black-white-text">Название доната</th>
+                <th class="black-white-text">Дата покупки</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for purchase in purchases %}
+                <tr>
+                    <td class="black-white-text">{{ purchase.donation_name }}</td>
+                    <td class="black-white-text">{{ purchase.purchase_date }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="change-color btn btn-outline-light" data-toggle="modal"
+                data-target="#changePasswordModal">
+            Сменить пароль
+        </button>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="black-white-text">Название доната</th>
-            <th class="black-white-text">Дата покупки</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for purchase in purchases %}
-            <tr>
-                <td class="black-white-text">{{ purchase.donation_name }}</td>
-                <td class="black-white-text">{{ purchase.purchase_date }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <button type="button" class="change-color btn btn-outline-light" data-toggle="modal"
-            data-target="#changePasswordModal">
-        Сменить пароль
-    </button>
 
     <div class="modal fade black-white-text" id="changePasswordModal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel"
