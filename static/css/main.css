@@ -2,15 +2,6 @@ dialog[open]::backdrop {
     backdrop-filter: blur(5px);
 }
 
-#productDialog {
-    outline: none;
-    overflow-y: hidden;
-    border: 0;
-    padding: 20px;
-    width: 40%;
-    height: 40%;
-    background: transparent;
-}
 
 .day-night-check {
     width: 40px;
@@ -21,11 +12,6 @@ dialog[open]::backdrop {
     border-radius: 15px;
 }
 
-.dialog-iframe {
-    background: transparent;
-    border: 1px black;
-    border-radius: 10px;
-}
 
 .navbar {
     height: 80px;
@@ -34,9 +20,6 @@ dialog[open]::backdrop {
     margin: auto;
 }
 
-.detail-html {
-    padding: 20px
-}
 
 .black-white-text {
     color: var(--card-label-color);
@@ -644,7 +627,6 @@ body {
 }
 
 html {
-
     scroll-behavior: smooth;
 }
 
@@ -787,4 +769,49 @@ footer li a {
 
 .btn-outline-light:focus, .btn-outline-light:active, .btn-outline-dark:focus, .btn-outline-dark:active {
     box-shadow: none;
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.13);
+    border-radius: 10px;
+    backdrop-filter: blur(3px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+}
+
+.modal-backdrop {
+    background: var(--blur-color);
+}
+
+.modal-backdrop.show {
+    opacity: .4;
+}
+
+.iframe-body {
+    background: none transparent !important;
+    height: 100%;
+}
+
+
+#productDialog {
+    outline: none;
+    overflow: hidden;
+    padding: 20px;
+    width: 40%;
+    height: 60%;
+    background: transparent;
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-iframe {
+    background: transparent;
+    border: 1px black;
+    border-radius: 10px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.detail-html {
 }

@@ -6,10 +6,10 @@ from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, func
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 
-from forms.login import LoginForm
+from forms.login import LoginForm, ChangePasswordForm
 
 # TODO: from werkzeug.security import check_password_hash
 
@@ -29,16 +29,6 @@ app.app_context().push()
 db = SQLAlchemy(app)
 logmanager = LoginManager()
 logmanager.init_app(app)
-
-
-class Donation(db.Model):
-    __tablename__ = 'donations'
-    id = Column(Integer, autoincrement=True, primary_key=True, default=0)
-    name = Column(String, nullable=False, default='none')
-    price = Column(Float, nullable=False, default=0.00)
-    duration = Column(Integer, default=0)
-
-    purchases = relationship('Purchase', back_populates='donations')
 
 
 class Player(UserMixin, db.Model):
@@ -65,11 +55,10 @@ class Purchase(db.Model):
     __tablename__ = 'purchases'
     id = Column(Integer, autoincrement=True, primary_key=True, default=0)
     player_name = Column(String, ForeignKey('players.name'), nullable=False, default='none')
-    donation_name = Column(String, ForeignKey('donations.name'), nullable=False, default='none')
+    donation_name = Column(String, nullable=False, default='none')
     purchase_date = Column(DateTime(timezone=True), server_default=func.now())
 
     player = relationship('Player', back_populates='purchases')
-    donations = relationship('Donation', back_populates='purchases')
 
 
 def easydonate_get_shop_info():
@@ -103,7 +92,7 @@ def index():
     products_info = easydonate_get_products()
 
     if shop_info and products_info:
-        return render_template('index.html', shop_info=shop_info, products_info=products_info)
+        return render_template('index.html', shop_info=shop_info, products_info=products_info, current_page='index')
     else:
         flash('Ошибка при получении информации о магазине или товарах', 'error')
         return render_template('index.html')
@@ -124,7 +113,6 @@ def easydonate_get_product(product_id):
 @app.route('/product/<int:product_id>', methods=['GET', 'POST'])
 def product_detail(product_id):
     product_info = easydonate_get_product(product_id)
-    print(product_info)
 
     if product_info:
         if request.method == 'POST':
@@ -145,9 +133,28 @@ def product_detail(product_id):
         return redirect(url_for('index'))
 
 
+def easydonate_get_product_info(product_id):
+    easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
+    headers = {'Shop-key': EASYDONATE_KEY}
+
+    response = requests.get(easydonate_url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+
 def easydonate_create_payment(customer, server_id, products, email=None, coupon=None, success_url=None):
     easydonate_url = 'https://easydonate.ru/api/v3/shop/payment/create'
     headers = {'Shop-Key': EASYDONATE_KEY}
+
+    product_id = list(products.keys())[0]
+    product_info = easydonate_get_product_info(product_id)
+
+    if not product_info:
+        print(f'Ошибка при получении информации о товаре {product_id}')
+        return None
 
     payload = {
         'customer': customer,
@@ -165,6 +172,12 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
         response_data = response.json()
 
         if response_data.get('success'):
+            purchase = Purchase(
+                player_name=customer,
+                donation_name=product_info['response']['name'],
+            )
+            db.session.add(purchase)
+            db.session.commit()
             return response_data
         else:
             print(f'Ошибка при создании платежа: {response_data.get("error_message")}')
@@ -175,13 +188,6 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
     except ValueError as error:
         print(f'Ошибка при разборе JSON: {error}')
         return None
-
-
-@app.route('/account')
-@login_required
-def account():
-    purchases = Purchase.query.filter_by(player_name=current_user.name).all()
-    return render_template('account.html', purchases=purchases)
 
 
 @logmanager.user_loader
@@ -214,6 +220,26 @@ def logout():
     logout_user()
     flash('Вы успешно вышли из аккаунта.', 'success')
     return redirect(url_for('index'))
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    purchases = Purchase.query.filter_by(player_name=current_user.name).all()
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        player = Player.query.filter_by(name=current_user.name).first()
+
+        if player.password[0].password == form.current_password.data:
+            player.password[0].password = form.new_password.data
+            db.session.commit()
+            flash('Пароль успешно изменен.', 'success')
+            return redirect(url_for('account'))
+        else:
+            flash('Неверный текущий пароль.', 'error')
+
+    return render_template('account.html', purchases=purchases, form=form)
 
 
 if __name__ == '__main__':

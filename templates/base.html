@@ -41,23 +41,44 @@
         {% endif %}
 
         <div class="navbar-nav">
-            {% if current_user and current_user.is_authenticated %}
-                <div class="nav-item mx-1">
-                    <button class="nav-link change-color btn btn-outline-light"
-                            onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
-                    </button>
-                </div>
-                <div class="nav-item mx-1">
-                    <button class="nav-link change-color btn btn-outline-light"
-                            onclick="window.location.href='{{ url_for('logout') }}'">Выход
-                    </button>
-                </div>
+            {% if current_page == 'index' %}
+                {% if current_user and current_user.is_authenticated %}
+                    <div class="nav-item mx-1">
+                        <button class="nav-link btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
+                        </button>
+                    </div>
+                    <div class="nav-item mx-1">
+                        <button class="nav-link btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('logout') }}'">Выход
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="nav-item mx-1">
+                        <button class="nav-link btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('login') }}'">Вход
+                        </button>
+                    </div>
+                {% endif %}
             {% else %}
-                <div class="nav-item mx-1">
-                    <button class="nav-link change-color btn btn-outline-light"
-                            onclick="window.location.href='{{ url_for('login') }}'">Вход
-                    </button>
-                </div>
+                {% if current_user and current_user.is_authenticated %}
+                    <div class="nav-item mx-1">
+                        <button class="nav-link change-color btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
+                        </button>
+                    </div>
+                    <div class="nav-item mx-1">
+                        <button class="nav-link change-color btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('logout') }}'">Выход
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="nav-item mx-1">
+                        <button class="nav-link change-color btn btn-outline-light"
+                                onclick="window.location.href='{{ url_for('login') }}'">Вход
+                        </button>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
@@ -91,7 +112,7 @@
 {% block footer %}{% endblock %}
 
 <dialog id="productDialog" class="dialog">
-    <iframe src="" width="100%" height="100%" class="dialog-iframe"></iframe>
+    <iframe src="" width="100%" height="100%" class="dialog-iframe" allowtransparency="true"></iframe>
 </dialog>
 
 <script>
@@ -111,7 +132,9 @@
         }
     });
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
     function openProductDialog(url) {
         let dialog = document.getElementById('productDialog');
