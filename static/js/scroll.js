@@ -25,8 +25,8 @@ const scrolling = {
 };
 
 
-function goToSection(section, anim, i) {
-    if (scrolling.enabled) { // skip if a scroll tween is in progress
+function goToSection(section, anim, _) {
+    if (scrolling.enabled) {
         scrolling.disable();
         gsap.to(window, {
             scrollTo: {y: section, autoKill: false},
@@ -38,8 +38,8 @@ function goToSection(section, anim, i) {
     }
 }
 
-sections.forEach((section, i) => {
-    const intoAnim = gsap.from(section.querySelector(".right-col"), {yPercent: 50, duration: 1, paused: true});
+sections.forEach((section, _) => {
+    const intoAnim = gsap.from(section.querySelector(".section"), {yPercent: 50, duration: 1, paused: true});
 
     ScrollTrigger.create({
         trigger: section,
@@ -48,5 +48,4 @@ sections.forEach((section, i) => {
         onEnter: () => goToSection(section, intoAnim),
         onEnterBack: () => goToSection(section)
     });
-
 });

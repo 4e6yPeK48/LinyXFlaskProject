@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/login.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Monoton&display=swap">
@@ -44,18 +46,18 @@
             {% if current_page == 'index' %}
                 {% if current_user and current_user.is_authenticated %}
                     <div class="nav-item mx-1">
-                        <button class="nav-link btn btn-outline-light"
+                        <button class=" btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
                         </button>
                     </div>
                     <div class="nav-item mx-1">
-                        <button class="nav-link btn btn-outline-light"
+                        <button class=" btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('logout') }}'">Выход
                         </button>
                     </div>
                 {% else %}
                     <div class="nav-item mx-1">
-                        <button class="nav-link btn btn-outline-light"
+                        <button class=" btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('login') }}'">Вход
                         </button>
                     </div>
@@ -63,18 +65,18 @@
             {% else %}
                 {% if current_user and current_user.is_authenticated %}
                     <div class="nav-item mx-1">
-                        <button class="nav-link change-color btn btn-outline-light"
+                        <button class=" change-color btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
                         </button>
                     </div>
                     <div class="nav-item mx-1">
-                        <button class="nav-link change-color btn btn-outline-light"
+                        <button class=" change-color btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('logout') }}'">Выход
                         </button>
                     </div>
                 {% else %}
                     <div class="nav-item mx-1">
-                        <button class="nav-link change-color btn btn-outline-light"
+                        <button class=" change-color btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('login') }}'">Вход
                         </button>
                     </div>
@@ -114,27 +116,76 @@
             allowtransparency="true" name="{{ date }}"></iframe>
 </dialog>
 
-
 {# gsap #}
 <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
 <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
-<script src="../static/js/main.js"></script>
 
-{# бутстрап #}
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-{# бутстрап select #}
-{#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">#}
-{#<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>#}
-{##}
-{#<script>#}
-{#    $(function () {#}
-{#        $('select').selectpicker();#}
+{#<script type="text/javascript" src="../static/js/ScrollBetweenElements.js"></script>#}
+{#<script src="../static/js/scroll.js"></script>#}
+
+{#<script type="text/javascript" src="../static/js/ScrollBetweenElements.js"></script>#}
+{#<script type="text/javascript">#}
+
+{#    $(document).ready(function () {#}
+{#        $('body,html').animate({scrollTop: 0}, 500);#}
+{#        ScrollBetweenElements.init(400, "linear", true);#}
+{#        ScrollBetweenElements.addElement($("#section1"));#}
+{#        ScrollBetweenElements.addElement($("#section2"));#}
 {#    });#}
 {#</script>#}
+
+
+{# бутстрап и jquery #}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+{# создание платежа #}
+<script>
+    function buyProduct(product_id) {
+        fetch(`/buy_product/${product_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.top.location.href = data['payment_url'];
+                } else {
+                    alert('Ошибка при создании платежа');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка. Попробуйте еще раз.');
+            });
+    }
+</script>
+
+{# .hidden класс для описания #}
+<script>
+    function addTags() {
+        let productGrid = document.getElementById('productGrid');
+        productGrid.classList.add('hidden');
+    }
+
+    function removeTags() {
+        let productDetail = document.getElementById('productDetails');
+        let productGrid = document.getElementById('productGrid');
+        productDetail.classList.add('hidden');
+        productGrid.classList.remove('hidden');
+    }
+</script>
 
 {# уведомления #}
 <script>
@@ -155,33 +206,86 @@
     });
 </script>
 
-{# скрыть диалог товара #}
+{# div описания товара #}
 <script>
-    function openProductDialog(url) {
-        let dialog = document.getElementById('productDialog');
-        let iframe = dialog.querySelector('iframe');
-        iframe.src = '';  // Очистите src перед открытием нового диалога
-        iframe.src = url; // Установите новый src
-        dialog.showModal();
+    function openProductDialog(product_id) {
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        fetch(`/product_info/${product_id}`)
+            .then(response => response.json())
+            .then(product_info => {
+                console.log(product_info['response']);
+                let productDetails = document.getElementById('productDetails');
+                if (product_info['response']['name'] === 'Eola') {
+                    productDetails.innerHTML = `
+                    <h4 class="gradient-eola">${product_info['response']['name']}</h4>
+                    <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+                    <div class="product-image mb-2 description-card-text"><img src="${product_info['response']['image']}" alt=""></div>
+                    <p class="black-white-text description-card-text"><b>Цена: </b>${product_info['response']['price']} р.</p>
+                    <button class="change-color btn btn-outline-light" onclick="buyProduct(${product_id})">Купить</button>
+                    <button class="change-color btn btn-outline-light" onclick="removeTags()">Закрыть</button>
+                `;
+                } else {
+                    productDetails.innerHTML = `
+                    <div class="d-flex product-info">
+                        <div class="d-flex p-2 w-70 flex-column ">
+                            <h4 class="gradient-eola">${product_info['response']['name']}</h4>
+                            <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+                            <p class="black-white-text description-card-text mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
+                        </div>
+                        <div class="d-flex ms-auto product-image mb-2 description-card-text p-2 flex-shrink-1 align-items-center justify-content-end"><img src="${product_info['response']['image']}" alt=""></div>
+                    </div>
+                    <button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
+                    <button class="change-color btn btn-outline-light btn-lg" onclick="removeTags()">Закрыть</button>
+                `;
+                }
+
+
+                productDetails.classList.remove('hidden');
+
+                updateTheme(isDarkMode);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при загрузке информации о товаре. Попробуйте еще раз.');
+            });
     }
 
     document.addEventListener('click', function (event) {
-        let dialog = document.getElementById('productDialog');
+        let productDetails = document.getElementById('productDetails');
         let targetElement = event.target;
 
-        if (targetElement === dialog) {
-            let iframe = dialog.querySelector('iframe');
-            iframe.src = ''; // Очистите src перед закрытием диалога
-            dialog.close();
+        if (targetElement === productDetails) {
+            productDetails.classList.add('hidden');
         }
     });
 </script>
 
-
 {# день ночь #}
 <script>
+    const bodyElement = document.querySelector("body");
+
+    function updateTheme(isDark) {
+        bodyElement.classList.add("toggle");
+
+        setTimeout(() => {
+            bodyElement.classList.toggle("dark", isDark);
+            bodyElement.classList.toggle("light", !isDark);
+
+            const changeColorElements = document.querySelectorAll(".change-color");
+            changeColorElements.forEach(element => {
+                element.classList.toggle("btn-outline-dark", !isDark);
+                element.classList.toggle("btn-outline-light", isDark);
+            });
+
+            setTimeout(() => {
+                bodyElement.classList.remove("toggle");
+            }, 10);
+        }, 5);
+        localStorage.setItem('darkMode', isDark);
+
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        const bodyElement = document.querySelector("body");
         const toggleCheckbox = document.querySelector(".day-night input");
 
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -214,31 +318,12 @@
 
             localStorage.setItem('darkMode', newMode);
 
-            // Передаем информацию о режиме в iframe
             const iframe = document.getElementById('productIframe');
             if (iframe) {
                 iframe.contentWindow.postMessage({darkMode: newMode}, '*');
             }
         });
 
-        function updateTheme(isDark) {
-            bodyElement.classList.add("toggle");
-
-            setTimeout(() => {
-                bodyElement.classList.toggle("dark", isDark);
-                bodyElement.classList.toggle("light", !isDark);
-
-                const changeColorElements = document.querySelectorAll(".change-color");
-                changeColorElements.forEach(element => {
-                    element.classList.toggle("btn-outline-dark", !isDark);
-                    element.classList.toggle("btn-outline-light", isDark);
-                });
-
-                setTimeout(() => {
-                    bodyElement.classList.remove("toggle");
-                }, 10);
-            }, 5);
-        }
     });
 </script>
 
@@ -278,6 +363,28 @@
     document.getElementById('all-products-svg-btn').addEventListener("click", function () {
         window.location.href = '{{ url_for('products') }}';
     });
+</script>
+
+{# анимация фильтра продуктов #}
+<script>
+    function filterProducts(category) {
+        let productGrid = document.getElementById('productGrid');
+        let cards = productGrid.getElementsByClassName('card');
+
+        for (let i = 0; i < cards.length; i++) {
+            let card = cards[i];
+            let description = card.getAttribute('data-description');
+            let showCard = (category === 'Всё' || description.includes(category));
+            card.style.display = showCard ? 'block' : 'none';
+            if (showCard) {
+                card.classList.remove('fadeOut');
+                card.classList.add('fadeIn');
+            } else {
+                card.classList.remove('fadeIn');
+                card.classList.add('fadeOut');
+            }
+        }
+    }
 </script>
 </body>
 </html>

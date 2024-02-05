@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block parallax %}
-    <div class="parallax section"
+    <div id="section1" class="parallax section"
          style="background-image: url('../static/img/linyx.png');">
         <div class="background-blur d-flex justify-content-center align-items-center">
             <div class="hi-box d-flex justify-content-center p-5 align-items-stretch">
@@ -35,21 +35,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container product-container section ">
+    <div id="section2" class="container product-container section ">
         <div class="product-table">
             <div class="black-white-text community-choice rounded p-1">
                 <h3 class="text-start">Выбор сообщества</h3>
             </div>
             <div class="stick-light rounded"></div>
 
-            <div class="grid">
-
-
+            <div id="productDetails" class="hidden product-details">
+            </div>
+            <div class="row" id="productGrid">
                 {% for product in products_info['response'] %}
                     {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
-                        <div class="card"
-                             onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')">
-                    <span class="icon">
+                        <div class="card mx-2 my-2 product-card col"
+                             onclick="openProductDialog('{{ product['id'] }}'); addTags()">
+                            <span class="icon">
                         <svg
                                 viewBox="0 0 24 24"
                                 fill="none"
@@ -63,13 +63,10 @@
                         </svg>
                     </span>
                             <h4>{{ product['name'] }}</h4>
-                            <p>
-                                {{ product['price'] }} рублей
-                            </p>
-                            <button type="button" class="btn btn-outline-secondary">
-                                Подробнее
-                            </button>
+                            <p>{{ product['price'] }} рублей</p>
                             <div class="shine"></div>
+                            <button type="button" class="btn btn-outline-light more-info change-color mt-3">Подробнее
+                            </button>
                             <div class="background">
                                 <div class="tiles">
                                     <div class="tile tile-1"></div>
@@ -96,8 +93,8 @@
             </div>
         </div>
 
-        <div class="all-products-button">
-            <button class="nav-link change-color btn btn-outline-light mx-auto btn-lg"
+        <div class="all-products-button d-flex justify-content-center">
+            <button class="change-color btn mx-auto btn-lg"
                     onclick="window.location.href='{{ url_for('products') }}'">Ко всем товарам
             </button>
         </div>
@@ -116,7 +113,7 @@
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
                 <li class="ms-3 icon-link tg">
-                    <a class="" href="https://t.me/m4estro48">
+                    <a class="svg-link" href="https://t.me/m4estro48">
                         <svg viewBox="0 0 80 80"
                              fill="none"
                              stroke="currentColor"
@@ -129,7 +126,7 @@
                     </a>
                 </li>
                 <li class="ms-3 icon-link ds">
-                    <a class="" href="https://discord.gg/linyx">
+                    <a class="svg-link" href="https://discord.gg/linyx">
                         <svg viewBox="0 0 80 80"
                              fill="none"
                              stroke="currentColor"

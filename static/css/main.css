@@ -27,6 +27,7 @@ dialog[open]::backdrop {
 
 body {
     --background-color: #18181B;
+    --products-background-color: #202023;
     --text-color: #A1A1AA;
 
     --card-background-color: rgba(255, 255, 255, .015);
@@ -65,6 +66,7 @@ body {
 
 body.light {
     --background-color: #FAFAFA;
+    --products-background-color: #f0f0f0;
     --text-color: #52525B;
 
     --navbar-background-color: #ededed;
@@ -133,6 +135,7 @@ body.toggle .grid * {
     cursor: pointer;
     position: relative;
     transition: box-shadow 0.25s;
+    width: calc(25% - 20px);
 }
 
 .card .icon {
@@ -812,4 +815,168 @@ footer li a {
 
 .btn-more {
     width: fit-content;
+}
+
+.svg-link {
+    width: 50px;
+    height: 50px;
+}
+
+.more-info {
+    z-index: 2;
+}
+
+.gradient-border {
+    --borderWidth: 4px;
+    background: var(--products-background-color);
+    position: relative;
+    border-radius: var(--borderWidth);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.gradient-border:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: calc(2 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+}
+
+
+@keyframes animatedgradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.stick-light-sm {
+    width: 192px;
+    height: 4px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.stick-light-sm::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+    border-radius: 2px;
+}
+
+.w2 {
+    width: 16.66%;
+}
+
+.w8 {
+    width: 83.34%;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 1s;
+}
+
+.fadeOut {
+    animation: fadeOut 1s;
+}
+
+.hidden {
+    display: none;
+}
+
+#productDetails {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-color: var(--products-background-color);
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-image img {
+    height: 90%;
+    width: auto;
+}
+
+.all-products-container {
+    min-height: 80vh !important;
+}
+
+.gradient-eola {
+    display: inline-block;
+    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    font-size: 50px;
+}
+
+@keyframes animatedgradient {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+.description-card-text {
+    font-size: 25px;
+    font-family: 'Comfortaa', serif;
+}
+
+.product-info {
+    height: 90%;
 }

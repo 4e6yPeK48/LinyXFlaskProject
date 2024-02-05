@@ -3,7 +3,7 @@ import json
 from urllib.parse import quote_plus
 
 import requests
-from flask import Flask, render_template, url_for, redirect, flash, request
+from flask import Flask, render_template, url_for, redirect, flash, request, jsonify
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -121,6 +121,33 @@ def easydonate_get_product(product_id):
         return response.json()
     else:
         return None
+
+
+@app.route('/buy_product/<int:product_id>', methods=['POST'])
+def buy_product(product_id):
+    product_info = easydonate_get_product(product_id)
+
+    if product_info:
+        customer = current_user.name if current_user.is_authenticated else 'Anonymous'
+        payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
+                                                 {product_id: 1})
+
+        if payment_info and payment_info.get('success'):
+            return jsonify({'success': True, 'payment_url': payment_info['response']['url']})
+        else:
+            return jsonify({'error': 'Ошибка при создании платежа'}), 500
+    else:
+        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
+
+
+@app.route('/product_info/<int:product_id>')
+def product_info(product_id):
+    product_info = easydonate_get_product(product_id)
+
+    if product_info:
+        return jsonify(product_info)
+    else:
+        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
 
 
 @app.route('/product/<int:product_id>', methods=['GET', 'POST'])

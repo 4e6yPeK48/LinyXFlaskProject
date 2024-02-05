@@ -1,91 +1,91 @@
-<!-- products.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container product-container section">
-        <div class="product-table-list">
-            <label for="categoryFilter" class="black-white-text"><span>Выберите категорию:</span></label>
-            <select id="categoryFilter" onchange="filterProducts()" class="form-select form-select-sm"
-                    aria-label=".form-select-sm example">
-                <option selected value="Всё">Всё</option>
-                <option value="Привилегия">Привилегия</option>
-                <option value="Предмет">Предмет</option>
-                <option value="Валюта">Валюта</option>
-                <option value="Кейс">Кейс</option>
-            </select>
+    <div class="container mt-5 ">
+        <div class="row gradient-border px-2 py-4 all-products-container">
+            <div class="w2">
+                <div class="category-filter d-flex flex-column">
+                    <button class="btn btn-outline-light btn-category mb-2 change-color"
+                            onclick="filterProducts('Всё')">Всё
+                    </button>
+                    <div class="stick-light-sm rounded"></div>
 
-            <div class="black-white-text community-choice rounded p-1">
-                <h3 class="text-start">Все товары</h3>
+                    <button class="btn btn-outline-light btn-category mb-2 change-color"
+                            onclick="filterProducts('Привилегия')">Привилегия
+                    </button>
+                    <div class="stick-light-sm rounded"></div>
+
+                    <button class="btn btn-outline-light btn-category mb-2 change-color"
+                            onclick="filterProducts('Предмет')">Предмет
+                    </button>
+                    <div class="stick-light-sm rounded"></div>
+
+                    <button class="btn btn-outline-light btn-category mb-2 change-color"
+                            onclick="filterProducts('Валюта')">Валюта
+                    </button>
+                    <div class="stick-light-sm rounded"></div>
+
+                    <button class="btn btn-outline-light btn-category mb-2 change-color"
+                            onclick="filterProducts('Кейс')">Кейс
+                    </button>
+                    <div class="stick-light-sm rounded "></div>
+                </div>
             </div>
-            <div class="stick-light rounded"></div>
+            <div class="w8">
+                <div id="productDetails" class="hidden product-details">
+                </div>
+                <div class="row" id="productGrid">
+                    {% for product in products_info['response'] %}
+                        <div class="card mx-2 my-2 product-card"
+                             onclick="openProductDialog('{{ product['id'] }}'); addTags()"
+                             data-description="{{ product['description'] }}">
+                            <span class="icon">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                </svg>
+                            </span>
+                            <h4>{{ product['name'] }}</h4>
+                            <p class="mb-2">
+                                {{ product['price'] }} рублей
+                            </p>
+                            <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                Подробнее
+                            </button>
+                            <div class="shine"></div>
+                            <div class="background">
+                                <div class="tiles">
+                                    <div class="tile tile-1"></div>
+                                    <div class="tile tile-2"></div>
+                                    <div class="tile tile-3"></div>
+                                    <div class="tile tile-4"></div>
 
-            <div class="grid" id="productGrid">
-                {% for product in products_info['response'] %}
-                    <div class="card"
-                         onclick="openProductDialog('{{ url_for('product_detail', product_id=product['id']) }}')"
-                         data-description="{{ product['description'] }}">
-                        <span class="icon">
-                            <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
-                            </svg>
-                        </span>
-                        <h4>{{ product['name'] }}</h4>
-                        <p>
-                            {{ product['price'] }} рублей
-                        </p>
-                        <button type="button" class="btn btn-outline-secondary btn-more">
-                            Подробнее
-                        </button>
-                        <div class="shine"></div>
-                        <div class="background">
-                            <div class="tiles">
-                                <div class="tile tile-1"></div>
-                                <div class="tile tile-2"></div>
-                                <div class="tile tile-3"></div>
-                                <div class="tile tile-4"></div>
+                                    <div class="tile tile-5"></div>
+                                    <div class="tile tile-6"></div>
+                                    <div class="tile tile-7"></div>
+                                    <div class="tile tile-8"></div>
 
-                                <div class="tile tile-5"></div>
-                                <div class="tile tile-6"></div>
-                                <div class="tile tile-7"></div>
-                                <div class="tile tile-8"></div>
+                                    <div class="tile tile-9"></div>
+                                    <div class="tile tile-10"></div>
+                                </div>
 
-                                <div class="tile tile-9"></div>
-                                <div class="tile tile-10"></div>
+                                <div class="line line-1"></div>
+                                <div class="line line-2"></div>
+                                <div class="line line-3"></div>
                             </div>
-
-                            <div class="line line-1"></div>
-                            <div class="line line-2"></div>
-                            <div class="line line-3"></div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function filterProducts() {
-            let categoryFilter = document.getElementById('categoryFilter');
-            let selectedCategory = categoryFilter.value;
-            console.log(selectedCategory);
 
-            let productGrid = document.getElementById('productGrid');
-            let cards = productGrid.getElementsByClassName('card');
-
-            for (let i = 0; i < cards.length; i++) {
-                let card = cards[i];
-                let description = card.getAttribute('data-description');
-                let showCard = (selectedCategory === 'Всё' || description.includes(selectedCategory));
-                card.style.display = showCard ? 'block' : 'none';
-            }
-        }
-    </script>
 {% endblock %}

@@ -27,13 +27,11 @@
             {% endfor %}
             </tbody>
         </table>
-        <button type="button" class="change-color btn btn-outline-light" data-toggle="modal"
-                data-target="#changePasswordModal">
+        <button type="button" class="change-color btn btn-outline-light" data-bs-toggle="modal"
+                data-bs-target="#changePasswordModal">
             Сменить пароль
         </button>
     </div>
-
-
 
     <div class="modal fade black-white-text" id="changePasswordModal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel"
@@ -42,9 +40,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="{{ url_for('account') }}">
@@ -66,7 +61,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="change-color btn btn-outline-light" data-dismiss="modal">
+                            <button type="button" class="change-color btn btn-outline-light" data-bs-dismiss="modal">
                                 Отмена
                             </button>
                             <button type="submit" class="change-color btn btn-outline-light">Сменить пароль</button>
