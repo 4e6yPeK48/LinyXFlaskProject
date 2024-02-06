@@ -30,6 +30,9 @@ body {
     --products-background-color: #202023;
     --text-color: #A1A1AA;
 
+    --table-sel-col: rgba(255, 255, 255, 0.2);
+    --table-sel-back: rgba(255, 255, 255, 0.3);
+
     --card-background-color: rgba(255, 255, 255, .015);
     --navbar-background-color: #0c0c0e;
     --blur-color: rgba(15, 15, 15, 0.8);
@@ -68,6 +71,9 @@ body.light {
     --background-color: #FAFAFA;
     --products-background-color: #f0f0f0;
     --text-color: #52525B;
+
+    --table-sel-col: rgba(0, 0, 0, 0.06);
+    --table-sel-back: rgba(0, 0, 0, 0.1);
 
     --navbar-background-color: #ededed;
     --blur-color: rgba(255, 255, 255, 0.8);
@@ -679,7 +685,7 @@ body {
 
 .product-container {
     padding-top: 20px;
-    height: 100vh;
+    height: fit-content;
     top: -80px;
     position: relative;
 }
@@ -868,6 +874,11 @@ footer li a {
     scrollbar-width: none;
 }
 
+.w8, #productDetails {
+    border: 0 !important;
+    outline: 0 !important;
+}
+
 .w8::-webkit-scrollbar {
     width: 0;
 }
@@ -925,7 +936,6 @@ footer li a {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
@@ -1066,6 +1076,11 @@ footer li a {
     .product-grid-m {
         display: none;
     }
+
+    .cart-button {
+        position: absolute;
+        left: calc(50% - 25px);
+    }
 }
 
 
@@ -1182,6 +1197,33 @@ footer li a {
         margin-bottom: 5px;
         min-height: 20%;
     }
+
+    .product-image-main {
+        width: 100%;
+        height: auto;
+    }
+
+    .steve-div {
+        display: none;
+    }
+
+    .account-local {
+        width: 100%;
+        align-items: center;
+    }
+
+    .account-list {
+        width: 100% !important;
+    }
+
+    #productGrid {
+        margin-left: 5px !important;
+    }
+
+    .close-link {
+        left: 92% !important;
+        top: 5px !important;
+    }
 }
 
 .dropdown-toggle {
@@ -1254,4 +1296,101 @@ footer li a {
 
 #dropdownMenuButton:active {
     background-color: var(--blur-color);
+}
+
+.community-img img {
+    width: 10vw;
+    height: auto;
+}
+
+.account-list {
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 60%;
+}
+
+.account-list th, .account-list td {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.account-list th {
+    text-align: left;
+}
+
+.account-list thead th {
+    background-color: var(--card-background-color);
+}
+
+.account-list tbody tr:hover {
+    background-color: var(--table-sel-back);
+}
+
+.account-list tbody td {
+    position: relative;
+}
+
+.account-list tbody td:hover:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: var(--table-sel-col);
+    z-index: -1;
+}
+
+.account-list-title {
+    width: fit-content;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.blur-account {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    width: 80%;
+    max-height: 20%;
+}
+
+.steve {
+    height: 25vh;
+    width: auto;
+}
+
+.productGrid {
+    margin-left: 0;
+}
+
+.close-dialog {
+    stroke: red;
+}
+
+.close-link {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.main {
+    background-color: var(--card-background-color);
+    width: fit-content;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.servers-head {
+    width: fit-content;
+}
+
+.text-server {
+    text-align: center;
 }

@@ -15,11 +15,6 @@
     <title>{% block title %}LinyX{% endblock %}</title>
 </head>
 <body id="body">
-<div class="navbar-shapes">
-    {% for _ in range(6) %}
-        <div class="navbar-shape"></div>
-    {% endfor %}
-</div>
 <nav class="navbar navbar-expand-lg">
     <div class="d-flex justify-content-between w-100">
         <div class="logo">
@@ -181,6 +176,9 @@
 {# копировать айпи #}
 <script src="../static/js/copy-ip.js"></script>
 
+{# онлайн #}
+<script src="../static/js/server-online.js"></script>
+
 {# скролл картинки параллакса #}
 <script src="../static/js/parallax-scroll.js"></script>
 
@@ -203,29 +201,65 @@
                 productDetails.innerHTML = '';
                 if (product_info['response']['name'] === 'Eola') {
                     productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="removeTags(); hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
 <div class="d-flex product-info">
     <div class="d-flex p-2 flex-column desc-text">
         <h4 class="gradient-eola">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-price mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
-    <div class="d-flex ms-auto product-image mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
 </div>
-<button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
-<button class="change-color btn btn-outline-light btn-lg" onclick="removeTags(); hideProductDetails()">Закрыть</button>
+<div class="d-flex flex-row w-100 mt-auto">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} р.</p>
+</div>
                 `;
                 } else {
                     productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="removeTags(); hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
 <div class="d-flex product-info">
     <div class="d-flex p-2 flex-column desc-text">
         <h4 class="gradient-eola">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-price mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
-    <div class="d-flex ms-auto product-image mb-2 p-2 align-items-center"><img src="${product_info['response']['image']}" class="" alt=""></div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
 </div>
-<button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
-<button class="change-color btn btn-outline-light btn-lg" onclick="removeTags(); hideProductDetails()">Закрыть</button>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} р.</p>
+</div>
                 `;
                 }
 

@@ -45,9 +45,9 @@
                 <div id="productDetails" class="hidden product-details">
                     <p class="">Подождите...</p>
                 </div>
-                <div class="row" id="productGrid">
+                <div class="row ms-4" id="productGrid">
                     {% for product in products_info['response'] %}
-                        <div class="card mx-2 mb-3 product-card"
+                        <div class="card ms-2 mb-3 product-card"
                              onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); addTags();"
                              data-description="{{ product['description'] }}">
                             <div class="card-name-icon d-flex mt-auto">

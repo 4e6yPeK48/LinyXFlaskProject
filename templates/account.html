@@ -5,32 +5,55 @@
 
 {% block content %}
     <div class="container">
-        <div class="black-white-text mt-2">
-            <h1>Личный кабинет</h1>
+        <div class="blur-account d-flex justify-content-between ms-auto me-auto">
+            <div class="d-flex flex-column account-local">
+                <div class="black-white-text mt-4">
+                    <h1>Личный кабинет</h1>
+                </div>
+
+                <button type="button" class="change-color btn btn-outline-light my-3 mt-auto" data-bs-toggle="modal"
+                        data-bs-target="#changePasswordModal">
+                    Сменить пароль
+                </button>
+            </div>
+            <div class="steve-div">
+                <img src="../static/img/steve.jpg" alt="" class="steve rounded shadow-sm">
+            </div>
         </div>
-        <div class="black-white-text mt-2">
+
+
+        <div class="black-white-text mt-2 ms-auto me-auto account-list-title">
             <h4>Список покупок</h4>
         </div>
-        <table class="table">
+        <table class="table account-list ms-auto me-auto gradient-border">
             <thead>
             <tr>
-                <th class="black-white-text">Название доната</th>
-                <th class="black-white-text">Дата покупки</th>
+                <th>
+                    <p class="black-white-text">Название доната
+                    </p>
+                </th>
+                <th>
+                    <p class="black-white-text">Дата покупки
+                    </p>
+                </th>
             </tr>
             </thead>
             <tbody>
             {% for purchase in purchases %}
                 <tr>
-                    <td class="black-white-text">{{ purchase.donation_name }}</td>
-                    <td class="black-white-text">{{ purchase.purchase_date }}</td>
+                    <td>
+                        <p class="black-white-text">{{ purchase.donation_name }}
+                        </p>
+                    </td>
+                    <td>
+                        <p class="black-white-text">
+                            {{ purchase.purchase_date }}
+                        </p>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <button type="button" class="change-color btn btn-outline-light" data-bs-toggle="modal"
-                data-bs-target="#changePasswordModal">
-            Сменить пароль
-        </button>
     </div>
 
     <div class="modal fade black-white-text" id="changePasswordModal" tabindex="-1" role="dialog"
