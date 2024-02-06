@@ -19,7 +19,7 @@
                                 IP: play.linyx.ru
                             </span>
                         </button>
-                        <button class="change-color btn btn-outline-light ml-1 flex-fil"
+                        <button class="change-color btn btn-outline-light ms-1 flex-fil"
                                 onclick="window.location.href='{{ url_for('products') }}'">К донату
                         </button>
                     </div>
@@ -44,10 +44,57 @@
 
             <div id="productDetails" class="hidden product-details">
             </div>
-            <div class="row" id="productGrid">
+            <div class="row product-grid-pc" id="productGrid">
                 {% for product in products_info['response'] %}
                     {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
                         <div class="card mx-2 my-2 product-card col"
+                             onclick="openProductDialog('{{ product['id'] }}'); addTags()">
+                            <span class="icon">
+                        <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                        </svg>
+                    </span>
+                            <h4>{{ product['name'] }}</h4>
+                            <p>{{ product['price'] }} рублей</p>
+                            <div class="shine"></div>
+                            <button type="button" class="btn btn-outline-light more-info change-color mt-3">Подробнее
+                            </button>
+                            <div class="background">
+                                <div class="tiles">
+                                    <div class="tile tile-1"></div>
+                                    <div class="tile tile-2"></div>
+                                    <div class="tile tile-3"></div>
+                                    <div class="tile tile-4"></div>
+
+                                    <div class="tile tile-5"></div>
+                                    <div class="tile tile-6"></div>
+                                    <div class="tile tile-7"></div>
+                                    <div class="tile tile-8"></div>
+
+                                    <div class="tile tile-9"></div>
+                                    <div class="tile tile-10"></div>
+                                </div>
+
+                                <div class="line line-1"></div>
+                                <div class="line line-2"></div>
+                                <div class="line line-3"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="row product-grid-m" id="productGrid">
+                {% for product in products_info['response'] %}
+                    {% if product['name'] in ['Eola', 'Fenix'] %}
+                        <div class="card mx-1 my-2 product-card col"
                              onclick="openProductDialog('{{ product['id'] }}'); addTags()">
                             <span class="icon">
                         <svg

@@ -21,11 +21,13 @@
     {% endfor %}
 </div>
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid d-flex align-items-center justify-content-between">
-        <a class="navbar-brand" id="linyx" href="{{ url_for('index') }}">LinyX</a>
+    <div class="d-flex justify-content-between w-100">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="../static/img/logo.jpg" alt="" class=""></a>
+        </div>
 
         {% if current_user and current_user.is_authenticated %}
-            <div class="cart-button mx-auto" id="all-products-svg-btn">
+            <div class="cart-button mt-auto mb-auto" id="all-products-svg-btn">
                 <svg
                         viewBox="0 0 25 25"
                         fill="none"
@@ -36,28 +38,28 @@
                         xmlns="http://www.w3.org/2000/svg"
 
                 >
-                    <path d="M3 10H21L19 20H5M3 10L4 15M3 10L9 4M18 7L15 4" href="{{ url_for('account') }}"></path>
+                    <path d="M3 10H21L19 20H5M3 10L4 15M3 10L9 4M18 7L15 4"></path>
 
                 </svg>
             </div>
         {% endif %}
 
-        <div class="navbar-nav">
+        <div class="navbar-nav pc-navbar mt-auto mb-auto justify-content-end">
             {% if current_page == 'index' %}
                 {% if current_user and current_user.is_authenticated %}
                     <div class="nav-item mx-1">
-                        <button class=" btn btn-outline-light"
+                        <button class="btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
                         </button>
                     </div>
                     <div class="nav-item mx-1">
-                        <button class=" btn btn-outline-light"
+                        <button class="btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('logout') }}'">Выход
                         </button>
                     </div>
                 {% else %}
                     <div class="nav-item mx-1">
-                        <button class=" btn btn-outline-light"
+                        <button class="btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('login') }}'">Вход
                         </button>
                     </div>
@@ -82,6 +84,30 @@
                     </div>
                 {% endif %}
             {% endif %}
+        </div>
+
+        <div class="dropdown mt-auto mb-auto ">
+            <button class="btn btn-outline-light dropdown-toggle change-color" type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if current_user and current_user.is_authenticated %}
+                    <button class="dropdown-item btn btn-outline-light black-white-text"
+                            onclick="window.location.href='{{ url_for('account') }}'">Личный
+                        кабинет
+                    </button>
+                    <button class="dropdown-item btn btn-outline-light black-white-text"
+                            onclick="window.location.href='{{ url_for('logout') }}'">Выход
+                    </button>
+                {% else %}
+                    <button class="dropdown-item btn btn-outline-light black-white-text"
+                            onclick="window.location.href='{{ url_for('login') }}'">Вход
+                    </button>
+                {% endif %}
+            </div>
         </div>
     </div>
 </nav>
@@ -111,17 +137,6 @@
 {% block content %}{% endblock %}
 {% block footer %}{% endblock %}
 
-<dialog id="productDialog" class="dialog">
-    <iframe id="productIframe" src="" width="100%" height="100%" class="dialog-iframe"
-            allowtransparency="true" name="{{ date }}"></iframe>
-</dialog>
-
-{# gsap #}
-<script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
-<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
-
-
 {#<script type="text/javascript" src="../static/js/ScrollBetweenElements.js"></script>#}
 {#<script src="../static/js/scroll.js"></script>#}
 
@@ -138,14 +153,107 @@
 
 
 {# бутстрап и jquery #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+{# gsap #}
+<script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
+
+
+{# .hidden класс для описания #}
+<script src="../static/js/hide-desc.js"></script>
+
+{# уведомления #}
+<script src="../static/js/notifications.js"></script>
+
+{# день ночь #}
+<script src="../static/js/day-night.js"></script>
+
+{# копировать айпи #}
+<script src="../static/js/copy-ip.js"></script>
+
+{# скролл картинки параллакса #}
+<script src="../static/js/parallax-scroll.js"></script>
+
+{# анимация фильтра продуктов #}
+<script src="../static/js/filter-animation.js"></script>
+
+{# очистка описания продукта и надпись загрузки #}
+<script src="../static/js/clear-desc.js"></script>
+
+
+{# div описания товара #}
+<script>
+    function openProductDialog(product_id) {
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        fetch(`/product_info/${product_id}`)
+            .then(response => response.json())
+            .then(product_info => {
+                console.log(product_info['response']);
+                let productDetails = document.getElementById('productDetails');
+                productDetails.innerHTML = '';
+                if (product_info['response']['name'] === 'Eola') {
+                    productDetails.innerHTML = `
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-eola">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-price mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
+</div>
+<button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
+<button class="change-color btn btn-outline-light btn-lg" onclick="removeTags(); hideProductDetails()">Закрыть</button>
+                `;
+                } else {
+                    productDetails.innerHTML = `
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-eola">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-price mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image mb-2 p-2 align-items-center"><img src="${product_info['response']['image']}" class="" alt=""></div>
+</div>
+<button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
+<button class="change-color btn btn-outline-light btn-lg" onclick="removeTags(); hideProductDetails()">Закрыть</button>
+                `;
+                }
+
+                productDetails.classList.remove('hidden');
+                updateTheme(isDarkMode);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при загрузке информации о товаре. Попробуйте еще раз.');
+            });
+    }
+
+    document.addEventListener('click', function (event) {
+        let productDetails = document.getElementById('productDetails');
+        let targetElement = event.target;
+
+        if (targetElement === productDetails) {
+            productDetails.classList.add('hidden');
+        }
+    });
+</script>
+
+{# клик с свг корзины на страницу товаров #}
+<script>
+    document.getElementById('all-products-svg-btn').addEventListener("click", function () {
+        window.location.href = '{{ url_for('products') }}';
+    });
+</script>
 
 {# создание платежа #}
 <script>
@@ -172,219 +280,5 @@
     }
 </script>
 
-{# .hidden класс для описания #}
-<script>
-    function addTags() {
-        let productGrid = document.getElementById('productGrid');
-        productGrid.classList.add('hidden');
-    }
-
-    function removeTags() {
-        let productDetail = document.getElementById('productDetails');
-        let productGrid = document.getElementById('productGrid');
-        productDetail.classList.add('hidden');
-        productGrid.classList.remove('hidden');
-    }
-</script>
-
-{# уведомления #}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function showPopup() {
-            const popup = document.querySelector('.popup');
-            popup.style.display = 'block';
-
-            setTimeout(function () {
-                popup.style.display = 'none';
-            }, 3000);
-        }
-
-        const messages = document.querySelectorAll('.popup');
-        if (messages.length > 0) {
-            showPopup();
-        }
-    });
-</script>
-
-{# div описания товара #}
-<script>
-    function openProductDialog(product_id) {
-        const isDarkMode = localStorage.getItem('darkMode') === 'true';
-        fetch(`/product_info/${product_id}`)
-            .then(response => response.json())
-            .then(product_info => {
-                console.log(product_info['response']);
-                let productDetails = document.getElementById('productDetails');
-                if (product_info['response']['name'] === 'Eola') {
-                    productDetails.innerHTML = `
-                    <h4 class="gradient-eola">${product_info['response']['name']}</h4>
-                    <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
-                    <div class="product-image mb-2 description-card-text"><img src="${product_info['response']['image']}" alt=""></div>
-                    <p class="black-white-text description-card-text"><b>Цена: </b>${product_info['response']['price']} р.</p>
-                    <button class="change-color btn btn-outline-light" onclick="buyProduct(${product_id})">Купить</button>
-                    <button class="change-color btn btn-outline-light" onclick="removeTags()">Закрыть</button>
-                `;
-                } else {
-                    productDetails.innerHTML = `
-                    <div class="d-flex product-info">
-                        <div class="d-flex p-2 w-70 flex-column ">
-                            <h4 class="gradient-eola">${product_info['response']['name']}</h4>
-                            <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
-                            <p class="black-white-text description-card-text mt-auto"><b>Цена: </b>${product_info['response']['price']} р.</p>
-                        </div>
-                        <div class="d-flex ms-auto product-image mb-2 description-card-text p-2 flex-shrink-1 align-items-center justify-content-end"><img src="${product_info['response']['image']}" alt=""></div>
-                    </div>
-                    <button class="change-color btn btn-outline-light btn-lg" onclick="buyProduct(${product_id})">Купить</button>
-                    <button class="change-color btn btn-outline-light btn-lg" onclick="removeTags()">Закрыть</button>
-                `;
-                }
-
-
-                productDetails.classList.remove('hidden');
-
-                updateTheme(isDarkMode);
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при загрузке информации о товаре. Попробуйте еще раз.');
-            });
-    }
-
-    document.addEventListener('click', function (event) {
-        let productDetails = document.getElementById('productDetails');
-        let targetElement = event.target;
-
-        if (targetElement === productDetails) {
-            productDetails.classList.add('hidden');
-        }
-    });
-</script>
-
-{# день ночь #}
-<script>
-    const bodyElement = document.querySelector("body");
-
-    function updateTheme(isDark) {
-        bodyElement.classList.add("toggle");
-
-        setTimeout(() => {
-            bodyElement.classList.toggle("dark", isDark);
-            bodyElement.classList.toggle("light", !isDark);
-
-            const changeColorElements = document.querySelectorAll(".change-color");
-            changeColorElements.forEach(element => {
-                element.classList.toggle("btn-outline-dark", !isDark);
-                element.classList.toggle("btn-outline-light", isDark);
-            });
-
-            setTimeout(() => {
-                bodyElement.classList.remove("toggle");
-            }, 10);
-        }, 5);
-        localStorage.setItem('darkMode', isDark);
-
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggleCheckbox = document.querySelector(".day-night input");
-
-        const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-        window.addEventListener('pageshow', function (event) {
-            if (event.persisted || isDarkMode) {
-                updateTheme(isDarkMode);
-            }
-        });
-
-        updateTheme(isDarkMode);
-
-        function showPopup() {
-            const popup = document.querySelector('.popup');
-            popup.style.display = 'block';
-
-            setTimeout(function () {
-                popup.style.display = 'none';
-            }, 3000);
-        }
-
-        const messages = document.querySelectorAll('.popup');
-        if (messages.length > 0) {
-            showPopup();
-        }
-
-        toggleCheckbox.addEventListener("change", () => {
-            const newMode = toggleCheckbox.checked;
-            updateTheme(newMode);
-
-            localStorage.setItem('darkMode', newMode);
-
-            const iframe = document.getElementById('productIframe');
-            if (iframe) {
-                iframe.contentWindow.postMessage({darkMode: newMode}, '*');
-            }
-        });
-
-    });
-</script>
-
-{# копировать айпи #}
-<script>
-    let text = "play.linyx.ru";
-    const copyToClipboard = async () => {
-        try {
-            await navigator.clipboard.writeText(text);
-            const button = document.getElementById('copy-ip');
-            button.innerText = 'Скопировано!';
-            button.classList.add('copied');
-            setTimeout(() => {
-                button.innerText = 'IP: play.linyx.ru';
-                button.classList.remove('copied');
-            }, 3000);
-            console.log('Скопировано');
-        } catch (err) {
-            console.error('Не удалось скопировать: ', err);
-        }
-    }
-</script>
-
-{# скролл картинки параллакса #}
-<script>
-    document.addEventListener("scroll", function () {
-        const parallax = document.querySelector(".parallax");
-        const scrollPosition = window.scrollY;
-
-        parallax.style.backgroundPositionY = -scrollPosition * 0.5 + "px";
-    });
-
-</script>
-
-{# клик с свг корзины на страницу товаров #}
-<script>
-    document.getElementById('all-products-svg-btn').addEventListener("click", function () {
-        window.location.href = '{{ url_for('products') }}';
-    });
-</script>
-
-{# анимация фильтра продуктов #}
-<script>
-    function filterProducts(category) {
-        let productGrid = document.getElementById('productGrid');
-        let cards = productGrid.getElementsByClassName('card');
-
-        for (let i = 0; i < cards.length; i++) {
-            let card = cards[i];
-            let description = card.getAttribute('data-description');
-            let showCard = (category === 'Всё' || description.includes(category));
-            card.style.display = showCard ? 'block' : 'none';
-            if (showCard) {
-                card.classList.remove('fadeOut');
-                card.classList.add('fadeIn');
-            } else {
-                card.classList.remove('fadeIn');
-                card.classList.add('fadeOut');
-            }
-        }
-    }
-</script>
 </body>
 </html>

@@ -1,45 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container mt-5 ">
-        <div class="row gradient-border px-2 py-4 all-products-container">
-            <div class="w2">
-                <div class="category-filter d-flex flex-column">
-                    <button class="btn btn-outline-light btn-category mb-2 change-color"
-                            onclick="filterProducts('Всё')">Всё
-                    </button>
-                    <div class="stick-light-sm rounded"></div>
+    <div class="container mt-4 ">
+        <div class="d-flex flex-row gradient-border px-2 py-4 all-products-container">
+            <div class="w2 me-3">
+                <div class="category-filter d-flex flex-wrap justify-content-center">
+                    <div class="w-100 sort-btn mx-1">
+                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                onclick="filterProducts('Всё')">Всё
+                        </button>
+                        <div class="stick-light-sm rounded"></div>
+                    </div>
 
-                    <button class="btn btn-outline-light btn-category mb-2 change-color"
-                            onclick="filterProducts('Привилегия')">Привилегия
-                    </button>
-                    <div class="stick-light-sm rounded"></div>
+                    <div class="w-100 sort-btn mx-1">
+                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                onclick="filterProducts('Привилегия')">Привилегия
+                        </button>
+                        <div class="stick-light-sm rounded"></div>
+                    </div>
 
-                    <button class="btn btn-outline-light btn-category mb-2 change-color"
-                            onclick="filterProducts('Предмет')">Предмет
-                    </button>
-                    <div class="stick-light-sm rounded"></div>
+                    <div class="w-100 sort-btn mx-1">
+                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                onclick="filterProducts('Предмет')">Предмет
+                        </button>
+                        <div class="stick-light-sm rounded"></div>
+                    </div>
 
-                    <button class="btn btn-outline-light btn-category mb-2 change-color"
-                            onclick="filterProducts('Валюта')">Валюта
-                    </button>
-                    <div class="stick-light-sm rounded"></div>
+                    <div class="w-100 sort-btn mx-1">
+                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                onclick="filterProducts('Валюта')">Валюта
+                        </button>
+                        <div class="stick-light-sm rounded"></div>
+                    </div>
 
-                    <button class="btn btn-outline-light btn-category mb-2 change-color"
-                            onclick="filterProducts('Кейс')">Кейс
-                    </button>
-                    <div class="stick-light-sm rounded "></div>
+                    <div class="w-100 sort-btn mx-1 ">
+                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                onclick="filterProducts('Кейс')">Кейс
+                        </button>
+                        <div class="stick-light-sm rounded"></div>
+                    </div>
                 </div>
             </div>
             <div class="w8">
                 <div id="productDetails" class="hidden product-details">
+                    <p class="">Подождите...</p>
                 </div>
                 <div class="row" id="productGrid">
                     {% for product in products_info['response'] %}
-                        <div class="card mx-2 my-2 product-card"
-                             onclick="openProductDialog('{{ product['id'] }}'); addTags()"
+                        <div class="card mx-2 mb-3 product-card"
+                             onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); addTags();"
                              data-description="{{ product['description'] }}">
-                            <span class="icon">
+                            <div class="card-name-icon d-flex mt-auto">
+                                <h4 class="card-name">{{ product['name'] }}</h4>
+                                <span class="icon">
                                 <svg
                                         viewBox="0 0 24 24"
                                         fill="none"
@@ -52,7 +65,7 @@
                                     <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
                                 </svg>
                             </span>
-                            <h4>{{ product['name'] }}</h4>
+                            </div>
                             <p class="mb-2">
                                 {{ product['price'] }} рублей
                             </p>

@@ -1,9 +1,8 @@
-import datetime
 import json
 from urllib.parse import quote_plus
 
 import requests
-from flask import Flask, render_template, url_for, redirect, flash, request, jsonify
+from flask import Flask, render_template, url_for, redirect, flash, jsonify
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -11,8 +10,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 
 from forms.login import LoginForm, ChangePasswordForm
-
-# TODO: from werkzeug.security import check_password_hash
 
 csrf = CSRFProtect()
 password = 'SbDwFqC@+iD5erM7QAYHE@Jo'
@@ -63,6 +60,11 @@ class Purchase(db.Model):
 
 
 def easydonate_get_shop_info():
+    """
+    возвращает json для информации о магазине
+    :return:
+    """
+
     easydonate_url = 'https://easydonate.ru/api/v3/shop'
 
     headers = {'Shop-key': EASYDONATE_KEY}
@@ -76,6 +78,11 @@ def easydonate_get_shop_info():
 
 
 def easydonate_get_products():
+    """
+    возвращает json с информацией о всех товарах магазина
+    :return:
+    """
+
     easydonate_url = 'https://easydonate.ru/api/v3/shop/products'
     headers = {'Shop-key': EASYDONATE_KEY}
 
@@ -87,111 +94,23 @@ def easydonate_get_products():
         return None
 
 
-@app.route('/')
-def index():
-    shop_info = easydonate_get_shop_info()
-    products_info = easydonate_get_products()
-
-    if shop_info and products_info:
-        return render_template('index.html', shop_info=shop_info, products_info=products_info, current_page='index')
-    else:
-        flash('Ошибка при получении информации о магазине или товарах', 'error')
-        return render_template('index.html')
-
-
-@app.route('/products')
-def products():
-    shop_info = easydonate_get_shop_info()
-    products_info = easydonate_get_products()
-    print(products_info)
-    if shop_info and products_info:
-        return render_template('products.html', shop_info=shop_info, products_info=products_info)
-    else:
-        flash('Ошибка при получении информации о магазине или товарах', 'error')
-        return render_template('index.html')
-
-
-def easydonate_get_product(product_id):
-    easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
-    headers = {'Shop-key': EASYDONATE_KEY}
-
-    response = requests.get(easydonate_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
-
-
-@app.route('/buy_product/<int:product_id>', methods=['POST'])
-def buy_product(product_id):
-    product_info = easydonate_get_product(product_id)
-
-    if product_info:
-        customer = current_user.name if current_user.is_authenticated else 'Anonymous'
-        payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
-                                                 {product_id: 1})
-
-        if payment_info and payment_info.get('success'):
-            return jsonify({'success': True, 'payment_url': payment_info['response']['url']})
-        else:
-            return jsonify({'error': 'Ошибка при создании платежа'}), 500
-    else:
-        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
-
-
-@app.route('/product_info/<int:product_id>')
-def product_info(product_id):
-    product_info = easydonate_get_product(product_id)
-
-    if product_info:
-        return jsonify(product_info)
-    else:
-        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
-
-
-@app.route('/product/<int:product_id>', methods=['GET', 'POST'])
-def product_detail(product_id):
-    product_info = easydonate_get_product(product_id)
-
-    if product_info:
-        if request.method == 'POST':
-            customer = current_user.name if current_user.is_authenticated else 'Anonymous'
-            payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
-                                                     {product_id: 1})
-
-            if payment_info and payment_info.get('success'):
-                payment_url = payment_info['response']['url']
-                return f'<script>window.top.location.href = "{payment_url}";</script>'
-            else:
-                flash('Ошибка при создании платежа', 'error')
-                return abort(500)
-
-        print(datetime.datetime.now())
-        return render_template('product_detail.html', product_info=product_info, date=datetime.datetime.now())
-    else:
-        flash('Ошибка при получении информации о товаре', 'error')
-        return redirect(url_for('index'))
-
-
-def easydonate_get_product_info(product_id):
-    easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
-    headers = {'Shop-key': EASYDONATE_KEY}
-
-    response = requests.get(easydonate_url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
-
-
 def easydonate_create_payment(customer, server_id, products, email=None, coupon=None, success_url=None):
+    """
+    создание платежа для магазина
+    :param customer:
+    :param server_id:
+    :param products:
+    :param email:
+    :param coupon:
+    :param success_url:
+    :return:
+    """
+
     easydonate_url = 'https://easydonate.ru/api/v3/shop/payment/create'
     headers = {'Shop-Key': EASYDONATE_KEY}
 
     product_id = list(products.keys())[0]
-    product_info = easydonate_get_product_info(product_id)
+    product_info = easydonate_get_product(product_id)
 
     if not product_info:
         print(f'Ошибка при получении информации о товаре {product_id}')
@@ -229,6 +148,75 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
     except ValueError as error:
         print(f'Ошибка при разборе JSON: {error}')
         return None
+
+
+def easydonate_get_product(product_id):
+    """
+    возвращает json с информацией о товаре магазина
+    :param product_id:
+    :return:
+    """
+
+    easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
+    headers = {'Shop-key': EASYDONATE_KEY}
+
+    response = requests.get(easydonate_url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+
+@app.route('/')
+def index():
+    shop_info = easydonate_get_shop_info()
+    products_info = easydonate_get_products()
+
+    if shop_info and products_info:
+        return render_template('index.html', shop_info=shop_info, products_info=products_info, current_page='index')
+    else:
+        flash('Ошибка при получении информации о магазине или товарах', 'error')
+        return render_template('index.html')
+
+
+@app.route('/products')
+def products():
+    shop_info = easydonate_get_shop_info()
+    products_info = easydonate_get_products()
+    print(products_info)
+    if shop_info and products_info:
+        return render_template('products.html', shop_info=shop_info, products_info=products_info)
+    else:
+        flash('Ошибка при получении информации о магазине или товарах', 'error')
+        return render_template('index.html')
+
+
+@app.route('/product_info/<int:product_id>')
+def product_info(product_id):
+    product_info = easydonate_get_product(product_id)
+
+    if product_info:
+        return jsonify(product_info)
+    else:
+        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
+
+
+@app.route('/buy_product/<int:product_id>', methods=['POST'])
+def buy_product(product_id):
+    product_info = easydonate_get_product(product_id)
+
+    if product_info:
+        customer = current_user.name if current_user.is_authenticated else 'Anonymous'
+        payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
+                                                 {product_id: 1})
+
+        if payment_info and payment_info.get('success'):
+            return jsonify({'success': True, 'payment_url': payment_info['response']['url']})
+        else:
+            return jsonify({'error': 'Ошибка при создании платежа'}), 500
+    else:
+        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
 
 
 @logmanager.user_loader

@@ -121,16 +121,10 @@ body.toggle .grid * {
     }
 }
 
-@media (max-width: 576px) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-    }
-}
-
 .card {
     background-color: var(--background-color);
     box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2), 0 0 0 1px var(--card-border-color);
-    padding: 56px 16px 16px 16px;
+    padding: 24px;
     border-radius: 15px;
     cursor: pointer;
     position: relative;
@@ -691,7 +685,7 @@ body {
 }
 
 .cart-button {
-    width: 50px;
+    min-width: 50px;
     height: 50px;
 }
 
@@ -826,29 +820,6 @@ footer li a {
     z-index: 2;
 }
 
-.gradient-border {
-    --borderWidth: 4px;
-    background: var(--products-background-color);
-    position: relative;
-    border-radius: var(--borderWidth);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-}
-
-.gradient-border:after {
-    content: '';
-    position: absolute;
-    top: calc(-1 * var(--borderWidth));
-    left: calc(-1 * var(--borderWidth));
-    height: calc(100% + var(--borderWidth) * 2);
-    width: calc(100% + var(--borderWidth) * 2);
-    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
-    border-radius: calc(2 * var(--borderWidth));
-    z-index: -1;
-    animation: animatedgradient 3s ease alternate infinite;
-    background-size: 300% 300%;
-}
-
-
 @keyframes animatedgradient {
     0% {
         background-position: 0 50%;
@@ -862,7 +833,7 @@ footer li a {
 }
 
 .stick-light-sm {
-    width: 192px;
+    width: 100%;
     height: 4px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
     margin-bottom: 30px;
@@ -884,11 +855,23 @@ footer li a {
 
 .w2 {
     width: 16.66%;
+    max-width: 16.66%;
 }
 
 .w8 {
     width: 83.34%;
+    max-width: 83.34%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 80vh;
+    ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+.w8::-webkit-scrollbar {
+    width: 0;
+}
+
 
 @keyframes fadeOut {
     0% {
@@ -919,12 +902,15 @@ footer li a {
 }
 
 .fadeIn {
-    animation: fadeIn 1s;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .fadeOut {
-    animation: fadeOut 1s;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
+
 
 .hidden {
     display: none;
@@ -940,15 +926,18 @@ footer li a {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
 }
 
 .product-image img {
-    height: 90%;
-    width: auto;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
 }
 
 .all-products-container {
-    min-height: 80vh !important;
+    min-height: 85vh !important;
+    max-height: 85vh !important;
 }
 
 .gradient-eola {
@@ -972,11 +961,297 @@ footer li a {
     }
 }
 
-.description-card-text {
+.description-card-text, .description-card-price {
     font-size: 25px;
     font-family: 'Comfortaa', serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.description-card-text {
+    max-height: 75% !important;
+    ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.desc-text {
+    width: 50%;
+}
+
+.description-card-text::-webkit-scrollbar {
+    width: 0;
+}
+
+.description-card-price {
+    overflow-y: hidden !important;
 }
 
 .product-info {
     height: 90%;
+    overflow: hidden;
+}
+
+
+@keyframes fade-In {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-Out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.product-details {
+    animation: fade-In 0.3s ease forwards;
+}
+
+.product-details.hidden {
+    animation: fade-Out 0.3s ease forwards;
+}
+
+.card-name {
+    bottom: 12%;
+}
+
+.product-info {
+    flex-direction: row;
+}
+
+
+.logo {
+    height: 60px;
+    width: auto;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+    border-radius: 10px;
+}
+
+#navbarNavDropdown {
+    width: fit-content;
+}
+
+.pc-navbar {
+    width: fit-content;
+}
+
+@media (min-width: 577px) {
+    .dropdown {
+        display: none;
+    }
+
+    .category-filter {
+        flex-direction: column;
+    }
+
+    .product-grid-pc {
+        display: flex;
+    }
+
+    .product-grid-m {
+        display: none;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+
+    .pc-navbar, .nav-item {
+        display: none;
+        width: 0 !important;
+    }
+
+    .dropdown-toggle {
+        display: block !important;
+    }
+
+    .navbar {
+        width: 100%;
+        border-radius: 0 !important;
+    }
+
+    .all-products-container {
+        flex-direction: column !important;
+    }
+
+    .product-info {
+        flex-direction: column;
+    }
+
+    .navbar-shapes {
+        display: none;
+    }
+
+    .card {
+        width: calc(50% - 20px);
+        padding: 16px;
+    }
+
+    .w8, .w2 {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .category-filter {
+        flex-direction: row;
+    }
+
+    .sort-btn {
+        width: 45% !important;
+    }
+
+    .description-card-text, .description-card-price {
+        font-size: 15px;
+    }
+
+    .gradient-eola {
+        font-size: 30px;
+    }
+
+    .product-image {
+        width: auto;
+        height: 70%;
+        overflow: hidden;
+        padding: 0 !important;
+    }
+
+    .product-image img {
+        height: 100%;
+        width: auto;
+    }
+
+    .shapes {
+        display: none;
+    }
+
+    .day-night-check {
+        left: 0;
+        top: 5px;
+    }
+
+    .hi-box {
+        width: 80%;
+    }
+
+    .hi-text {
+        width: 100%;
+    }
+
+    .hi-box .hi-pic {
+        display: none;
+    }
+
+    .hi-box .hi-text .buttons-row button {
+        font-size: 15px;
+    }
+
+    .product-grid-pc {
+        display: none;
+    }
+
+    .product-grid-m {
+        display: flex;
+    }
+
+    .desc-text {
+        max-height: 70%;
+        width: 100%;
+        padding: 0 !important;
+    }
+
+    .desc-text .description-card-price {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        min-height: 20%;
+    }
+}
+
+.dropdown-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+}
+
+.dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    height: 200%;
+    width: 200%;
+    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: 50%;
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+@keyframes animatedgradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 50% 100%;
+    }
+    100% {
+        background-position: 50% 0;
+    }
+}
+
+
+.gradient-border {
+    --borderWidth: 4px;
+    background: var(--products-background-color);
+    position: relative;
+    border-radius: var(--borderWidth);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.gradient-border:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: calc(2 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+}
+
+.dropdown-menu {
+    left: -250% !important;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    top: 110%;
+}
+
+#dropdownMenuButton:active {
+    background-color: var(--blur-color);
 }
