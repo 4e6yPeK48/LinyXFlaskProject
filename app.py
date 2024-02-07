@@ -15,6 +15,8 @@ from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAl
 
 from forms.login import LoginForm, ChangePasswordForm
 
+# TODO: добавить последние покупки
+
 csrf = CSRFProtect()
 password = 'SbDwFqC@+iD5erM7QAYHE@Jo'
 encoded_password = quote_plus(password)
