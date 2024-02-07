@@ -2,12 +2,8 @@ venv
 linyx-react-app
 node_modules
 .idea
-package.json
-package-lock.json
 
 /venv
 /linyx-react-app
 /node_modules
 /.idea
-/package.json
-/package-lock.json
