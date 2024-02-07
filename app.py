@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from jinja2.exceptions import TemplateNotFound, UndefinedError
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
-from sqlalchemy.exc import OperationalError, IntegrityError
+from sqlalchemy.exc import OperationalError, IntegrityError, PendingRollbackError
 from sqlalchemy.orm import relationship
 from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAllowed, InternalServerError, \
     ServiceUnavailable, RequestTimeout, NotFound
@@ -188,7 +188,6 @@ def index():
 def products():
     shop_info = easydonate_get_shop_info()
     products_info = easydonate_get_products()
-    print(products_info)
     if shop_info and products_info:
         return render_template('products.html', shop_info=shop_info, products_info=products_info)
     else:
@@ -225,7 +224,7 @@ def buy_product(product_id):
 
 @logmanager.user_loader
 def load_user(user_id):
-    return Player.query.get(user_id)
+    return db.session.get(Player, user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -324,6 +323,12 @@ def handle_internal_server_error(error):
                                                  "Пожалуйста, попробуйте позже."), 500
 
 
+@app.errorhandler(PendingRollbackError)
+def handle_pending_rollback_error(error):
+    return render_template('error.html', message="Внутренняя ошибка сервера. "
+                                                 "Пожалуйста, попробуйте позже."), 500
+
+
 @app.errorhandler(ServiceUnavailable)
 def handle_service_unavailable(error):
     return render_template('error.html', message="Сервис временно недоступен. "
@@ -343,7 +348,7 @@ def handle_template_not_found(error):
 
 
 @app.errorhandler(UndefinedError)
-def handle_template_not_found(error):
+def handle_undefined_error(error):
     return render_template('error.html',
                            message="Неизвестная ошибка. "
                                    "Пожалуйста, свяжитесь с администратором сайта."), 404

@@ -50,9 +50,9 @@
                         <div class="card ms-2 mb-3 product-card"
                              onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
                              data-description="{{ product['description'] }}">
-                            <div class="card-name-icon d-flex mt-auto">
-                                <h4 class="card-name">{{ product['name'] }}</h4>
-                                <span class="icon">
+                            <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center">
+                                <h4 class="card-name mt-auto mb-auto">{{ product['name'] }}</h4>
+                                <span class="icon mt-auto mb-auto">
                                     {% if 'Привилегия' in product['description'] %}
                                         <svg
                                                 viewBox="0 0 24 24"

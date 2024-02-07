@@ -1206,7 +1206,6 @@ body .gradient-satira {
 }
 
 .card-name {
-    bottom: 12%;
 }
 
 .product-info {
@@ -1474,6 +1473,7 @@ body .gradient-satira {
 .community-img img {
     width: 10vw;
     height: auto;
+    z-index: 5 !important;
 }
 
 .account-list {
@@ -1581,7 +1581,7 @@ body .gradient-satira {
     opacity: 1;
 }
 
-body, .hi-box, .card {
+body, .hi-box {
     transition: background-color 0.5s ease;
 }
 

@@ -41,9 +41,6 @@
                 <h3 class="text-start">Выбор сообщества</h3>
             </div>
             <div class="stick-light rounded"></div>
-
-            <div id="productDetails" class="hidden product-details index">
-            </div>
             <div class="row product-grid-pc" id="productGrid">
                 {% for product in products_info['response'] %}
                     {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
@@ -141,6 +138,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
+            <div id="productDetails" class="hidden product-details index"></div>
         </div>
 
         <div class="all-products-button d-flex justify-content-center">
