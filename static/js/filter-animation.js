@@ -1,32 +1,31 @@
 function filterProducts(category) {
     let productGrid = document.getElementById('productGrid');
     let cards = productGrid.getElementsByClassName('card');
-    let visibleCards = [];
 
-    for (let i = 0; i < cards.length; i++) {
-        let card = cards[i];
-        let description = card.getAttribute('data-description');
-        let showCard = (category === 'Всё' || description.includes(category));
-
-        if (showCard) {
-            visibleCards.push(card);
-        } else {
-            card.classList.remove('fadeIn');
-            card.classList.add('fadeOut');
-            setTimeout(() => {
-                card.style.display = 'none';
-            }, 500);
-        }
+    for (let card of cards) {
+        card.classList.add('fadeOut');
     }
 
     setTimeout(() => {
-        for (let i = 0; i < visibleCards.length; i++) {
-            let card = visibleCards[i];
-            card.style.display = 'block';
-            setTimeout(() => {
-                card.classList.remove('fadeOut');
-                card.classList.add('fadeIn');
-            }, 10);
+        for (let card of cards) {
+            card.style.display = 'none';
         }
+
+        for (let card of cards) {
+            let description = card.getAttribute('data-description');
+            let showCard = (category === 'Всё' || description.includes(category));
+            if (showCard) {
+                card.style.display = 'block';
+            }
+        }
+
+        setTimeout(() => {
+            for (let card of cards) {
+                if (card.style.display === 'block') {
+                    card.classList.remove('fadeOut');
+                    card.classList.add('fadeIn');
+                }
+            }
+        }, 10);
     }, 500);
 }

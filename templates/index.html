@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="hi-pic rounded">
-                    <img src="static/img/fox.png"
+                    <img src="../static/img/fox.png"
                          class="img-fluid rounded"
                          alt="Картинка">
                 </div>
@@ -147,8 +147,9 @@
             </button>
         </div>
     </div>
-    <div class="servers">
-        <div class="servers-head ms-auto me-auto">
+    <hr class="mb-5">
+    <div class="servers container">
+        <div class="servers-head me-auto d-f">
             <div class="black-white-text community-choice rounded p-1 ms-auto me-auto d-flex flex-row black-white-text">
                 <h3 class="text-server mt-auto mb-auto ">Наши сервера</h3>
                 <div class="mt-auto mb-auto servers-svg ms-2">
@@ -174,20 +175,22 @@
             </div>
             <div class="stick-light rounded"></div>
         </div>
-
-        <div class="main ms-auto me-auto px-5 py-3 rounded">
-            <div class="icon-server justify-content-center d-flex">
-                <img src="" id="favicon" alt="" class="rounded ms-auto me-auto"></div>
-            <div class="header image-server">
-                <div class="image"><img
-                        src=""
-                        alt=""/>
+        <div class="servers-list d-flex flex-row">
+            <div class="main me-auto px-5 py-3 rounded py-5">
+                <div class="icon-server justify-content-center d-flex">
+                    <img src="" id="favicon" alt="" class="rounded ms-auto me-auto"></div>
+                <div class="header image-server">
+                    <div class="image"><img
+                            src=""
+                            alt=""/>
+                    </div>
+                    <h2 class="black-white-text">play.linyx.ru</h2>
                 </div>
-                <h2 class="black-white-text">play.linyx.ru</h2>
+                <div id="rest" class="black-white-text">Loading ...</div>
             </div>
-            <div id="rest" class="black-white-text">Loading ...</div>
         </div>
     </div>
+
 
 {% endblock %}
 

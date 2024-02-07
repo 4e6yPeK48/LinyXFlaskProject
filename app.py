@@ -146,7 +146,7 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
             db.session.commit()
             return response_data
         else:
-            print(f'Ошибка при создании платежа: {response_data.get("error_message")}')
+            print(f'Ошибка при создании платежа: {response_data}')
             return None
     except requests.exceptions.RequestException as error:
         print(f'Произошла ошибка в запросе: {error}')
