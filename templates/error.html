@@ -4,5 +4,8 @@
 {% block title %}Ошибка{% endblock %}
 
 {% block content %}
-    <h1>{{ message }}</h1>
+    <div class="alert alert-danger ms-auto me-auto my-5 text-center error-handle" role="alert">
+        <h4>{{ message }}</h4>
+    </div>
+
 {% endblock %}

@@ -193,10 +193,9 @@
         fetch(`/product_info/${product_id}`)
             .then(response => response.json())
             .then(product_info => {
-                console.log(product_info['response']);
                 let productDetails = document.getElementById('productDetails');
                 productDetails.innerHTML = '';
-                if (product_info['response']['name'] === 'Eola') {
+                if (product_info['response']['name'] === 'Shulker') {
                     productDetails.innerHTML = `
 
 <div class="close-link">
@@ -217,17 +216,48 @@
 </div>
 <div class="d-flex product-info">
     <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-eola">${product_info['response']['name']}</h4>
+        <div class="shulker-background"><h4 class="gradient-shulker">${product_info['response']['name']}</h4></div>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
     <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} р.</p>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
 </div>
                 `;
-                } else {
+                } else if (product_info['response']['name'] === 'Vega') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-vega">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Eola') {
                     productDetails.innerHTML = `
 
 <div class="close-link">
@@ -255,7 +285,192 @@
 </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} р.</p>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Chorus') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-chorus">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Hydra') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-hydra">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Fenix') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-fenix">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Leviathan') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-leviathan">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else if (product_info['response']['name'] === 'Satira') {
+                    productDetails.innerHTML = `
+
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="gradient-satira">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+</div>
+                `;
+                } else {
+                    productDetails.innerHTML = `
+<div class="close-link">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+        <svg
+            viewBox="0 0 25 25"
+            fill="none"
+            stroke="gray"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5"></path>
+            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"></path>
+        </svg>
+    </a>
+</div>
+<div class="d-flex product-info">
+    <div class="d-flex p-2 flex-column desc-text">
+        <h4 class="black-white-text product-name">${product_info['response']['name']}</h4>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+    </div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
+</div>
+<div class="d-flex flex-row w-100 mt-auto">
+    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
 </div>
                 `;
                 }
@@ -267,15 +482,6 @@
                 alert('Произошла ошибка при загрузке информации о товаре. Попробуйте еще раз.');
             });
     }
-
-    document.addEventListener('click', function (event) {
-        let productDetails = document.getElementById('productDetails');
-        let targetElement = event.target;
-
-        if (targetElement === productDetails) {
-            productDetails.classList.add('hidden');
-        }
-    });
 </script>
 
 {# клик с свг корзины на страницу товаров #}

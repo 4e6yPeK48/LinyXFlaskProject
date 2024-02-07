@@ -29,6 +29,7 @@ body {
     --background-color: #18181B;
     --products-background-color: #202023;
     --text-color: #A1A1AA;
+    --text-shadow-color: rgba(255, 255, 255, 0.4);
 
     --table-sel-col: rgba(255, 255, 255, 0.2);
     --table-sel-back: rgba(255, 255, 255, 0.3);
@@ -71,6 +72,7 @@ body.light {
     --background-color: #FAFAFA;
     --products-background-color: #f0f0f0;
     --text-color: #52525B;
+    --text-shadow-color: rgba(0, 0, 0, 0.1);
 
     --table-sel-col: rgba(0, 0, 0, 0.06);
     --table-sel-back: rgba(0, 0, 0, 0.1);
@@ -939,6 +941,14 @@ footer li a {
     overflow: hidden;
 }
 
+.w8 #productDetails {
+    background-color: var(--products-background-color) !important;
+}
+
+.product-table #productDetails {
+    background-color: var(--background-color) !important;
+}
+
 .product-image img {
     width: 100%;
     height: auto;
@@ -950,15 +960,174 @@ footer li a {
     max-height: 85vh !important;
 }
 
-.gradient-eola {
+.gradient-shulker {
     display: inline-block;
-    background: linear-gradient(60deg, #ff00f5, #bd71ff, #b642e0, #774bbe, #5073b8, #1098ad, #07b39b, #6fba82);
+    background: linear-gradient(60deg, #ffd600, #fadc00, #f4e200, #eee800, #e7ee00, #e0f300, #d8f900, #cfff0f);
     -webkit-background-clip: text;
     color: transparent;
     animation: animatedgradient 3s ease alternate infinite;
     background-size: 300% 300%;;
     font-family: 'Comfortaa', serif;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-shulker {
+    text-shadow: 0 0 20px #ffd600;
+}
+
+body .gradient-shulker {
+    text-shadow: 0 0 20px #cfff0f;
+}
+
+body.light .shulker-background {
+    background-color: rgba(0, 0, 0, 0.15);
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 10px 0;
+    border-radius: 5px;
+}
+
+.gradient-vega {
+    display: inline-block;
+    background: linear-gradient(60deg, #009420, #12a124, #1faf29, #2bbc2d, #36ca32, #41d836, #4be63a, #56f43e);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-vega {
+    text-shadow: 0 0 20px #009420;
+}
+
+body .gradient-vega {
+    text-shadow: 0 0 20px #56f43e;
+}
+
+.gradient-eola {
+    display: inline-block;
+    background: linear-gradient(60deg, #00a1e6, #00aeed, #00bbf1, #00c7f3, #00d3f2, #00dfef, #00eaea, #00f5e4);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-eola {
+    text-shadow: 0 0 20px #00a1e6;
+}
+
+body .gradient-eola {
+    text-shadow: 0 0 20px #00f5e4;
+}
+
+.gradient-chorus {
+    display: inline-block;
+    background: linear-gradient(60deg, #8b45fc, #9445fc, #9c45fc, #a445fc, #ab45fc, #b345fc, #ba45fc, #c145fc);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-chorus {
+    text-shadow: 0 0 20px #8b45fc;
+}
+
+.gradient-hydra {
+    display: inline-block;
+    background: linear-gradient(60deg, #1adbce, #00ccd0, #00bcd0, #00accd, #009cc7, #008cbe, #067bb3, #2d6ba4);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-hydra {
+    text-shadow: 0 0 20px #2d6ba4;
+}
+
+body .gradient-hydra {
+    text-shadow: 0 0 20px #1adbce;
+}
+
+.gradient-fenix {
+    display: inline-block;
+    background: linear-gradient(60deg, #ea5906, #da4d0c, #cb410f, #bb3511, #ab2a11, #9a1e11, #8a120f, #7a050d);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-fenix {
+    text-shadow: 0 0 20px #7a050d;
+}
+
+body .gradient-fenix {
+    text-shadow: 0 0 20px #ea5906;
+}
+
+.gradient-leviathan {
+    display: inline-block;
+    background: linear-gradient(60deg, #5e16f8, #6f43f9, #7c62fb, #857efc, #8c99fc, #91b4fc, #93cefc, #92e9fc);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-leviathan {
+    text-shadow: 0 0 20px #5e16f8;
+}
+
+body .gradient-leviathan {
+    text-shadow: 0 0 20px #92e9fc;
+}
+
+.gradient-satira {
+    display: inline-block;
+    background: linear-gradient(60deg, #860918, #920617, #9d0416, #a90114, #b40011, #bf000d, #cb0007, #d60000);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
+    font-size: 50px;
+}
+
+body.light .gradient-satira {
+    text-shadow: 0 0 20px #860918;
+}
+
+body .gradient-satira {
+    text-shadow: 0 0 20px #d60000;
+}
+
+.product-name {
+    display: inline-block;
+    font-family: 'Comfortaa', serif;
+    text-shadow: 0 0 20px var(--text-shadow-color);
     font-size: 50px;
 }
 
@@ -973,7 +1142,6 @@ footer li a {
 
 .description-card-text, .description-card-price {
     font-size: 25px;
-    font-family: 'Comfortaa', serif;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -999,6 +1167,11 @@ footer li a {
 .product-info {
     height: 90%;
     overflow: hidden;
+}
+
+.product-info h4 {
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 
@@ -1408,10 +1581,23 @@ footer li a {
     opacity: 1;
 }
 
-body {
+body, .hi-box, .card {
     transition: background-color 0.5s ease;
 }
 
 .change-color {
     transition: color 0.5s ease;
+}
+
+.error-handle {
+    width: fit-content;
+}
+
+.servers-svg {
+    width: 40px;
+    height: 40px;
+}
+
+.servers-svg svg {
+    stroke: var(--card-icon-color);
 }
