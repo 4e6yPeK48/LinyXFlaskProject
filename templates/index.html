@@ -48,7 +48,7 @@
                 {% for product in products_info['response'] %}
                     {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
                         <div class="card mx-2 my-2 product-card col"
-                             onclick="openProductDialog('{{ product['id'] }}'); addTags()">
+                             onclick="openProductDialog('{{ product['id'] }}')">
                             <div class="community-img"><img src="{{ product['image'] }}" alt=""></div>
                             <div class="card-name-icon d-flex mt-auto">
                                 <h4 class="card-name">{{ product['name'] }}</h4>
@@ -98,7 +98,7 @@
                 {% for product in products_info['response'] %}
                     {% if product['name'] in ['Eola', 'Fenix'] %}
                         <div class="card mx-1 my-2 product-card col"
-                             onclick="openProductDialog('{{ product['id'] }}'); addTags()">
+                             onclick="openProductDialog('{{ product['id'] }}')">
                             <span class="icon">
                                 <svg
                                         viewBox="0 0 24 24"

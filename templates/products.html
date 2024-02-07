@@ -48,7 +48,7 @@
                 <div class="row ms-4" id="productGrid">
                     {% for product in products_info['response'] %}
                         <div class="card ms-2 mb-3 product-card"
-                             onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); addTags();"
+                             onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
                              data-description="{{ product['description'] }}">
                             <div class="card-name-icon d-flex mt-auto">
                                 <h4 class="card-name">{{ product['name'] }}</h4>

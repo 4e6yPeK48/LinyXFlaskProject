@@ -6,8 +6,12 @@ from flask import Flask, render_template, url_for, redirect, flash, jsonify
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
+from jinja2.exceptions import TemplateNotFound
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
+from sqlalchemy.exc import OperationalError, IntegrityError
 from sqlalchemy.orm import relationship
+from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAllowed, InternalServerError, \
+    ServiceUnavailable, RequestTimeout, NotFound
 
 from forms.login import LoginForm, ChangePasswordForm
 
@@ -269,6 +273,74 @@ def account():
             flash('Неверный текущий пароль.', 'error')
 
     return render_template('account.html', purchases=purchases, form=form)
+
+
+@app.errorhandler(OperationalError)
+def handle_operational_error(error):
+    return render_template('error_page.html',
+                           message="Произошла операционная ошибка. "
+                                   "Пожалуйста, обновите страницу или свяжитесь с нами."), 500
+
+
+@app.errorhandler(IntegrityError)
+def handle_integrity_error(error):
+    return render_template('error_page.html',
+                           message="Произошла ошибка целостности данных. "
+                                   "Пожалуйста, обновите страницу или свяжитесь с нами."), 500
+
+
+@app.errorhandler(NotFound)
+def handle_not_found_error(error):
+    return render_template('error_page.html',
+                           message="Страница не найдена. "
+                                   "Пожалуйста, проверьте правильность URL или свяжитесь с нами."), 404
+
+
+@app.errorhandler(BadRequest)
+def handle_bad_request(error):
+    return render_template('error_page.html',
+                           message="Неправильный запрос. "
+                                   "Пожалуйста, проверьте правильность отправленных данных."), 400
+
+
+@app.errorhandler(Unauthorized)
+def handle_unauthorized(error):
+    return render_template('error_page.html', message="Для доступа к этому ресурсу требуется авторизация."), 401
+
+
+@app.errorhandler(Forbidden)
+def handle_forbidden(error):
+    return render_template('error_page.html', message="У вас нет доступа к этому ресурсу."), 403
+
+
+@app.errorhandler(MethodNotAllowed)
+def handle_method_not_allowed(error):
+    return render_template('error_page.html', message="Метод HTTP не поддерживается для этого ресурса."), 405
+
+
+@app.errorhandler(InternalServerError)
+def handle_internal_server_error(error):
+    return render_template('error_page.html', message="Внутренняя ошибка сервера. "
+                                                      "Пожалуйста, попробуйте позже."), 500
+
+
+@app.errorhandler(ServiceUnavailable)
+def handle_service_unavailable(error):
+    return render_template('error_page.html', message="Сервис временно недоступен. "
+                                                      "Пожалуйста, попробуйте позже."), 503
+
+
+@app.errorhandler(RequestTimeout)
+def handle_request_timeout(error):
+    return render_template('error_page.html',
+                           message="Время ожидания запроса истекло. "
+                                   "Пожалуйста, попробуйте позже."), 504
+
+
+@app.errorhandler(TemplateNotFound)
+def handle_template_not_found(error):
+    return render_template('error_page.html',
+                           message="Шаблон не найден. Пожалуйста, свяжитесь с администратором сайта."), 404
 
 
 if __name__ == '__main__':

@@ -1394,3 +1394,24 @@ footer li a {
 .text-server {
     text-align: center;
 }
+
+.product-details.fade-Out {
+    animation: fade-Out 0.3s ease forwards;
+}
+
+.lazy-load {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.lazy-load .loaded {
+    opacity: 1;
+}
+
+body {
+    transition: background-color 0.5s ease;
+}
+
+.change-color {
+    transition: color 0.5s ease;
+}

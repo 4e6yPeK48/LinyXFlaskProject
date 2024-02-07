@@ -164,9 +164,6 @@
 <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
 
 
-{# .hidden класс для описания #}
-<script src="../static/js/hide-desc.js"></script>
-
 {# уведомления #}
 <script src="../static/js/notifications.js"></script>
 
@@ -203,7 +200,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="removeTags(); hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -223,7 +220,7 @@
         <h4 class="gradient-eola">${product_info['response']['name']}</h4>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
@@ -234,7 +231,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="removeTags(); hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -254,7 +251,7 @@
         <h4 class="gradient-eola">${product_info['response']['name']}</h4>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" class="" alt=""></div>
+    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
@@ -263,7 +260,6 @@
                 `;
                 }
 
-                productDetails.classList.remove('hidden');
                 updateTheme(isDarkMode);
             })
             .catch(error => {
