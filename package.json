@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "coffeescript": "^2.7.0",
+    "gsap": "^3.12.5",
+    "less": "^4.2.0",
+    "lessc": "^1.0.2"
+  }
+}
