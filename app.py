@@ -12,8 +12,12 @@ from sqlalchemy.exc import OperationalError, IntegrityError, PendingRollbackErro
 from sqlalchemy.orm import relationship
 from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAllowed, InternalServerError, \
     ServiceUnavailable, RequestTimeout, NotFound
+import argparse
+from ProtocolClient.client import MessagingChannelHandler
+from ProtocolClient.Types.PacketType import PacketType
+user_sessions = {}
 
-from forms.login import LoginForm, ChangePasswordForm
+from forms.login import LoginForm
 
 # TODO: добавить последние покупки
 
@@ -224,28 +228,81 @@ def buy_product(product_id):
         return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
 
 
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--host', type=str, default="localhost")
+parser.add_argument('--port', type=int, default=12345)
+parser.add_argument('--debug', type=bool, default=False)
+parser.add_argument('--passw', type=str, default="?thisIsPassword?")
+parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
+
+args = parser.parse_args()
+
+messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
+    address=(args.host, args.port), side=PacketType.SITESIDE,
+    isDebug=args.debug
+)
+
+
+# Определение обработчика ответа на двухфакторную аутентификацию
+def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
+    nickname: str = packet["nickname"]
+    is_accepted: str = packet["status"]  # SUCCESS or DENIED
+    reason_if_denied: str = packet["reason"]  # "" - if SUCCESS
+
+    if is_accepted == "SUCCESS":
+        user = Player.query.filter_by(name=nickname).first()
+        if user:
+            login_user(user)
+            flash('Вы успешно вошли в аккаунт.', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash(f'Ошибка при аутентификации: {reason_if_denied}', 'error')
+
+
+messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
+messagingChannel.start(args.passw, args.forceProtocol)
+
+
+def send_packet(packet: dict) -> None:
+    messagingChannel.sendPacket(packet=packet)
+
+
 @logmanager.user_loader
 def load_user(user_id):
     return db.session.get(Player, user_id)
 
 
+# Метод аутентификации через никнейм
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        player_name = form.name.data
-        entered_password = form.password.data
-        player = Player.query.filter_by(name=player_name).first()
-
-        if player:
-            password_entry = Password.query.filter_by(player_name=player_name).first().password
-            if password_entry == entered_password:
-                login_user(player, remember=form.remember_me.data)
-                flash('Вы успешно вошли в аккаунт.', 'success')
-                return redirect(url_for('index'))
+        nickname = form.name.data
+        send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
+        return redirect(url_for('index'))  # Redirecting to index while waiting for response
 
     return render_template('login.html', form=form)
+
+
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#
+#     if form.validate_on_submit():
+#         player_name = form.name.data
+#         entered_password = form.password.data
+#         player = Player.query.filter_by(name=player_name).first()
+#
+#         if player:
+#             password_entry = Password.query.filter_by(player_name=player_name).first().password
+#             if password_entry == entered_password:
+#                 login_user(player, remember=form.remember_me.data)
+#                 flash('Вы успешно вошли в аккаунт.', 'success')
+#                 return redirect(url_for('index'))
+#
+#     return render_template('login.html', form=form)
 
 
 @app.route('/logout')
@@ -260,20 +317,21 @@ def logout():
 @login_required
 def account():
     purchases = Purchase.query.filter_by(player_name=current_user.name).all()
-    form = ChangePasswordForm()
+    # form = ChangePasswordForm()
+    #
+    # if form.validate_on_submit():
+    #     player = Player.query.filter_by(name=current_user.name).first()
+    #
+    #     if player.password[0].password == form.current_password.data:
+    #         player.password[0].password = form.new_password.data
+    #         db.session.commit()
+    #         flash('Пароль успешно изменен.', 'success')
+    #         return redirect(url_for('account'))
+    #     else:
+    #         flash('Неверный текущий пароль.', 'error')
 
-    if form.validate_on_submit():
-        player = Player.query.filter_by(name=current_user.name).first()
-
-        if player.password[0].password == form.current_password.data:
-            player.password[0].password = form.new_password.data
-            db.session.commit()
-            flash('Пароль успешно изменен.', 'success')
-            return redirect(url_for('account'))
-        else:
-            flash('Неверный текущий пароль.', 'error')
-
-    return render_template('account.html', purchases=purchases, form=form)
+    # return render_template('account.html', purchases=purchases, form=form)
+    return render_template('account.html', purchases=purchases)
 
 
 @app.errorhandler(OperationalError)

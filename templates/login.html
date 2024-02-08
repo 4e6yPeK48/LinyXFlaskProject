@@ -1,4 +1,3 @@
-<!-- login.html -->
 {% extends 'base.html' %}
 
 {% block title %}Вход{% endblock %}
@@ -17,11 +16,6 @@
         <div class="form-group black-white-text">
             {{ form.name.label(class="form-control-label login-label black-white-text", for="username") }}
             {{ form.name(class="form-control login-input", type="text", id="username") }}
-        </div>
-
-        <div class="form-group black-white-text">
-            {{ form.password.label(class="form-control-label login-label black-white-text", for="password") }}
-            {{ form.password(class="form-control login-input", type="password", id="password") }}
         </div>
 
         <div class="form-group black-white-text">
