@@ -984,7 +984,6 @@ body.light .shulker-background {
     background-color: rgba(0, 0, 0, 0.15);
     width: fit-content;
     height: fit-content;
-    padding: 10px 10px 0;
     border-radius: 5px;
 }
 
@@ -1371,7 +1370,7 @@ body .gradient-satira {
     }
 
     .product-image-main {
-        width: 100%;
+        width: 100% !important;
         height: auto;
     }
 
@@ -1602,3 +1601,8 @@ body, .hi-box {
 .servers-svg svg {
     stroke: var(--card-icon-color);
 }
+
+.product-image-main {
+    width: 50%;
+}
+
