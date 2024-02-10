@@ -1034,12 +1034,12 @@ footer li a {
 }
 
 .card-name {
+    line-height: 1.2 !important;
 }
 
 .product-info {
     flex-direction: row;
 }
-
 
 .logo {
     height: 60px;
@@ -1061,12 +1061,20 @@ footer li a {
 }
 
 @media (min-width: 577px) {
+    .stick-light-sm-m {
+        display: none !important;
+    }
+
     .dropdown {
         display: none;
     }
 
-    .category-filter {
+    .category-filter-pc {
         flex-direction: column;
+    }
+
+    .category-filter-m {
+        display: none !important;
     }
 
     .product-grid-pc {
@@ -1085,6 +1093,10 @@ footer li a {
 
 
 @media (max-width: 576px) {
+    .stick-light-sm {
+        margin-bottom: 10px !important;
+    }
+
     .product-container-1 {
         position: relative;
         margin-bottom: 50px !important;
@@ -1093,15 +1105,15 @@ footer li a {
     .servers {
         position: relative;
         margin-bottom: 50px !important;
-        margin-top: 0px !important;
+        margin-top: 0 !important;
     }
 
-    .circle2-2, .circle2-1, .circle1-2, .circle1-1 {
+    .circle2-3, .circle2-2, .circle2-1, .circle1-3, .circle1-2, .circle1-1 {
         display: none;
     }
 
     .gradient-shulker, .gradient-vega, .gradient-eola, .gradient-chorus, .gradient-hydra, .gradient-fenix, .gradient-leviathan, .gradient-satira {
-        font-size: 40px !important;
+        font-size: 20px !important;
     }
 
     .grid {
@@ -1144,8 +1156,12 @@ footer li a {
         width: 100%;
     }
 
-    .category-filter {
+    .category-filter-m {
         flex-direction: row;
+    }
+
+    .category-filter-pc {
+        display: none !important;
     }
 
     .sort-btn {
@@ -1190,7 +1206,8 @@ footer li a {
     }
 
     .hi-box {
-        width: 80%;
+        width: 90%;
+        padding: 30px !important;
     }
 
     .hi-text {
@@ -1202,7 +1219,7 @@ footer li a {
     }
 
     .hi-box .hi-text .buttons-row button {
-        font-size: 15px;
+        font-size: 17px;
     }
 
     .product-grid-pc {
@@ -2019,4 +2036,10 @@ body.light .white-hover {
     background: linear-gradient(60deg, #92e9fc, #7edbfe, #75cbff, #79bafc, #87a7f5, #9a92e6, #ad7bd0, #bc62b4);
     border-radius: 50%;
     z-index: -10;
+}
+
+.sort-btn-m .btn {
+    width: 5vh !important;
+    height: 5vh;
+    padding: 0;
 }

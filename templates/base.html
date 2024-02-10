@@ -293,15 +293,19 @@
     }
 
     function openProductDialog(product_id) {
+        let isAuthenticated = {% if current_user and current_user.is_authenticated %} true {% else %} false {% endif %};
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         fetch(`/product_info/${product_id}`)
             .then(response => response.json())
             .then(product_info => {
                 let productDetails = document.getElementById('productDetails');
                 productDetails.innerHTML = '';
+                let productHTML = `
+                    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+                    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+                `;
                 if (product_info['response']['name'] === 'Shulker') {
                     productDetails.innerHTML = `
-
 <div class="close-link">
     <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
@@ -345,8 +349,7 @@
     </div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Vega') {
@@ -395,9 +398,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Eola') {
@@ -448,9 +450,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Chorus') {
@@ -501,9 +502,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Hydra') {
@@ -554,9 +554,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Fenix') {
@@ -607,9 +606,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Leviathan') {
@@ -661,9 +659,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Satira') {
@@ -715,9 +712,8 @@
         </p>
     </div>
     </div>
-<div class="d-flex flex-row w-100">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+<div class="d-flex flex-row w-100 mt-auto">
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 } else {
@@ -746,8 +742,7 @@
     <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+    ${isAuthenticated ? productHTML : '<p>Для покупки авторизуйтесь</p>'}
 </div>
                 `;
                 }

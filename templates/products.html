@@ -8,36 +8,33 @@
         <div class="circle2-3 "></div>
         <div class="container mt-4 products-table-main">
             <div class="d-flex flex-row gradient-border px-2 py-4 all-products-container" id="allProductsContainer">
-                <div class="w2 me-3">
-                    <div class="category-filter d-flex flex-wrap justify-content-center">
+                <div class="w2 me-3 d-flex flex-column">
+
+                    <div class="category-filter-pc d-flex flex-wrap justify-content-center">
                         <div class="w-100 sort-btn mx-1">
                             <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
                                     onclick="filterProducts('Всё'); hideProductDetails(); clearTags()">Всё
                             </button>
                             <div class="stick-light-sm rounded"></div>
                         </div>
-
                         <div class="w-100 sort-btn mx-1">
                             <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
                                     onclick="filterProducts('Привилегия'); hideProductDetails(); clearTags()">Привилегия
                             </button>
                             <div class="stick-light-sm rounded"></div>
                         </div>
-
                         <div class="w-100 sort-btn mx-1">
                             <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
                                     onclick="filterProducts('Предмет'); hideProductDetails(); clearTags()">Предмет
                             </button>
                             <div class="stick-light-sm rounded"></div>
                         </div>
-
                         <div class="w-100 sort-btn mx-1">
                             <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
                                     onclick="filterProducts('Валюта'); hideProductDetails(); clearTags()">Валюта
                             </button>
                             <div class="stick-light-sm rounded"></div>
                         </div>
-
                         <div class="w-100 sort-btn mx-1 ">
                             <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
                                     onclick="filterProducts('кейс'); hideProductDetails(); clearTags()">Кейс
@@ -45,6 +42,113 @@
                             <div class="stick-light-sm rounded"></div>
                         </div>
                     </div>
+
+                    <div class="category-filter-m d-flex flex-row justify-content-center">
+                        <div class="w-100 sort-btn-m mx-1 d-flex justify-content-center">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100 ms-auto me-auto"
+                                    onclick="filterProducts('Всё'); hideProductDetails(); clearTags()">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M2 14L5.23309 16.4248C5.66178 16.7463 6.26772 16.6728 6.60705 16.2581L15 6"
+                                          stroke-width="2" stroke-linecap="round"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                          d="M9.87441 15.7802L11.603 17.163C12.4588 17.8477 13.7063 17.716 14.4003 16.8678L22.774 6.63327C23.1237 6.20582 23.0607 5.5758 22.6332 5.22607C22.2058 4.87635 21.5758 4.93935 21.226 5.36679L12.8524 15.6013L11.141 14.2322L9.87441 15.7802Z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-100 sort-btn-m mx-1 d-flex justify-content-center">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100 ms-auto me-auto"
+                                    onclick="filterProducts('Привилегия'); hideProductDetails(); clearTags()">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-100 sort-btn-m mx-1 d-flex justify-content-center">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100 ms-auto me-auto"
+                                    onclick="filterProducts('Предмет'); hideProductDetails(); clearTags()">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                    <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                    <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-100 sort-btn-m mx-1 d-flex justify-content-center">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100 ms-auto me-auto"
+                                    onclick="filterProducts('Валюта'); hideProductDetails(); clearTags()">
+                                <svg
+                                        viewBox="-0.5 0 25 25"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                          stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                          stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="1.5"></path>
+                                    <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                          stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-100 sort-btn-m mx-1 d-flex justify-content-center">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100 ms-auto me-auto"
+                                    onclick="filterProducts('кейс'); hideProductDetails(); clearTags()">
+                                <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                          stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                          stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="stick-light-sm rounded stick-light-sm-m"></div>
+
                 </div>
                 <div class="w8">
                     <div id="productDetails" class="hidden product-details products">

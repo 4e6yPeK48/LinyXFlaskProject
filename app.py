@@ -358,5 +358,9 @@ def handle_undefined_error():
 
 
 if __name__ == '__main__':
+    import os
+    os.environ['FLASK_ENV'] = 'production'
     db.create_all()
-    app.run(debug=True)
+    from waitress import serve
+    serve(app, host='localhost', port=5000)
+    # serve(app, host='46.174.48.78', port=5000)
