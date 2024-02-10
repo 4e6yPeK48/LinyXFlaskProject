@@ -42,8 +42,6 @@
 .login-form * {
     font-family: 'Poppins', sans-serif;
     letter-spacing: 0.5px;
-    outline: none;
-    border: none;
 }
 
 .login-form h3 {
@@ -79,11 +77,8 @@
 .btn-login {
     margin-top: 50px;
     width: 100%;
-    background-color: #ffffff;
-    color: #080710;
     padding: 15px 0;
     font-size: 18px;
     font-weight: 600;
-    border-radius: 5px;
     cursor: pointer;
 }

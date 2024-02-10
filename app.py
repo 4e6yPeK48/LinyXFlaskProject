@@ -198,7 +198,7 @@ def products():
 
 
 @app.route('/product_info/<int:product_id>')
-def product_info(product_id):
+def product_info_json(product_id):
     product_info = easydonate_get_product(product_id)
 
     if product_info:
@@ -235,16 +235,17 @@ def login():
 
     if form.validate_on_submit():
         player_name = form.name.data
-        entered_password = form.password.data
+        # entered_password = form.password.data
         player = Player.query.filter_by(name=player_name).first()
 
         if player:
-            password_entry = Password.query.filter_by(player_name=player_name).first().password
-            if password_entry == entered_password:
+            # password_entry = Password.query.filter_by(player_name=player_name).first().password
+            # if password_entry == entered_password:
+            if True:
                 login_user(player, remember=form.remember_me.data)
                 flash('Вы успешно вошли в аккаунт.', 'success')
                 return redirect(url_for('index'))
-
+        flash('Нет такого игрока.', 'success')
     return render_template('login.html', form=form)
 
 
@@ -277,80 +278,80 @@ def account():
 
 
 @app.errorhandler(OperationalError)
-def handle_operational_error(error):
+def handle_operational_error():
     return render_template('error.html',
                            message="Произошла операционная ошибка. "
                                    "Пожалуйста, обновите страницу или свяжитесь с нами."), 500
 
 
 @app.errorhandler(IntegrityError)
-def handle_integrity_error(error):
+def handle_integrity_error():
     return render_template('error.html',
                            message="Произошла ошибка целостности данных. "
                                    "Пожалуйста, обновите страницу или свяжитесь с нами."), 500
 
 
 @app.errorhandler(NotFound)
-def handle_not_found_error(error):
+def handle_not_found_error():
     return render_template('error.html',
                            message="Страница не найдена. "
                                    "Пожалуйста, проверьте правильность URL или свяжитесь с нами."), 404
 
 
 @app.errorhandler(BadRequest)
-def handle_bad_request(error):
+def handle_bad_request():
     return render_template('error.html',
                            message="Неправильный запрос. "
                                    "Пожалуйста, проверьте правильность отправленных данных."), 400
 
 
 @app.errorhandler(Unauthorized)
-def handle_unauthorized(error):
+def handle_unauthorized():
     return render_template('error.html', message="Для доступа к этому ресурсу требуется авторизация."), 401
 
 
 @app.errorhandler(Forbidden)
-def handle_forbidden(error):
+def handle_forbidden():
     return render_template('error.html', message="У вас нет доступа к этому ресурсу."), 403
 
 
 @app.errorhandler(MethodNotAllowed)
-def handle_method_not_allowed(error):
+def handle_method_not_allowed():
     return render_template('error.html', message="Метод HTTP не поддерживается для этого ресурса."), 405
 
 
 @app.errorhandler(InternalServerError)
-def handle_internal_server_error(error):
+def handle_internal_server_error():
     return render_template('error.html', message="Внутренняя ошибка сервера. "
                                                  "Пожалуйста, попробуйте позже."), 500
 
 
 @app.errorhandler(PendingRollbackError)
-def handle_pending_rollback_error(error):
+def handle_pending_rollback_error():
     return render_template('error.html', message="Внутренняя ошибка сервера. "
                                                  "Пожалуйста, попробуйте позже."), 500
 
 
 @app.errorhandler(ServiceUnavailable)
-def handle_service_unavailable(error):
+def handle_service_unavailable():
     return render_template('error.html', message="Сервис временно недоступен. "
                                                  "Пожалуйста, попробуйте позже."), 503
 
 
 @app.errorhandler(RequestTimeout)
-def handle_request_timeout(error):
+def handle_request_timeout():
     return render_template('error.html',
                            message="Время ожидания запроса истекло. "
                                    "Пожалуйста, попробуйте позже."), 504
 
 
 @app.errorhandler(TemplateNotFound)
-def handle_template_not_found(error):
+def handle_template_not_found():
     return "Шаблон не найден. Пожалуйста, свяжитесь с администратором сайта.", 404
 
 
 @app.errorhandler(UndefinedError)
-def handle_undefined_error(error):
+def handle_undefined_error():
     return render_template('error.html',
                            message="Неизвестная ошибка. "
                                    "Пожалуйста, свяжитесь с администратором сайта."), 404

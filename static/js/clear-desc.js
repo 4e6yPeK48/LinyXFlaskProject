@@ -21,3 +21,35 @@ function hideProductDetails() {
     addClasses();
     productGrid.classList.remove('hidden');
 }
+
+function clearTags(){
+    let productDetails = document.getElementById('productDetails');
+    if (productDetails) {
+        const containers = document.querySelectorAll('.all-products-container');
+        containers.forEach(container => {
+            container.classList.remove(
+                'gradient-color-shulker',
+                'gradient-color-vega',
+                'gradient-color-eola',
+                'gradient-color-chorus',
+                'gradient-color-hydra',
+                'gradient-color-fenix',
+                'gradient-color-leviathan',
+                'gradient-color-satira'
+            );
+        });
+        const sticks = document.querySelectorAll('.stick-light-sm');
+        sticks.forEach(stick => {
+            stick.classList.remove(
+                'gradient-color-shulker',
+                'gradient-color-vega',
+                'gradient-color-eola',
+                'gradient-color-chorus',
+                'gradient-color-hydra',
+                'gradient-color-fenix',
+                'gradient-color-leviathan',
+                'gradient-color-satira'
+            );
+        });
+    }
+}

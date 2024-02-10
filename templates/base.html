@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="../static/img/mine.svg"/>
     <title>{% block title %}LinyX{% endblock %}</title>
 </head>
-<body id="body">
+<body id="body" class="{% block index %}index{% endblock %}">
 <nav class="navbar navbar-expand-lg">
     <div class="d-flex justify-content-between w-100">
         <div class="logo">
@@ -42,11 +42,11 @@
         <div class="navbar-nav pc-navbar mt-auto mb-auto justify-content-end">
             {% if current_page == 'index' %}
                 {% if current_user and current_user.is_authenticated %}
-                    <div class="nav-item mx-1">
-                        <button class="btn btn-outline-light"
-                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
-                        </button>
-                    </div>
+                    {#                    <div class="nav-item mx-1">#}
+                    {#                        <button class="btn btn-outline-light"#}
+                    {#                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет#}
+                    {#                        </button>#}
+                    {#                    </div>#}
                     <div class="nav-item mx-1">
                         <button class="btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('logout') }}'">Выход
@@ -61,11 +61,11 @@
                 {% endif %}
             {% else %}
                 {% if current_user and current_user.is_authenticated %}
-                    <div class="nav-item mx-1">
-                        <button class=" change-color btn btn-outline-light"
-                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет
-                        </button>
-                    </div>
+                    {#                    <div class="nav-item mx-1">#}
+                    {#                        <button class=" change-color btn btn-outline-light"#}
+                    {#                                onclick="window.location.href='{{ url_for('account') }}'">Личный кабинет#}
+                    {#                        </button>#}
+                    {#                    </div>#}
                     <div class="nav-item mx-1">
                         <button class=" change-color btn btn-outline-light"
                                 onclick="window.location.href='{{ url_for('logout') }}'">Выход
@@ -82,18 +82,23 @@
         </div>
 
         <div class="dropdown mt-auto mb-auto ">
-            <button class="btn btn-outline-light dropdown-toggle change-color" type="button"
+            <button class="btn btn-outline-light dropdown-toggle" type="button"
                     id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="w-100 h-100 m-auto d-flex flex-column">
+                    <div class="first-line rounded btn-line mb-auto ms-auto me-auto"></div>
+                    <div class="second-line rounded btn-line mt-auto mb-auto ms-auto me-auto"></div>
+                    <div class="third-line rounded btn-line mt-auto ms-auto me-auto"></div>
+                </div>
             </button>
 
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% if current_user and current_user.is_authenticated %}
-                    <button class="dropdown-item btn btn-outline-light black-white-text"
-                            onclick="window.location.href='{{ url_for('account') }}'">Личный
-                        кабинет
-                    </button>
+                    {#                    <button class="dropdown-item btn btn-outline-light black-white-text"#}
+                    {#                            onclick="window.location.href='{{ url_for('account') }}'">Личный#}
+                    {#                        кабинет#}
+                    {#                    </button>#}
                     <button class="dropdown-item btn btn-outline-light black-white-text"
                             onclick="window.location.href='{{ url_for('logout') }}'">Выход
                     </button>
@@ -188,6 +193,105 @@
 
 {# div описания товара #}
 <script>
+    function findGradient() {
+        // Найти все дочерние элементы с классом "child"
+        const children = document.querySelectorAll('.product-info');
+        // Проход по всем дочерним элементам
+        children.forEach(child => {
+            // Получить значение атрибута "data-name"
+            const name = child.getAttribute('data-name');
+            // Проверить, совпадает ли значение атрибута с заданным значением
+            if (name === 'shulker') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-shulker');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-shulker');
+                });
+            }
+            if (name === 'vega') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-vega');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-vega');
+                });
+            }
+            if (name === 'eola') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-eola');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-eola');
+                });
+            }
+            if (name === 'chorus') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-chorus');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-chorus');
+                });
+            }
+            if (name === 'hydra') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-hydra');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-hydra');
+                });
+            }
+            if (name === 'fenix') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-fenix');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-fenix');
+                });
+            }
+            if (name === 'leviathan') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-leviathan');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-leviathan');
+                });
+            }
+            if (name === 'satira') {
+                const containers = document.querySelectorAll('.all-products-container');
+                const sticks = document.querySelectorAll('.stick-light-sm::after');
+                // Проверить, есть ли такой родительский элемент
+                containers.forEach(container => {
+                    container.classList.add('gradient-color-satira');
+                });
+                sticks.forEach(stick => {
+                    stick.classList.add('gradient-color-satira');
+                });
+            }
+        });
+    }
+
     function openProductDialog(product_id) {
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         fetch(`/product_info/${product_id}`)
@@ -199,7 +303,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -214,12 +318,31 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex flex-column desc-text">
-        <div class="shulker-background pe-2"><h4 class="gradient-shulker">${product_info['response']['name']}</h4></div>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="shulker">
+    <div class="d-flex flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="shulker-background pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-shulker">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="shulker-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="shulker-color-anim">SHULKER</a> - <a class="shulker-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="shulker-color-anim">SHULKER</a> - <a class="shulker-color">/salary</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="shulker-color">/near 65</a></a><br>
+        <br>
+
+        <a class="shulker-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="shulker-color">3</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="shulker-color">4</a></a><br>
+        <a>Ускоренная телепортация - <a class="shulker-color">6</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="shulker-color">1.2</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="shulker-color">4</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
@@ -230,7 +353,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -245,13 +368,33 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-vega">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="vega">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-vega">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="vega-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="vega-color-anim">VEGA</a> - <a class="vega-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="vega-color-anim">VEGA</a> - <a class="vega-color">/salary</a></a><br>
+        <a>Возможность соврешить самоубийство <a class="vega-color">VEGA</a> - <a class="vega-color">/suicide</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="vega-color">/near 89</a></a><br>
+        <br>
+
+        <a class="vega-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="vega-color">4</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="vega-color">6</a></a><br>
+        <a>Ускоренная телепортация - <a class="vega-color">5.5</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="vega-color">1.4</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="vega-color">6</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -261,7 +404,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -276,13 +419,35 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-eola">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="eola">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-eola">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="eola-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="eola-color-anim">EOLA</a> - <a class="eola-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="eola-color-anim">EOLA</a> - <a class="eola-color">/salary</a></a><br>
+        <a>Возможность полностью восстановить здоровье - <a class="eola-color">/heal</a></a><br>
+        <a>Возможность очистить свой инвентарь - <a class="eola-color">/clear</a></a><br>
+        <a>Возможность переименовать вещь без наковальни - <a class="eola-color">/name</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="eola-color">/near 104</a></a><br>
+        <br>
+
+        <a class="eola-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="eola-color">4</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="eola-color">7</a></a><br>
+        <a>Ускоренная телепортация - <a class="eola-color">5</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="eola-color">1.6</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="eola-color">6</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -292,7 +457,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -307,13 +472,35 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-chorus">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="chorus">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-chorus">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="chorus-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="chorus-color-anim">chorus</a> - <a class="chorus-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="chorus-color-anim">chorus</a> - <a class="chorus-color">/salary</a></a><br>
+        <a>Доступ к своему эндер-честу - <a class="chorus-color">/ec</a></a><br>
+        <a>Доступ к портативному столу кузнеца - <a class="chorus-color">/smiting</a></a><br>
+        <a>Возможность телепортироваться на верх - <a class="chorus-color">/top</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="chorus-color">/near 125</a></a><br>
+        <br>
+
+        <a class="chorus-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="chorus-color">5</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="chorus-color">8</a></a><br>
+        <a>Ускоренная телепортация - <a class="chorus-color">5</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="chorus-color">1.8</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="chorus-color">7</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -323,7 +510,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -338,13 +525,35 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-hydra">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="hydra">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-hydra">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="hydra-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="hydra-color-anim">HYDRA</a> - <a class="hydra-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="hydra-color-anim">HYDRA</a> - <a class="hydra-color">/salary</a></a><br>
+        <a>Возможность сделать объявление в чате - <a class="hydra-color">/bc</a></a><br>
+        <a>Доступ к портативному верстаку - <a class="hydra-color">/craft</a></a><br>
+        <a>Возможность потушить себя - <a class="hydra-color">/ext</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="hydra-color">/near 149</a></a><br>
+        <br>
+
+        <a class="hydra-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="hydra-color">5</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="hydra-color">10</a></a><br>
+        <a>Ускоренная телепортация - <a class="hydra-color">5</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="hydra-color">2</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="hydra-color">7</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -354,7 +563,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -369,13 +578,35 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-fenix">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="fenix">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-fenix">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="fenix-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="fenix-color-anim">FENIX</a> - <a class="fenix-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="fenix-color-anim">FENIX</a> - <a class="fenix-color">/salary</a></a><br>
+        <a>Возможность включить режим полета с элитрами - <a class="fenix-color">/fly</a></a><br>
+        <a>Возможность поставить свой личный варп - <a class="fenix-color">/delwarp</a></a><br>
+        <a>Возможность включить режим <a class="fenix-color">АФК</a> - <a class="fenix-color">/afk</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="fenix-color">/near 165</a></a><br>
+        <br>
+
+        <a class="fenix-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="fenix-color">6</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="fenix-color">10</a></a><br>
+        <a>Ускоренная телепортация - <a class="fenix-color">4</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="fenix-color">2.2</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="fenix-color">8</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -385,7 +616,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -400,13 +631,36 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-leviathan">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="leviathan">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-leviathan">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="leviathan-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="leviathan-color-anim">LEVIATHAN</a> - <a class="leviathan-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="leviathan-color-anim">LEVIATHAN</a> - <a class="leviathan-color">/salary</a></a><br>
+        <a>Возможность изменять скорость полета - <a class="leviathan-color">/fly speed</a></a><br>
+        <a>Возможность открыть портативное точило - <a class="leviathan-color">/grindstone</a></a><br>
+        <a>Возможность настроить фейерверки - <a class="leviathan-color">/firework</a></a><br>
+        <a>Возможность починить вещь в руке - <a class="leviathan-color">/repair</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="leviathan-color">/near 176</a></a><br>
+        <br>
+
+        <a class="leviathan-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="leviathan-color">6</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="leviathan-color">10</a></a><br>
+        <a>Ускоренная телепортация - <a class="leviathan-color">4</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="leviathan-color">2.4</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="leviathan-color">8</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -416,7 +670,7 @@
                     productDetails.innerHTML = `
 
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -431,13 +685,36 @@
         </svg>
     </a>
 </div>
-<div class="d-flex product-info">
-    <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="gradient-satira">${product_info['response']['name']}</h4>
-        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
+<div class="d-flex product-info" data-name="satira">
+    <div class="d-flex p-2 flex-column desc-text-privilege">
+        <div class="d-flex flex-row product-name-image">
+            <div class="pe-2 mt-auto mb-auto ms-auto me-auto"><h4 class="gradient-satira">${product_info['response']['name']}</h4></div>
+            <div class="d-flex mt-auto mb-auto ms-auto me-auto product-image product-image-main p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class=" mt-auto mb-auto ms-auto me-auto " alt=""></div>
+        </div>
+        <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}<br>
+
+        <br>
+        <a class="satira-color">ВОЗМОЖНОСТИ:</a><br>
+        <a>Возможность взять кит <a class="satira-color-anim">SATIRA</a> - <a class="satira-color">/kits</a></a><br>
+        <a>Возможность забрать зарплату <a class="satira-color-anim">SATIRA</a> - <a class="satira-color">/salary</a></a><br>
+        <a>Возможность изменять скорость полета - <a class="satira-color">/fly speed</a></a><br>
+        <a>Возможность открыть портативную чаровальню - <a class="satira-color">/enchanting</a></a><br>
+        <a>Возможность починить все вещи в инвентаре - <a class="satira-color">/repair all</a></a><br>
+        <a>Возможность телепортироваться на тот блок на который смотришь - <a class="satira-color">/jump</a></a><br>
+        <a>Доступ к увеличенному поиску игроков - <a class="satira-color">/near 200</a></a><br>
+        <br>
+
+        <a class="satira-color">ДОПОЛНИТЕЛЬНО:</a><br>
+        <a>Увеличенные лимиты точек домов - <a class="satira-color">8</a></a><br>
+        <a>Увеличенные слоты на аукционе - <a class="satira-color">13</a></a><br>
+        <a>Ускоренная телепортация - <a class="satira-color">0</a> сек.</a><br>
+        <a>Увеличенный множитель выпадающей валюты с мобов - <a class="satira-color">2.6</a>х</a><br>
+        <a>Увеличенные лимиты приватов - <a class="satira-color">10</a></a><br>
+        <br>
+
+        </p>
     </div>
-    <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
-</div>
+    </div>
 <div class="d-flex flex-row w-100">
     <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
@@ -446,7 +723,7 @@
                 } else {
                     productDetails.innerHTML = `
 <div class="close-link">
-    <a class="svg-link close-dialog" onclick="hideProductDetails()">
+    <a class="svg-link close-dialog" onclick="hideProductDetails(); clearTags()">
         <svg
             viewBox="0 0 25 25"
             fill="none"
@@ -463,7 +740,7 @@
 </div>
 <div class="d-flex product-info">
     <div class="d-flex p-2 flex-column desc-text">
-        <h4 class="black-white-text product-name">${product_info['response']['name']}</h4>
+        <h4 class="black-white-text product-name gradient-white">${product_info['response']['name']}</h4>
         <p class="black-white-text description-card-text"><b>Описание: </b>${product_info['response']['description']}</p>
     </div>
     <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
@@ -476,6 +753,7 @@
                 }
 
                 updateTheme(isDarkMode);
+                findGradient();
             })
             .catch(error => {
                 console.error('Ошибка:', error);
@@ -515,6 +793,5 @@
             });
     }
 </script>
-
 </body>
 </html>

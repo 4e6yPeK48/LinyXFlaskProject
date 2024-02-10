@@ -1,58 +1,185 @@
 {% extends 'base.html' %}
 
+{% block index %}not-index{% endblock %}
+
 {% block content %}
-    <div class="container mt-4 ">
-        <div class="d-flex flex-row gradient-border px-2 py-4 all-products-container">
-            <div class="w2 me-3">
-                <div class="category-filter d-flex flex-wrap justify-content-center">
-                    <div class="w-100 sort-btn mx-1">
-                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
-                                onclick="filterProducts('Всё')">Всё
-                        </button>
-                        <div class="stick-light-sm rounded"></div>
-                    </div>
+    <div class="container products-back">
+        <div class="circle1-3 "></div>
+        <div class="circle2-3 "></div>
+        <div class="container mt-4 products-table-main">
+            <div class="d-flex flex-row gradient-border px-2 py-4 all-products-container" id="allProductsContainer">
+                <div class="w2 me-3">
+                    <div class="category-filter d-flex flex-wrap justify-content-center">
+                        <div class="w-100 sort-btn mx-1">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                    onclick="filterProducts('Всё'); hideProductDetails(); clearTags()">Всё
+                            </button>
+                            <div class="stick-light-sm rounded"></div>
+                        </div>
 
-                    <div class="w-100 sort-btn mx-1">
-                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
-                                onclick="filterProducts('Привилегия')">Привилегия
-                        </button>
-                        <div class="stick-light-sm rounded"></div>
-                    </div>
+                        <div class="w-100 sort-btn mx-1">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                    onclick="filterProducts('Привилегия'); hideProductDetails(); clearTags()">Привилегия
+                            </button>
+                            <div class="stick-light-sm rounded"></div>
+                        </div>
 
-                    <div class="w-100 sort-btn mx-1">
-                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
-                                onclick="filterProducts('Предмет')">Предмет
-                        </button>
-                        <div class="stick-light-sm rounded"></div>
-                    </div>
+                        <div class="w-100 sort-btn mx-1">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                    onclick="filterProducts('Предмет'); hideProductDetails(); clearTags()">Предмет
+                            </button>
+                            <div class="stick-light-sm rounded"></div>
+                        </div>
 
-                    <div class="w-100 sort-btn mx-1">
-                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
-                                onclick="filterProducts('Валюта')">Валюта
-                        </button>
-                        <div class="stick-light-sm rounded"></div>
-                    </div>
+                        <div class="w-100 sort-btn mx-1">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                    onclick="filterProducts('Валюта'); hideProductDetails(); clearTags()">Валюта
+                            </button>
+                            <div class="stick-light-sm rounded"></div>
+                        </div>
 
-                    <div class="w-100 sort-btn mx-1 ">
-                        <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
-                                onclick="filterProducts('Кейс')">Кейс
-                        </button>
-                        <div class="stick-light-sm rounded"></div>
+                        <div class="w-100 sort-btn mx-1 ">
+                            <button class="btn btn-outline-light btn-category mb-2 change-color w-100"
+                                    onclick="filterProducts('кейс'); hideProductDetails(); clearTags()">Кейс
+                            </button>
+                            <div class="stick-light-sm rounded"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="w8">
-                <div id="productDetails" class="hidden product-details products">
-                    <p class="">Подождите...</p>
-                </div>
-                <div class="row ms-4" id="productGrid">
-                    {% for product in products_info['response'] %}
-                        <div class="card ms-2 mb-3 product-card"
-                             onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
-                             data-description="{{ product['description'] }}">
-                            <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center">
-                                <h4 class="card-name mt-auto mb-auto">{{ product['name'] }}</h4>
-                                <span class="icon mt-auto mb-auto">
+                <div class="w8">
+                    <div id="productDetails" class="hidden product-details products">
+                        <p class="">Подождите...</p>
+                    </div>
+                    <div class="row ms-4" id="productGrid">
+                        {% for product in products_info['response'] %}
+                            {% if product['name'] == 'Shulker' %}
+                                <div class="card ms-2 mb-3 product-card shulker-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto shulker-color">sʜᴜʟᴋᴇʀ</h4>
+                                        <span class="icon mt-auto mb-auto shulker-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Vega' %}
+                                <div class="card ms-2 mb-3 product-card vega-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto vega-color">ᴠᴇɢᴀ</h4>
+                                        <span class="icon mt-auto mb-auto vega-hover">
                                     {% if 'Привилегия' in product['description'] %}
                                         <svg
                                                 viewBox="0 0 24 24"
@@ -138,41 +265,887 @@
                                                   stroke-linejoin="round"></path>
                                         </svg>
                                     {% endif %}
-                            </span>
-                            </div>
-                            <p class="mb-2">
-                                {{ product['price'] }} рублей
-                            </p>
-                            <button type="button" class="btn btn-outline-light btn-more more-info change-color">
-                                Подробнее
-                            </button>
-                            <div class="shine"></div>
-                            <div class="background">
-                                <div class="tiles">
-                                    <div class="tile tile-1"></div>
-                                    <div class="tile tile-2"></div>
-                                    <div class="tile tile-3"></div>
-                                    <div class="tile tile-4"></div>
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
 
-                                    <div class="tile tile-5"></div>
-                                    <div class="tile tile-6"></div>
-                                    <div class="tile tile-7"></div>
-                                    <div class="tile tile-8"></div>
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
 
-                                    <div class="tile tile-9"></div>
-                                    <div class="tile tile-10"></div>
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
                                 </div>
+                            {% elif product['name'] == 'Eola' %}
+                                <div class="card ms-2 mb-3 product-card eola-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto eola-color">ᴇᴏʟᴀ</h4>
+                                        <span class="icon mt-auto mb-auto eola-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
 
-                                <div class="line line-1"></div>
-                                <div class="line line-2"></div>
-                                <div class="line line-3"></div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Chorus' %}
+                                <div class="card ms-2 mb-3 product-card chorus-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto chorus-color">ᴄʜᴏʀᴜs</h4>
+                                        <span class="icon mt-auto mb-auto chorus-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Hydra' %}
+                                <div class="card ms-2 mb-3 product-card hydra-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto hydra-color">ʜʏᴅʀᴀ</h4>
+                                        <span class="icon mt-auto mb-auto hydra-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Fenix' %}
+                                <div class="card ms-2 mb-3 product-card fenix-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto fenix-color">ғᴇɴɪx</h4>
+                                        <span class="icon mt-auto mb-auto fenix-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Leviathan' %}
+                                <div class="card ms-2 mb-3 product-card leviathan-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto leviathan-color">ʟᴇᴠɪᴀᴛʜᴀɴ</h4>
+                                        <span class="icon mt-auto mb-auto leviathan-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% elif product['name'] == 'Satira' %}
+                                <div class="card ms-2 mb-3 product-card satira-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')"
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto satira-color">sᴀᴛɪʀᴀ</h4>
+                                        <span class="icon mt-auto mb-auto satira-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'Кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="card ms-2 mb-3 product-card white-hover"
+                                     onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); "
+                                     data-description="{{ product['description'] }}">
+                                    <div class="card-name-icon d-flex mt-auto mb-auto flex-row align-items-center ">
+                                        <h4 class="card-name mt-auto mb-auto">{{ product['name'] }}</h4>
+                                        <span class="icon mt-auto mb-auto white-hover">
+                                    {% if 'Привилегия' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M16 9L20 5V16H4V5L6 7M8 9L12 5L14 7M4 19H20"></path>
+                                        </svg>
+                                    {% elif 'Предмет' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M17.38 10.3799V13.6099C17.38 16.2999 16.3 17.3799 13.61 17.3799H10.38C7.69 17.3799 6.61 16.2999 6.61 13.6099V10.3799C6.61 7.68988 7.69 6.60986 10.38 6.60986H13.61C16.31 6.61986 17.38 7.68988 17.38 10.3799Z"></path>
+                                            <path d="M22 5.76999V9C22 11.69 20.92 12.77 18.23 12.77H17.38V10.39C17.38 7.70001 16.3 6.62 13.61 6.62H11.23V5.76999C11.23 3.07999 12.31 2 15 2H18.23C20.92 2 22 3.07999 22 5.76999Z"></path>
+                                            <path d="M2 18.23V15C2 12.31 3.08 11.23 5.77 11.23H6.62V13.61C6.62 16.3 7.7 17.38 10.39 17.38H12.77V18.23C12.77 20.92 11.69 22 9 22H5.77C3.08 22 2 20.92 2 18.23Z"></path>
+                                        </svg>
+                                    {% elif 'кейс' in product['description'] %}
+                                        <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M7.00001 4.10999C6.14022 4.33198 5.37874 4.83376 4.83558 5.53625C4.29241 6.23875 3.99845 7.10201 4.00001 7.98999V17.99C4.00001 19.0509 4.42149 20.0682 5.17164 20.8184C5.92178 21.5685 6.93914 21.99 8.00001 21.99H16C17.0609 21.99 18.0783 21.5685 18.8284 20.8184C19.5786 20.0682 20 19.0509 20 17.99V7.98999C19.9993 7.10372 19.7044 6.24269 19.1614 5.54224C18.6184 4.84178 17.8581 4.34156 17 4.12"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M9 5.98999C8.46957 5.98999 7.96089 5.77925 7.58582 5.40417C7.21074 5.0291 7 4.52042 7 3.98999C7 3.45956 7.21074 2.95088 7.58582 2.57581C7.96089 2.20073 8.46957 1.98999 9 1.98999H15C15.5304 1.98999 16.0392 2.20073 16.4142 2.57581C16.7893 2.95088 17 3.45956 17 3.98999C17 4.52042 16.7893 5.0291 16.4142 5.40417C16.0392 5.77925 15.5304 5.98999 15 5.98999H9Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 16H14" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M8 12H16" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% elif 'Валюта' in product['description'] %}
+                                        <svg
+                                                viewBox="-0.5 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M22 10.56C22 9.49913 21.5786 8.48171 20.8284 7.73157C20.0783 6.98142 19.0609 6.56 18 6.56H6C4.93913 6.56 3.92178 6.98142 3.17163 7.73157C2.42149 8.48171 2 9.49913 2 10.56"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21.9999 10.56L20.9999 18.56C20.8507 19.6487 20.3192 20.649 19.5002 21.3818C18.6813 22.1146 17.6285 22.5322 16.5299 22.56H7.38989C6.29132 22.5322 5.23847 22.1146 4.41956 21.3818C3.60064 20.649 3.0691 19.6487 2.91992 18.56L1.91992 10.56"
+                                                  stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="1.5"></path>
+                                            <path d="M8.00977 6.25C8.00977 5.18913 8.43119 4.17172 9.18134 3.42157C9.93148 2.67142 10.9489 2.25 12.0098 2.25C13.0706 2.25 14.0881 2.67142 14.8382 3.42157C15.5883 4.17172 16.0098 5.18913 16.0098 6.25"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg
+                                                viewBox="0 0 25 25"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M19.0006 9.03002C19.0007 8.10058 18.8158 7.18037 18.4565 6.32317C18.0972 5.46598 17.5709 4.68895 16.9081 4.03734C16.2453 3.38574 15.4594 2.87265 14.5962 2.52801C13.7331 2.18336 12.8099 2.01409 11.8806 2.03002C10.0966 2.08307 8.39798 2.80604 7.12302 4.05504C5.84807 5.30405 5.0903 6.98746 5.00059 8.77001C4.95795 9.9595 5.21931 11.1402 5.75999 12.2006C6.30067 13.2609 7.10281 14.1659 8.09058 14.83C8.36897 15.011 8.59791 15.2584 8.75678 15.5499C8.91565 15.8415 8.99945 16.168 9.00059 16.5V18.03H15.0006V16.5C15.0006 16.1689 15.0829 15.843 15.24 15.5515C15.3971 15.26 15.6241 15.0121 15.9006 14.83C16.8528 14.1911 17.6336 13.328 18.1741 12.3167C18.7147 11.3054 18.9985 10.1767 19.0006 9.03002V9.03002Z"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M15 21.04C14.1345 21.6891 13.0819 22.04 12 22.04C10.9181 22.04 9.86548 21.6891 9 21.04"
+                                                  stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    {% endif %}
+                            </span></div>
+                                    <p class="mb-2">
+                                        {{ product['price'] }} рублей
+                                    </p>
+                                    <button type="button" class="btn btn-outline-light btn-more more-info change-color">
+                                        Подробнее
+                                    </button>
+                                    <div class="shine"></div>
+                                    <div class="background">
+                                        <div class="tiles">
+                                            <div class="tile tile-1"></div>
+                                            <div class="tile tile-2"></div>
+                                            <div class="tile tile-3"></div>
+                                            <div class="tile tile-4"></div>
+
+                                            <div class="tile tile-5"></div>
+                                            <div class="tile tile-6"></div>
+                                            <div class="tile tile-7"></div>
+                                            <div class="tile tile-8"></div>
+
+                                            <div class="tile tile-9"></div>
+                                            <div class="tile tile-10"></div>
+                                        </div>
+
+                                        <div class="line line-1"></div>
+                                        <div class="line line-2"></div>
+                                        <div class="line line-3"></div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 {% endblock %}
