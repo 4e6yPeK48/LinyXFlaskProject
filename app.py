@@ -100,7 +100,7 @@ def easydonate_create_payment(customer, server_id, items, email=None, coupon=Non
     easydonate_url = 'https://easydonate.ru/api/v3/shop/payment/create'
     headers = {'Shop-Key': EASYDONATE_KEY}
 
-    product_id = list(items.keys())[0]
+    # product_id = list(items.keys())[0]
     # product_info = easydonate_get_product(product_id)
 
     # if not product_info:
@@ -357,3 +357,7 @@ if __name__ == '__main__':
 
     serve(app, host='localhost', port=5000)
     # serve(app, host='46.174.48.78', port=5000)
+
+# if __name__ == '__main__':
+#     db.create_all()
+#     app.run(debug=True)
