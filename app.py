@@ -244,7 +244,6 @@ args = parser.parse_args()
 
 # Определение обработчика ответа на двухфакторную аутентификацию
 def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
-
     if args.debug:
         print(f'Received response from server {packet}')
 
@@ -270,6 +269,15 @@ def send_packet(packet: dict) -> None:
 
 
 # sendPacket(PacketType.get_BOTSIDE_2FA_NEEDED('overdrive1')) # 'overdrive1' - nickname
+
+
+@app.route('/confirm_login', methods=['POST'])
+def confirm_login():
+    # Ваша логика обработки запроса подтверждения логина
+    # Здесь может быть проверка токена, базы данных и т.д.
+
+    # В данном примере просто возвращаем пустой ответ
+    return jsonify({'message': 'Логин подтвержден'})
 
 
 @logmanager.user_loader
@@ -431,8 +439,8 @@ if __name__ == '__main__':
 
     from waitress import serve
 
-    serve(app, host='localhost', port=5000)
-    # serve(app, host='46.174.48.78', port=5000)
+    # serve(app, host='localhost', port=5000)
+    serve(app, host='46.174.48.78', port=5000)
 
 # if __name__ == '__main__':
 #     db.create_all()
