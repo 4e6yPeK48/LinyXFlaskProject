@@ -66,10 +66,7 @@ class Purchase(db.Model):
 
 
 def easydonate_get_shop_info():
-    """
-    возвращает json для информации о магазине
-    :return:
-    """
+    """Возвращает json для информации о магазине"""
 
     easydonate_url = 'https://easydonate.ru/api/v3/shop'
 
@@ -84,10 +81,7 @@ def easydonate_get_shop_info():
 
 
 def easydonate_get_products():
-    """
-    возвращает json с информацией о всех товарах магазина
-    :return:
-    """
+    """Возвращает json с информацией о всех товарах магазина"""
 
     easydonate_url = 'https://easydonate.ru/api/v3/shop/products'
     headers = {'Shop-key': EASYDONATE_KEY}
@@ -100,32 +94,23 @@ def easydonate_get_products():
         return None
 
 
-def easydonate_create_payment(customer, server_id, products, email=None, coupon=None, success_url=None):
-    """
-    создание платежа для магазина
-    :param customer:
-    :param server_id:
-    :param products:
-    :param email:
-    :param coupon:
-    :param success_url:
-    :return:
-    """
+def easydonate_create_payment(customer, server_id, items, email=None, coupon=None, success_url=None):
+    """Создание платежа для магазина"""
 
     easydonate_url = 'https://easydonate.ru/api/v3/shop/payment/create'
     headers = {'Shop-Key': EASYDONATE_KEY}
 
-    product_id = list(products.keys())[0]
-    product_info = easydonate_get_product(product_id)
+    product_id = list(items.keys())[0]
+    # product_info = easydonate_get_product(product_id)
 
-    if not product_info:
-        print(f'Ошибка при получении информации о товаре {product_id}')
-        return None
+    # if not product_info:
+    #     print(f'Ошибка при получении информации о товаре {product_id}')
+    #     return None
 
     payload = {
         'customer': customer,
         'server_id': server_id,
-        'products': json.dumps(products),
+        'products': json.dumps(items),
         'email': email,
         'coupon': coupon,
         'success_url': success_url,
@@ -138,12 +123,12 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
         response_data = response.json()
 
         if response_data.get('success'):
-            purchase = Purchase(
-                player_name=customer,
-                donation_name=product_info['response']['name'],
-            )
-            db.session.add(purchase)
-            db.session.commit()
+            # purchase = Purchase(
+            #     player_name=customer,
+            #     donation_name=product_info['response']['name'],
+            # )
+            # db.session.add(purchase)
+            # db.session.commit()
             return response_data
         else:
             print(f'Ошибка при создании платежа: {response_data}')
@@ -157,11 +142,7 @@ def easydonate_create_payment(customer, server_id, products, email=None, coupon=
 
 
 def easydonate_get_product(product_id):
-    """
-    возвращает json с информацией о товаре магазина
-    :param product_id:
-    :return:
-    """
+    """Возвращает json с информацией о товаре магазина"""
 
     easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
     headers = {'Shop-key': EASYDONATE_KEY}
@@ -357,10 +338,22 @@ def handle_undefined_error():
                                    "Пожалуйста, свяжитесь с администратором сайта."), 404
 
 
+@app.errorhandler(404)
+def not_found_error():
+    return jsonify({'error': 'Not found'}), 404
+
+
+@app.errorhandler(500)
+def internal_error():
+    return jsonify({'error': 'Internal server error'}), 500
+
+
 if __name__ == '__main__':
     import os
+
     os.environ['FLASK_ENV'] = 'production'
     db.create_all()
     from waitress import serve
+
     serve(app, host='localhost', port=5000)
     # serve(app, host='46.174.48.78', port=5000)
