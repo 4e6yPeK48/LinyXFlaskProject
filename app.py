@@ -6,7 +6,7 @@ import argparse
 from ProtocolClient.client import MessagingChannelHandler
 from ProtocolClient.Types.PacketType import PacketType
 import requests
-from flask import Flask, render_template, url_for, redirect, flash, jsonify
+from flask import Flask, render_template, url_for, redirect, flash, jsonify, request
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -273,11 +273,13 @@ def send_packet(packet: dict) -> None:
 
 @app.route('/confirm_login', methods=['POST'])
 def confirm_login():
-    # Ваша логика обработки запроса подтверждения логина
-    # Здесь может быть проверка токена, базы данных и т.д.
+    # Получаем никнейм из запроса
+    nickname = request.form.get('nickname')
 
-    # В данном примере просто возвращаем пустой ответ
-    return jsonify({'message': 'Логин подтвержден'})
+    # Здесь вы можете использовать переменную nickname для вывода на страницу
+
+    # В данном примере возвращаем шаблон с сообщением о подтверждении логина и никнеймом
+    return render_template('accept.html', nickname=nickname)
 
 
 @logmanager.user_loader
@@ -292,7 +294,9 @@ def login():
     if form.validate_on_submit():
         nickname = form.name.data
         send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
-        return redirect(url_for('index'))  # Redirecting to index while waiting for response
+        # Передаем никнейм в функцию confirm_login
+        confirm_login(nickname)
+        return redirect(url_for('index'))  # Перенаправляем на главную страницу
 
     return render_template('login.html', form=form)
 
