@@ -1,0 +1,32 @@
+<!-- login.html -->
+{% extends 'base.html' %}
+{% block title %}Принять{% endblock %}
+{% block content %}
+    <div><a>Ожидание подтверждения</a></div>
+    <p></p>
+    <script>
+    // Функция для автоматической отправки запроса каждую секунду
+    function checkConfirmation() {
+        // Здесь вы можете выполнить AJAX запрос для проверки подтверждения
+        // В данном случае я использую jQuery для простоты
+        $.ajax({
+            url: "{{ url_for('confirm_login', nickname=nickname) }}", // URL для обработчика подтверждения
+            type: "GET", // Метод GET или POST, в зависимости от вашей конфигурации
+            success: function(response) {
+                // Обработка успешного ответа
+                if (response.redirect) {
+                    window.location.href = response.redirect; // Перенаправление на главную страницу после успешного входа
+                }
+            },
+            error: function(xhr, status, error) {
+                // Обработка ошибки
+                console.error(error);
+            }
+        });
+    }
+
+    // Вызов функции checkConfirmation каждую секунду
+    setInterval(checkConfirmation, 1000); // 1000 миллисекунд = 1 секунда
+</script>
+
+{% endblock %}

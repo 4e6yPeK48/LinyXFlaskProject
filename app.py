@@ -275,23 +275,30 @@ def _containsAll (data, values):
     try:
         return all(key in data for key in values)
     except TypeError as e:
-        print ("Generated TypeError: "+str(e)+" from data "+str(data)+" and values "+str(values))
-
-
-@app.route('/confirm_login', methods=['POST'])
-def confirm_login(nickname):
-
-    if _containsAll(handled, [nickname]):
-        is_authed, reason = handled[nickname]
-        if is_authed:
-            return redirect(url_for("index"))  # authed
-        else:
-            return jsonify({"error": f"Отказано по причине {reason}"})
+        print("Generated TypeError: "+str(e)+" from data "+str(data)+" and values "+str(values))
 
 
 @logmanager.user_loader
 def load_user(user_id):
     return db.session.get(Player, user_id)
+
+
+@app.route('/confirm_login', methods=['GET'])
+def confirm_login():
+    # Получаем никнейм из параметров URL
+    nickname = request.args.get('nickname')
+    if nickname:
+        # Ваша проверка подтверждения
+        if _containsAll(handled, [nickname]):
+            is_authed, reason = handled[nickname]
+            if is_authed:
+                return jsonify({"redirect": url_for("index")})  # Если аутентификация успешна, возвращаем URL для перенаправления на главную страницу
+            else:
+                return jsonify({"error": f"Отказано по причине {reason}"})
+        else:
+            return jsonify({"status": "waiting"})  # Если подтверждение еще не получено
+    else:
+        return jsonify({"error": "Никнейм не предоставлен"})  # Обработка случая, когда никнейм не передан
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -301,9 +308,7 @@ def login():
     if form.validate_on_submit():
         nickname = form.name.data
         send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
-        # Передаем никнейм в функцию confirm_login
-        confirm_login(nickname)
-        return redirect(url_for('index'))  # Перенаправляем на главную страницу
+        return redirect(url_for('confirm_login', nickname=nickname))
 
     return render_template('login.html', form=form)
 
