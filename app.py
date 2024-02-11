@@ -277,9 +277,9 @@ def _containsAll (data, values):
     except TypeError as e:
         print ("Generated TypeError: "+str(e)+" from data "+str(data)+" and values "+str(values))
 
+
 @app.route('/confirm_login', methods=['POST'])
-def confirm_login():
-    nickname = request.form.get('nickname')
+def confirm_login(nickname):
 
     if _containsAll(handled, [nickname]):
         is_authed, reason = handled[nickname]
