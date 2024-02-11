@@ -271,15 +271,22 @@ def send_packet(packet: dict) -> None:
 # sendPacket(PacketType.get_BOTSIDE_2FA_NEEDED('overdrive1')) # 'overdrive1' - nickname
 
 
+def _containsAll (data, values):
+    try:
+        return all(key in data for key in values)
+    except TypeError as e:
+        print ("Generated TypeError: "+str(e)+" from data "+str(data)+" and values "+str(values))
+
 @app.route('/confirm_login', methods=['POST'])
 def confirm_login():
-    # Получаем никнейм из запроса
     nickname = request.form.get('nickname')
 
-    # Здесь вы можете использовать переменную nickname для вывода на страницу
-
-    # В данном примере возвращаем шаблон с сообщением о подтверждении логина и никнеймом
-    return render_template('accept.html', nickname=nickname)
+    if _containsAll(handled, [nickname]):
+        is_authed, reason = handled[nickname]
+        if is_authed:
+            return redirect(url_for("index"))  # authed
+        else:
+            return jsonify({"error": f"Отказано по причине {reason}"})
 
 
 @logmanager.user_loader
