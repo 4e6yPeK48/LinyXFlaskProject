@@ -2,7 +2,9 @@ import json
 import threading
 from urllib.parse import quote_plus
 from functools import lru_cache
-
+import argparse
+from ProtocolClient.client import MessagingChannelHandler
+from ProtocolClient.Types.PacketType import PacketType
 import requests
 from flask import Flask, render_template, url_for, redirect, flash, jsonify
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
@@ -31,6 +33,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
 app.app_context().push()
+
+handled = dict[str, (bool, str)]
 
 db = SQLAlchemy(app)
 logmanager = LoginManager()
@@ -227,6 +231,52 @@ def buy_product(product_id):
         return jsonify({'error': 'Ошибка при создании платежа'}), 500
 
 
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--host', type=str, default="localhost")
+parser.add_argument('--port', type=int, default=12345)
+parser.add_argument('--debug', type=bool, default=False)
+parser.add_argument('--passw', type=str, default="?thisIsPassword?")
+parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
+
+args = parser.parse_args()
+
+
+# Определение обработчика ответа на двухфакторную аутентификацию
+def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
+    nickname: str = packet["nickname"]
+    is_accepted: str = packet["status"]  # SUCCESS or DENIED
+    reason_if_denied: str = packet["reason"]  # "" - if SUCCESS
+
+    if is_accepted == "SUCCESS":
+        user = Player.query.filter_by(name=nickname).first()
+        if user:
+            login_user(user)
+            flash('Вы успешно вошли в аккаунт.', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash(f'Ошибка при аутентификации: {reason_if_denied}', 'error')
+
+
+messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
+    address=(args.host, args.port), side=PacketType.SITESIDE,
+    isDebug=args.debug
+)
+
+messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
+messagingChannel.start(args.passw, args.forceProtocol)
+
+messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
+messagingChannel.start(args.passw, args.forceProtocol)
+
+
+def send_packet(packet: dict) -> None:
+    messagingChannel.sendPacket(packet=packet)
+
+
+# sendPacket(PacketType.get_BOTSIDE_2FA_NEEDED('overdrive1')) # 'overdrive1' - nickname
+
+
 @logmanager.user_loader
 def load_user(user_id):
     return db.session.get(Player, user_id)
@@ -237,19 +287,26 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        player_name = form.name.data
-        # entered_password = form.password.data
-        player = Player.query.filter_by(name=player_name).first()
+        nickname = form.name.data
+        send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
+        return redirect(url_for('index'))  # Redirecting to index while waiting for response
 
-        if player:
-            # password_entry = Password.query.filter_by(player_name=player_name).first().password
-            # if password_entry == entered_password:
-            if True:
-                login_user(player, remember=form.remember_me.data)
-                flash('Вы успешно вошли в аккаунт. Новый', 'success')
-                return redirect(url_for('index'))
-        flash('Нет такого игрока.', 'success')
     return render_template('login.html', form=form)
+
+    # if form.validate_on_submit():
+    #     player_name = form.name.data
+    #     # entered_password = form.password.data
+    #     player = Player.query.filter_by(name=player_name).first()
+    #
+    #     if player:
+    #         # password_entry = Password.query.filter_by(player_name=player_name).first().password
+    #         # if password_entry == entered_password:
+    #         if True:
+    #             login_user(player, remember=form.remember_me.data)
+    #             flash('Вы успешно вошли в аккаунт. Новый', 'success')
+    #             return redirect(url_for('index'))
+    #     flash('Нет такого игрока.', 'success')
+    # return render_template('login.html', form=form)
 
 
 @app.route('/logout')
