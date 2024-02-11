@@ -242,17 +242,18 @@ parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VER
 args = parser.parse_args()
 
 
-# Определение обработчика ответа на двухфакторную аутентификацию
 def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
     if args.debug:
         print(f'Received response from server {packet}')
 
     if packet["status"] == PacketType.SUCCESS:
         handled[packet["nickname"]] = (True, packet["reason"])
+        print(handled, True)
     else:
         if args.debug:
             print(f'Denied 2FA from nickname {packet["nickname"]} for reason {packet["reason"]}')
             handled[packet["nickname"]] = (False, packet["reason"])
+            print(handled, False)
 
 
 messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
@@ -268,14 +269,11 @@ def send_packet(packet: dict) -> None:
     messagingChannel.sendPacket(packet=packet)
 
 
-# sendPacket(PacketType.get_BOTSIDE_2FA_NEEDED('overdrive1')) # 'overdrive1' - nickname
-
-
-def _containsAll (data, values):
+def _containsAll(data, values):
     try:
         return all(key in data for key in values)
     except TypeError as e:
-        print("Generated TypeError: "+str(e)+" from data "+str(data)+" and values "+str(values))
+        print("Generated TypeError: " + str(e) + " from data " + str(data) + " and values " + str(values))
 
 
 @logmanager.user_loader
@@ -285,20 +283,21 @@ def load_user(user_id):
 
 @app.route('/confirm_login', methods=['GET'])
 def confirm_login():
-    # Получаем никнейм из параметров URL
     nickname = request.args.get('nickname')
     if nickname:
         if args.debug:
-            print (f'Nickname post: {nickname}')
-        # Ваша проверка подтверждения
+            print(f'Nickname post: {nickname}')
         if _containsAll(handled, [nickname]):
             is_authed, reason = handled[nickname]
             if args.debug:
                 print(f'Nickname in dictionary')
             if is_authed:
                 if args.debug:
+                    player = Player.query.filter_by(name=nickname).first()
                     print(f'Nickname authed: {nickname}')
-                return jsonify({"redirect": url_for("index")})  # Если аутентификация успешна, возвращаем URL для перенаправления на главную страницу
+                    login_user(player)
+                    flash('Вы успешно вошли в аккаунт', 'success')
+                return redirect(url_for('index'))
             else:
                 if args.debug:
                     print(f'Not authed by reason : {reason}')
@@ -306,11 +305,11 @@ def confirm_login():
         else:
             if args.debug:
                 print(f'Waiting containing for player: {nickname}')
-            return jsonify({"status": "waiting"})  # Если подтверждение еще не получено
+            return jsonify({"status": "waiting"})
     else:
         if args.debug:
-            print (f'No nickname present')
-        return jsonify({"error": "Никнейм не предоставлен"})  # Обработка случая, когда никнейм не передан
+            print(f'No nickname present')
+        return jsonify({"error": "Никнейм не предоставлен"})
 
 
 @app.route('/login', methods=['GET', 'POST'])
