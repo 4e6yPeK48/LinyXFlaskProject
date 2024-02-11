@@ -288,16 +288,28 @@ def confirm_login():
     # Получаем никнейм из параметров URL
     nickname = request.args.get('nickname')
     if nickname:
+        if args.debug:
+            print (f'Nickname post: {nickname}')
         # Ваша проверка подтверждения
         if _containsAll(handled, [nickname]):
             is_authed, reason = handled[nickname]
+            if args.debug:
+                print(f'Nickname in dictionary')
             if is_authed:
+                if args.debug:
+                    print(f'Nickname authed: {nickname}')
                 return jsonify({"redirect": url_for("index")})  # Если аутентификация успешна, возвращаем URL для перенаправления на главную страницу
             else:
+                if args.debug:
+                    print(f'Not authed by reason : {reason}')
                 return jsonify({"error": f"Отказано по причине {reason}"})
         else:
+            if args.debug:
+                print(f'Waiting containing for player: {nickname}')
             return jsonify({"status": "waiting"})  # Если подтверждение еще не получено
     else:
+        if args.debug:
+            print (f'No nickname present')
         return jsonify({"error": "Никнейм не предоставлен"})  # Обработка случая, когда никнейм не передан
 
 
