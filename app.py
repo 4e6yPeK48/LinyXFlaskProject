@@ -236,6 +236,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--host', type=str, default="localhost")
 parser.add_argument('--port', type=int, default=12345)
 parser.add_argument('--debug', type=bool, default=False)
+parser.add_argument('--messaging', type=bool, default=False)
 parser.add_argument('--passw', type=str, default="?thisIsPassword?")
 parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
 
@@ -262,7 +263,8 @@ messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
 )
 
 messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
-messagingChannel.start(args.passw, args.forceProtocol)
+if args.messaging:
+    messagingChannel.start(args.passw, args.forceProtocol)
 
 
 def send_packet(packet: dict) -> None:
