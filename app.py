@@ -34,7 +34,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
 app.app_context().push()
 
-handled:dict[str, tuple[bool, str]] = {}
+handled: dict[str, tuple[bool, str]] = {}
 
 db = SQLAlchemy(app)
 logmanager = LoginManager()
