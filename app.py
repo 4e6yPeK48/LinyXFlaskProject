@@ -34,7 +34,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
 app.app_context().push()
 
-handled = dict[str, (bool, str)]
+handled = dict[str, tuple[bool, str]]
 
 db = SQLAlchemy(app)
 logmanager = LoginManager()
@@ -244,27 +244,22 @@ args = parser.parse_args()
 
 # Определение обработчика ответа на двухфакторную аутентификацию
 def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
-    nickname: str = packet["nickname"]
-    is_accepted: str = packet["status"]  # SUCCESS or DENIED
-    reason_if_denied: str = packet["reason"]  # "" - if SUCCESS
 
-    if is_accepted == "SUCCESS":
-        user = Player.query.filter_by(name=nickname).first()
-        if user:
-            login_user(user)
-            flash('Вы успешно вошли в аккаунт.', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash(f'Ошибка при аутентификации: {reason_if_denied}', 'error')
+    if args.debug:
+        print(f'Received response from server {packet}')
+
+    if packet["status"] == PacketType.SUCCESS:
+        handled[packet["nickname"]] = (True, packet["reason"])
+    else:
+        if args.debug:
+            print(f'Denied 2FA from nickname {packet["nickname"]} for reason {packet["reason"]}')
+            handled[packet["nickname"]] = (False, packet["reason"])
 
 
 messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
     address=(args.host, args.port), side=PacketType.SITESIDE,
     isDebug=args.debug
 )
-
-messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
-messagingChannel.start(args.passw, args.forceProtocol)
 
 messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
 messagingChannel.start(args.passw, args.forceProtocol)
