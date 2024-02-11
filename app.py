@@ -1,5 +1,7 @@
 import json
+import threading
 from urllib.parse import quote_plus
+from functools import lru_cache
 
 import requests
 from flask import Flask, render_template, url_for, redirect, flash, jsonify
@@ -73,6 +75,7 @@ def easydonate_get_shop_info():
     headers = {'Shop-key': EASYDONATE_KEY}
 
     response = requests.get(easydonate_url, headers=headers)
+    print('easydonate_get_shop_info')
 
     if response.status_code == 200:
         return response.json()
@@ -80,18 +83,43 @@ def easydonate_get_shop_info():
         return None
 
 
-def easydonate_get_products():
+@lru_cache(maxsize=None)
+def easydonate_get_products_cached():
     """Возвращает json с информацией о всех товарах магазина"""
-
     easydonate_url = 'https://easydonate.ru/api/v3/shop/products'
     headers = {'Shop-key': EASYDONATE_KEY}
 
     response = requests.get(easydonate_url, headers=headers)
+    print('easydonate_get_products_cached')
 
     if response.status_code == 200:
         return response.json()
     else:
         return None
+
+
+def preload_product_descriptions():
+    """Предзагружает описание товаров"""
+
+    products_info = easydonate_get_products_cached()
+
+    if products_info:
+        product_ids = [product['id'] for product in products_info.get('response', [])]
+
+        def send_product_request(product_id):
+            easydonate_get_product(product_id)
+
+        def send_requests_periodically():
+            for product_id in product_ids:
+                send_product_request(product_id)
+                threading.Event().wait(0.5)  # 0.5 секунды
+
+        thread = threading.Thread(target=send_requests_periodically)
+        thread.start()
+
+
+def easydonate_get_products():
+    return easydonate_get_products_cached()
 
 
 def easydonate_create_payment(customer, server_id, items, email=None, coupon=None, success_url=None):
@@ -118,6 +146,7 @@ def easydonate_create_payment(customer, server_id, items, email=None, coupon=Non
 
     try:
         response = requests.get(easydonate_url, params=payload, headers=headers)
+        print('easydonate_create_payment')
         response.raise_for_status()
 
         response_data = response.json()
@@ -141,13 +170,14 @@ def easydonate_create_payment(customer, server_id, items, email=None, coupon=Non
         return None
 
 
+@lru_cache(maxsize=None)
 def easydonate_get_product(product_id):
     """Возвращает json с информацией о товаре магазина"""
-
     easydonate_url = f'https://easydonate.ru/api/v3/shop/product/{product_id}'
     headers = {'Shop-key': EASYDONATE_KEY}
 
     response = requests.get(easydonate_url, headers=headers)
+    print(f'easydonate_get_product({product_id})')
 
     if response.status_code == 200:
         return response.json()
@@ -157,11 +187,10 @@ def easydonate_get_product(product_id):
 
 @app.route('/')
 def index():
-    shop_info = easydonate_get_shop_info()
     products_info = easydonate_get_products()
 
-    if shop_info and products_info:
-        return render_template('index.html', shop_info=shop_info, products_info=products_info, current_page='index')
+    if products_info:
+        return render_template('index.html', products_info=products_info, current_page='index')
     else:
         flash('Ошибка при получении информации о магазине или товарах', 'error')
         return render_template('index.html')
@@ -169,10 +198,9 @@ def index():
 
 @app.route('/products')
 def products():
-    shop_info = easydonate_get_shop_info()
     products_info = easydonate_get_products()
-    if shop_info and products_info:
-        return render_template('products.html', shop_info=shop_info, products_info=products_info)
+    if products_info:
+        return render_template('products.html', products_info=products_info)
     else:
         flash('Ошибка при получении информации о магазине или товарах', 'error')
         return render_template('index.html')
@@ -190,19 +218,13 @@ def product_info_json(product_id):
 
 @app.route('/buy_product/<int:product_id>', methods=['POST'])
 def buy_product(product_id):
-    product_info = easydonate_get_product(product_id)
+    customer = current_user.name if current_user.is_authenticated else 'Anonymous'
+    payment_info = easydonate_create_payment(customer, '79936', {product_id: 1})
 
-    if product_info:
-        customer = current_user.name if current_user.is_authenticated else 'Anonymous'
-        payment_info = easydonate_create_payment(customer, product_info['response']['servers'][0]['id'],
-                                                 {product_id: 1})
-
-        if payment_info and payment_info.get('success'):
-            return jsonify({'success': True, 'payment_url': payment_info['response']['url']})
-        else:
-            return jsonify({'error': 'Ошибка при создании платежа'}), 500
+    if payment_info and payment_info.get('success'):
+        return jsonify({'success': True, 'payment_url': payment_info['response']['url']})
     else:
-        return jsonify({'error': 'Ошибка при получении информации о товаре'}), 500
+        return jsonify({'error': 'Ошибка при создании платежа'}), 500
 
 
 @logmanager.user_loader
@@ -353,6 +375,8 @@ if __name__ == '__main__':
 
     os.environ['FLASK_ENV'] = 'production'
     db.create_all()
+    preload_product_descriptions()
+
     from waitress import serve
 
     serve(app, host='localhost', port=5000)
