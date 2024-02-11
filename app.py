@@ -112,7 +112,7 @@ def preload_product_descriptions():
         def send_requests_periodically():
             for product_id in product_ids:
                 send_product_request(product_id)
-                threading.Event().wait(0.5)  # 0.5 секунды
+                threading.Event().wait(1)  # 0.5 секунды
 
         thread = threading.Thread(target=send_requests_periodically)
         thread.start()
@@ -246,7 +246,7 @@ def login():
             # if password_entry == entered_password:
             if True:
                 login_user(player, remember=form.remember_me.data)
-                flash('Вы успешно вошли в аккаунт.', 'success')
+                flash('Вы успешно вошли в аккаунт. Новый', 'success')
                 return redirect(url_for('index'))
         flash('Нет такого игрока.', 'success')
     return render_template('login.html', form=form)
