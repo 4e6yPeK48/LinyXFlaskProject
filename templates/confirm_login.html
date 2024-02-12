@@ -24,9 +24,10 @@
                 type: "GET",
                 data: {nickname: '{{ nickname }}'},
                 success: function (status_response) {
-                    if (status_response.status === 'SUCCESS') {
-                        window.location.href = status_response.location;
+                    if (status_response.redirect) {
+                        window.location.href = response.redirect;
                     } else {
+<!--                    Check data for error contains-->
                         setTimeout(checkStatus, 2000);
                     }
                 }

@@ -56,8 +56,8 @@ def get_random_bool():
 
 
 def is_complete_user(nickname: str = ""):
-    isCompleted = get_random_bool()  # for debug | replace this to check operation
-    if isCompleted:
+    is_completed = get_random_bool()  # for debug | replace this to check operation
+    if is_completed:
         print(f"Okay, redirecting player {nickname}")
     else:
         print(f"Okay, wait more time")
@@ -73,10 +73,10 @@ def confirm_login():
 def operation_status():
     operation_completed = is_complete_user(nickname=request.args.get('nickname'))
     if operation_completed:
-        return jsonify({'status': 'SUCCESS', 'location': '/index'})  # Internal Server Error favicon.ico
+        return redirect(url_for('index'))  # Internal Server Error favicon.ico
         # Do log in user in this block
     else:
-        return jsonify({'status': 'IN_PROGRESS', 'location': 'None'})
+        return jsonify({'status': 'IN_PROGRESS'})
 # Liny end
 
 
