@@ -300,7 +300,6 @@ def confirm_login():
                     player = Player.query.filter_by(name=nickname).first()
                     login_user(player)
                     flash('Вы успешно вошли в аккаунт', 'success')
-                    print(f'handled: {handled}')
                     return redirect(url_for('index'))
                 else:
                     if args.debug:
@@ -309,12 +308,10 @@ def confirm_login():
                     print(f'handled: {handled}')
                     return redirect(url_for('login'))
             finally:
-                print(f'handled finally: {handled} ')
                 _ = handled.pop(nickname, None)
         else:
             if args.debug:
-                pass
-            print(f'Waiting containing for player: {nickname}')
+                print(f'Waiting containing for player: {nickname}')
             flash(f'Ожидание подтверждения  игрока {nickname}', 'success')
             return render_template('confirm_login.html', nickname=nickname)
     else:
