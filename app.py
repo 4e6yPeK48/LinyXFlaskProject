@@ -2,9 +2,7 @@ import json
 import threading
 from urllib.parse import quote_plus
 from functools import lru_cache
-import argparse
-from ProtocolClient.client import MessagingChannelHandler
-from ProtocolClient.Types.PacketType import PacketType
+
 import requests
 from flask import Flask, render_template, url_for, redirect, flash, jsonify, request
 from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
@@ -18,6 +16,13 @@ from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAl
     ServiceUnavailable, RequestTimeout, NotFound
 
 from forms.login import LoginForm, ChangePasswordForm
+
+# Liny start
+import random
+# import argparse
+# from ProtocolClient.client import MessagingChannelHandler
+# from ProtocolClient.Types.PacketType import PacketType
+# Liny end
 
 # TODO: добавить последние покупки
 
@@ -39,6 +44,40 @@ handled: dict[str, tuple[bool, str]] = {}
 db = SQLAlchemy(app)
 logmanager = LoginManager()
 logmanager.init_app(app)
+
+
+# Liny start
+def get_random_bool():
+    random_number = random.random()
+    if random_number < 0.2:
+        return True
+    else:
+        return False
+
+
+def is_complete_user(nickname: str = ""):
+    isCompleted = get_random_bool()  # for debug | replace this to check operation
+    if isCompleted:
+        print(f"Okay, redirecting player {nickname}")
+    else:
+        print(f"Okay, wait more time")
+    return get_random_bool()
+
+
+@app.route('/confirm_login', methods=['GET'])
+def confirm_login():
+    return render_template('confirm_login.html', nickname=request.args.get('nickname'))
+
+
+@app.route('/operation_status', methods=['GET'])
+def operation_status():
+    operation_completed = is_complete_user(nickname=request.args.get('nickname'))
+    if operation_completed:
+        return jsonify({'status': 'SUCCESS', 'location': '/index'})  # Internal Server Error favicon.ico
+        # Do log in user in this block
+    else:
+        return jsonify({'status': 'IN_PROGRESS', 'location': 'None'})
+# Liny end
 
 
 class Player(UserMixin, db.Model):
@@ -231,51 +270,53 @@ def buy_product(product_id):
         return jsonify({'error': 'Ошибка при создании платежа'}), 500
 
 
-parser = argparse.ArgumentParser()
-
-parser.add_argument('--host', type=str, default="localhost")
-parser.add_argument('--port', type=int, default=12345)
-parser.add_argument('--debug', type=bool, default=False)
-parser.add_argument('--messaging', type=bool, default=False)
-parser.add_argument('--passw', type=str, default="?thisIsPassword?")
-parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
-
-args = parser.parse_args()
-
-
-def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
-    if args.debug:
-        print(f'Received response from server {packet}')
-
-    if packet["status"] == PacketType.SUCCESS:
-        handled[packet["nickname"]] = (True, packet["reason"])
-        print(handled, True)
-    else:
-        if args.debug:
-            print(f'Denied 2FA from nickname {packet["nickname"]} for reason {packet["reason"]}')
-            handled[packet["nickname"]] = (False, packet["reason"])
-            print(handled, False)
-
-
-messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
-    address=(args.host, args.port), side=PacketType.SITESIDE,
-    isDebug=args.debug
-)
-
-messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
-if args.messaging:
-    messagingChannel.start(args.passw, args.forceProtocol)
-
-
-def send_packet(packet: dict) -> None:
-    messagingChannel.sendPacket(packet=packet)
-
-
-def _containsAll(data, values):
-    try:
-        return all(key in data for key in values)
-    except TypeError as e:
-        print("Generated TypeError: " + str(e) + " from data " + str(data) + " and values " + str(values))
+# Liny start
+# parser = argparse.ArgumentParser()
+#
+# parser.add_argument('--host', type=str, default="localhost")
+# parser.add_argument('--port', type=int, default=12345)
+# parser.add_argument('--debug', type=bool, default=False)
+# parser.add_argument('--messaging', type=bool, default=False)
+# parser.add_argument('--passw', type=str, default="?thisIsPassword?")
+# parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
+#
+# args = parser.parse_args()
+#
+#
+# def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
+#     if args.debug:
+#         print(f'Received response from server {packet}')
+#
+#     if packet["status"] == PacketType.SUCCESS:
+#         handled[packet["nickname"]] = (True, packet["reason"])
+#         print(handled, True)
+#     else:
+#         if args.debug:
+#             print(f'Denied 2FA from nickname {packet["nickname"]} for reason {packet["reason"]}')
+#             handled[packet["nickname"]] = (False, packet["reason"])
+#             print(handled, False)
+#
+#
+# messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
+#     address=(args.host, args.port), side=PacketType.SITESIDE,
+#     isDebug=args.debug
+# )
+#
+# messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
+# if args.messaging:
+#     messagingChannel.start(args.passw, args.forceProtocol)
+#
+#
+# def send_packet(packet: dict) -> None:
+#     messagingChannel.sendPacket(packet=packet)
+#
+#
+# def _containsAll(data, values):
+#     try:
+#         return all(key in data for key in values)
+#     except TypeError as e:
+#         print("Generated TypeError: " + str(e) + " from data " + str(data) + " and values " + str(values))
+# Liny end
 
 
 @logmanager.user_loader
@@ -283,42 +324,44 @@ def load_user(user_id):
     return db.session.get(Player, user_id)
 
 
-@app.route('/confirm_login', methods=['GET'])
-def confirm_login():
-    nickname = request.args.get('nickname')
-    if nickname:
-        if args.debug:
-            print(f'Nickname post: {nickname}')
-        if _containsAll(handled, [nickname]):
-            is_authed, reason = handled[nickname]
-            if args.debug:
-                print(f'Nickname in dictionary')
-            try:
-                if is_authed:
-                    if args.debug:
-                        print(f'Nickname authed: {nickname}')
-                    player = Player.query.filter_by(name=nickname).first()
-                    login_user(player)
-                    flash('Вы успешно вошли в аккаунт', 'success')
-                    return redirect(url_for('index'))
-                else:
-                    if args.debug:
-                        print(f'Not authed by reason : {reason}')
-                    flash(f'Невозможно войти по причине {reason}', 'error')
-                    print(f'handled: {handled}')
-                    return redirect(url_for('login'))
-            finally:
-                _ = handled.pop(nickname, None)
-        else:
-            if args.debug:
-                print(f'Waiting containing for player: {nickname}')
-            flash(f'Ожидание подтверждения  игрока {nickname}', 'success')
-            return render_template('confirm_login.html', nickname=nickname)
-    else:
-        if args.debug:
-            print(f'No nickname present')
-        flash(f'Никнейм не предоставлен', 'error')
-        return redirect(url_for('login'))
+# Liny start
+# @app.route('/confirm_login', methods=['GET'])
+# def confirm_login():
+#     nickname = request.args.get('nickname')
+#     if nickname:
+#         if args.debug:
+#             print(f'Nickname post: {nickname}')
+#         if _containsAll(handled, [nickname]):
+#             is_authed, reason = handled[nickname]
+#             if args.debug:
+#                 print(f'Nickname in dictionary')
+#             try:
+#                 if is_authed:
+#                     if args.debug:
+#                         print(f'Nickname authed: {nickname}')
+#                     player = Player.query.filter_by(name=nickname).first()
+#                     login_user(player)
+#                     flash('Вы успешно вошли в аккаунт', 'success')
+#                     return redirect(url_for('index'))
+#                 else:
+#                     if args.debug:
+#                         print(f'Not authed by reason : {reason}')
+#                     flash(f'Невозможно войти по причине {reason}', 'error')
+#                     print(f'handled: {handled}')
+#                     return redirect(url_for('login'))
+#             finally:
+#                 _ = handled.pop(nickname, None)
+#         else:
+#             if args.debug:
+#                 print(f'Waiting containing for player: {nickname}')
+#             flash(f'Ожидание подтверждения  игрока {nickname}', 'success')
+#             return render_template('confirm_login.html', nickname=nickname)
+#     else:
+#         if args.debug:
+#             print(f'No nickname present')
+#         flash(f'Никнейм не предоставлен', 'error')
+#         return redirect(url_for('login'))
+# Liny end
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -327,8 +370,10 @@ def login():
 
     if form.validate_on_submit():
         nickname = form.name.data
-        send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
+        # Liny start
+        # send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
         return redirect(url_for('confirm_login', nickname=nickname))
+        # Liny end
 
     return render_template('login.html', form=form)
 
@@ -460,8 +505,8 @@ if __name__ == '__main__':
 
     from waitress import serve
 
-    # serve(app, host='localhost', port=5000)
-    serve(app, host='46.174.48.78', port=5000)
+    serve(app, host='localhost', port=5000)
+    # serve(app, host='46.174.48.78', port=5000)
 
 # if __name__ == '__main__':
 #     db.create_all()
