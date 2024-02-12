@@ -15,49 +15,22 @@
             подтверждении в Дискорде), либо выйдете на главную страницу</a>
     </div>
     <script>
-<!--Liny start-->
-
-
         function checkStatus() {
             $.ajax({
                 url: "{{ url_for('operation_status') }}",
                 type: "GET",
                 data: {nickname: '{{ nickname }}'},
-                success: function (status_response) {
-                    if (status_response.redirect) {
+                success: function (response) {
+                    if (response.redirect) {
+                        console.log('редиректим');
                         window.location.href = response.redirect;
                     } else {
-<!--                    Check data for error contains-->
                         setTimeout(checkStatus, 2000);
                     }
                 }
             });
         }
 
-
-<!--    For namespace '&'   -->
         setTimeout(checkStatus, 2000);
-<!--    Error               -->
-<!--    checkStatus();      -->
-
-
-
-<!--        function checkConfirmation() {-->
-<!--            $.ajax({-->
-<!--                url: "{{ url_for('confirm_login') }}",-->
-<!--                type: "GET",-->
-<!--                data: {nickname: '{{ nickname }}'},-->
-<!--                success: function (response) {-->
-<!--                    if (response.redirect) {-->
-<!--                        window.location.href = response.redirect;-->
-<!--                    }-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-
-<!--        setInterval(checkConfirmation, 1000);-->
-
-
-<!--Liny End-->
     </script>
 {% endblock %}

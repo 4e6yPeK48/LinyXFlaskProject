@@ -73,11 +73,9 @@ def confirm_login():
 def operation_status():
     operation_completed = is_complete_user(nickname=request.args.get('nickname'))
     if operation_completed:
-        return redirect(url_for('index'))  # Internal Server Error favicon.ico
-        # Do log in user in this block
+        return redirect(url_for('index'))
     else:
-        return jsonify({'status': 'IN_PROGRESS'})
-# Liny end
+        return jsonify({'redirect': '/'})
 
 
 class Player(UserMixin, db.Model):
