@@ -9,8 +9,25 @@
         <a class="black-white-text confirm-text">После подтверждения в Дискорде обновите страницу</a>
     </div>
     <div class="container">
-        <a class="black-white-text confirm-text">Время подтверждения истечёт через 30 секунд. По истечении этого времени вы либо
+        <a class="black-white-text confirm-text">Время подтверждения истечёт через 30 секунд. По истечении этого времени
+            вы либо
             войдете в аккаунт (при
             подтверждении в Дискорде), либо выйдете на главную страницу</a>
     </div>
+    <script>
+        function checkConfirmation() {
+            $.ajax({
+                url: "{{ url_for('confirm_login') }}",
+                type: "GET",
+                data: {nickname: '{{ nickname }}'},
+                success: function (response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    }
+                }
+            });
+        }
+
+        setInterval(checkConfirmation, 1000);
+    </script>
 {% endblock %}

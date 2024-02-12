@@ -293,20 +293,24 @@ def confirm_login():
             is_authed, reason = handled[nickname]
             if args.debug:
                 print(f'Nickname in dictionary')
-            if is_authed:
-                if args.debug:
-                    print(f'Nickname authed: {nickname}')
-                player = Player.query.filter_by(name=nickname).first()
-                login_user(player)
-                flash('Вы успешно вошли в аккаунт', 'success')
+            try:
+                if is_authed:
+                    if args.debug:
+                        print(f'Nickname authed: {nickname}')
+                    player = Player.query.filter_by(name=nickname).first()
+                    login_user(player)
+                    flash('Вы успешно вошли в аккаунт', 'success')
+                    print(f'handled: {handled}')
+                    return redirect(url_for('index'))
+                else:
+                    if args.debug:
+                        print(f'Not authed by reason : {reason}')
+                    flash(f'Невозможно войти по причине {reason}', 'error')
+                    print(f'handled: {handled}')
+                    return redirect(url_for('login'))
+            finally:
+                print(f'handled finally: {handled} ')
                 _ = handled.pop(nickname, None)
-                return redirect(url_for('index'))
-            else:
-                if args.debug:
-                    print(f'Not authed by reason : {reason}')
-                flash(f'Невозможно войти по причине {reason}', 'error')
-                _ = handled.pop(nickname, None)
-                return redirect(url_for('login'))
         else:
             if args.debug:
                 pass
