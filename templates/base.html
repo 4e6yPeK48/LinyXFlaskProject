@@ -170,6 +170,9 @@
 {# уведомления #}
 <script src="../static/js/notifications.js"></script>
 
+{# подтверждение логина #}
+<script src="../static/js/confirm-login.js"></script>
+
 {# день ночь #}
 <script src="../static/js/day-night.js"></script>
 
@@ -756,9 +759,13 @@
 
 {# клик с свг корзины на страницу товаров #}
 <script>
-    document.getElementById('all-products-svg-btn').addEventListener("click", function () {
-        window.location.href = '{{ url_for('products') }}';
-    });
+    btn = document.getElementById('all-products-svg-btn')
+    if (btn) {
+        btn.addEventListener("click", function () {
+            window.location.href = '{{ url_for('products') }}';
+        });
+    }
+
 </script>
 
 {# создание платежа #}

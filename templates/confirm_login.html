@@ -2,32 +2,15 @@
 {% extends 'base.html' %}
 {% block title %}Принять{% endblock %}
 {% block content %}
-    <div><a>Ожидание подтверждения</a></div>
-    <p></p>
-    <script>
-        // Функция для автоматического вызова функции подтверждения каждую секунду
-        function checkConfirmation() {
-            // Здесь вы можете выполнить AJAX запрос для проверки подтверждения
-            // В данном случае я использую jQuery для простоты
-            console.log('check')
-            $.ajax({
-                url: "{{ url_for('confirm_login') }}", // URL для обработчика подтверждения
-                type: "GET", // Метод GET или POST, в зависимости от вашей конфигурации
-                data: {nickname: '{{ nickname }}'}, // Передача никнейма в запросе
-                success: function(response) {
-                    // Обработка успешного ответа
-                    if (response.redirect) {
-                        window.location.href = response.redirect; // Перенаправление на главную страницу после успешного входа
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Обработка ошибки
-                    console.error(error);
-                }
-            });
-        }
-
-        // Вызов функции checkConfirmation каждую секунду
-        setInterval(checkConfirmation, 1000); // 1000 миллисекунд = 1 секунда
-    </script>
+    <div class="container">
+        <a class="black-white-text confirm-text">Ожидание подтверждения</a>
+    </div>
+    <div class="container">
+        <a class="black-white-text confirm-text">После подтверждения в Дискорде обновите страницу</a>
+    </div>
+    <div class="container">
+        <a class="black-white-text confirm-text">Время подтверждения истечёт через 30 секунд. По истечении этого времени вы либо
+            войдете в аккаунт (при
+            подтверждении в Дискорде), либо выйдете на главную страницу</a>
+    </div>
 {% endblock %}

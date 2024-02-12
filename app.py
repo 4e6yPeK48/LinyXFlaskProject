@@ -295,23 +295,29 @@ def confirm_login():
                 print(f'Nickname in dictionary')
             if is_authed:
                 if args.debug:
-                    player = Player.query.filter_by(name=nickname).first()
                     print(f'Nickname authed: {nickname}')
-                    login_user(player)
-                    flash('Вы успешно вошли в аккаунт', 'success')
+                player = Player.query.filter_by(name=nickname).first()
+                login_user(player)
+                flash('Вы успешно вошли в аккаунт', 'success')
+                _ = handled.pop(nickname, None)
                 return redirect(url_for('index'))
             else:
                 if args.debug:
                     print(f'Not authed by reason : {reason}')
-                return jsonify({"error": f"Отказано по причине {reason}"})
+                flash(f'Невозможно войти по причине {reason}', 'error')
+                _ = handled.pop(nickname, None)
+                return redirect(url_for('login'))
         else:
             if args.debug:
-                print(f'Waiting containing for player: {nickname}')
-            return jsonify({"status": "waiting"})
+                pass
+            print(f'Waiting containing for player: {nickname}')
+            flash(f'Ожидание подтверждения  игрока {nickname}', 'success')
+            return render_template('confirm_login.html', nickname=nickname)
     else:
         if args.debug:
             print(f'No nickname present')
-        return jsonify({"error": "Никнейм не предоставлен"})
+        flash(f'Никнейм не предоставлен', 'error')
+        return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -324,21 +330,6 @@ def login():
         return redirect(url_for('confirm_login', nickname=nickname))
 
     return render_template('login.html', form=form)
-
-    # if form.validate_on_submit():
-    #     player_name = form.name.data
-    #     # entered_password = form.password.data
-    #     player = Player.query.filter_by(name=player_name).first()
-    #
-    #     if player:
-    #         # password_entry = Password.query.filter_by(player_name=player_name).first().password
-    #         # if password_entry == entered_password:
-    #         if True:
-    #             login_user(player, remember=form.remember_me.data)
-    #             flash('Вы успешно вошли в аккаунт. Новый', 'success')
-    #             return redirect(url_for('index'))
-    #     flash('Нет такого игрока.', 'success')
-    # return render_template('login.html', form=form)
 
 
 @app.route('/logout')

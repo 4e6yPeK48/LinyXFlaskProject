@@ -2043,3 +2043,7 @@ body.light .white-hover {
     height: 5vh;
     padding: 0;
 }
+
+.confirm-text{
+    text-decoration: none;
+}
