@@ -163,6 +163,7 @@ async def send_confirmation_ticket(player: str) -> bool:
                 else:
                     success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
                     success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+                    user_timings.pop(player)
                     for_site[player] = (True, "")
                     await ctx.response.send_message(embed=success)  # Accepting
             else:
@@ -183,6 +184,7 @@ async def send_confirmation_ticket(player: str) -> bool:
                     success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
                     success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
                     for_site[player] = (False, "Discord integration")
+                    user_timings.pop(player)
                     await ctx.response.send_message(embed=success)  # Nope
             else:
                 denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
