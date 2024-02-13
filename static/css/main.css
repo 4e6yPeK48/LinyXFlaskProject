@@ -30,6 +30,7 @@ body {
     --products-background-color: #202023;
     --text-color: #A1A1AA;
     --text-shadow-color: rgba(255, 255, 255, 0.4);
+    --dropdown-background-color: rgba(255,255,255,0.3);
 
 
     --table-sel-col: rgba(255, 255, 255, 0.2);
@@ -70,11 +71,13 @@ body {
 }
 
 body.light {
+    --card-background-color: rgba(0, 0, 0, .015);
     --background-color: #FAFAFA;
     --background-color-blur: rgba(0, 0, 0, 0.05);
     --products-background-color: #f0f0f0;
     --text-color: #52525B;
     --text-shadow-color: rgba(0, 0, 0, 0.1);
+    --dropdown-background-color: rgba(0,0,0,0.13);
 
     --table-sel-col: rgba(0, 0, 0, 0.06);
     --table-sel-back: rgba(0, 0, 0, 0.1);
@@ -653,7 +656,7 @@ body {
 }
 
 .hi-text {
-    width: 90%;
+    width: 100%;
 }
 
 .hi-box {
@@ -1309,6 +1312,10 @@ body.index .dropdown-item {
 body.not-index .dropdown-item {
 }
 
+.dropdown-item{
+    background-color: var(--card-background-color) !important;
+}
+
 .btn-line {
     background-color: rgba(0, 0, 0, 0.5);
     height: 3px;
@@ -1351,10 +1358,10 @@ body.not-index .dropdown-item {
 }
 
 .dropdown-menu {
-    left: -250% !important;
-    background-color: transparent;
+    background-color: var(--dropdown-background-color) !important;
     backdrop-filter: blur(5px);
-    top: 110%;
+    top: 5vh !important;
+    left: -25vw !important;
 }
 
 #dropdownMenuButton:active {

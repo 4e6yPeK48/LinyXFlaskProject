@@ -1,10 +1,10 @@
 function showProductDetails() {
-    let productDetails = document.getElementById('productDetails');
-    productDetails.classList.remove('fade-Out');
     let productGrid = document.getElementById('productGrid');
-    productDetails.innerHTML = '<p class="black-white-text">Подождите...</p>';
     productGrid.classList.add('hidden');
+    let productDetails = document.getElementById('productDetails');
     productDetails.classList.remove('hidden');
+    productDetails.classList.remove('fade-Out');
+    productDetails.innerHTML = '<p class="black-white-text">Подождите...</p>';
 }
 
 function hideProductDetails() {
@@ -22,7 +22,7 @@ function hideProductDetails() {
     productGrid.classList.remove('hidden');
 }
 
-function clearTags(){
+function clearTags() {
     let productDetails = document.getElementById('productDetails');
     if (productDetails) {
         const containers = document.querySelectorAll('.all-products-container');
@@ -54,9 +54,31 @@ function clearTags(){
     }
 }
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === "Escape") {
         hideProductDetails();
         clearTags();
     }
 });
+
+
+function showProductDetailsPc(product_id) {
+    let productGrid = document.getElementById('productGrid');
+    let productDetails = document.getElementById('productDetails');
+
+    if (!productDetails.classList.contains('hidden')) {
+        hideProductDetails();
+        setTimeout(function () {
+            productDetails.classList.remove('hidden');
+            productDetails.classList.remove('fade-Out');
+            productDetails.innerHTML = '<p class="black-white-text">Подождите...</p>';
+            openProductDialog(product_id);
+        }, 300);
+    } else {
+        productGrid.classList.add('hidden');
+        productDetails.classList.remove('hidden');
+        productDetails.classList.remove('fade-Out');
+        productDetails.innerHTML = '<p class="black-white-text">Подождите...</p>';
+        openProductDialog(product_id);
+    }
+}

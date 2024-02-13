@@ -28,7 +28,7 @@
                             setTimeout(checkStatus, 1000);
                         } else {
                             if (response.status === 'error') {
-                                window.location.href = '{{ url_for('index') }}';
+                                window.location.href = '{{ url_for('login') }}';
                                 alert("Auth denied with reason: " + response.error_content);
                             }
                         }

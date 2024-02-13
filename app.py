@@ -5,7 +5,7 @@ from functools import lru_cache
 
 import requests
 from flask import Flask, render_template, url_for, redirect, flash, jsonify, request
-from flask_login import UserMixin, logout_user, login_required, current_user, LoginManager
+from flask_login import UserMixin, logout_user, login_required, current_user, LoginManager, login_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from jinja2.exceptions import TemplateNotFound, UndefinedError
@@ -217,11 +217,16 @@ def confirm_login():
 
 @app.route('/operation_status', methods=['GET'])
 def operation_status():
-    if request.args.get('nickname') in for_site.keys():
+    nickname = request.args.get('nickname')
+    if nickname in for_site.keys():
         is_authed, reason = for_site.pop(request.args.get('nickname'))
         if is_authed:
+            player = Player.query.filter_by(name=nickname).first()
+            login_user(player)
+            flash('Вы успешно вошли в аккаунт', 'success')
             return jsonify({'status': 'complete'})
         else:
+            flash(f'Невозможно войти по причине {reason}', 'error')
             return jsonify({'status': 'error', 'error_content': reason})
     else:
         return jsonify({'status': 'processing'})
@@ -599,6 +604,7 @@ if __name__ == '__main__':
     parser.add_argument('--host', type=str, default='localhost')
     parser.add_argument('--port', type=int, default=5000)
     args = parser.parse_args()
+    preload_product_descriptions()
 
     with ThreadPoolExecutor() as executor:
         # Site only start

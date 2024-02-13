@@ -7,7 +7,6 @@
         <div class="background-blur d-flex justify-content-center align-items-center">
             <div class="hi-box d-flex justify-content-center p-5 align-items-stretch">
                 <div class="hi-text d-flex align-items-start flex-column">
-                    {#rounded p-4  hi-div#}
                     <div class="black-white-text mb-auto">
                         <h2>Лучшая анархия в СНГ</h2>
                         <p>И самые лучшие игроки <3</p>
@@ -48,7 +47,9 @@
                     {% for product in products_info['response'] %}
                         {% if product['name'] in ['Eola', 'Fenix', 'Satira'] %}
                             <div class="card mx-2 my-2 product-card col"
-                                 onclick="showProductDetails(); openProductDialog('{{ product['id'] }}')">
+                                 onclick="
+                                         showProductDetailsPc('{{ product['id'] }}');
+                                         ">
                                 <div class="community-img"><img src="{{ product['image'] }}" alt=""></div>
                                 <div class="card-name-icon d-flex mt-auto">
                                     <h4 class="card-name">{{ product['name'] }}</h4>
@@ -99,7 +100,9 @@
                     {% for product in products_info['response'] %}
                         {% if product['name'] in ['Eola', 'Fenix'] %}
                             <div class="card mx-1 my-2 product-card col"
-                                 onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); ">
+                                 onclick="
+                                         showProductDetailsPc('{{ product['id'] }}');
+                                         ">
                             <span class="icon">
                                 <svg
                                         viewBox="0 0 24 24"
