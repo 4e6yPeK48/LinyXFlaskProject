@@ -1,0 +1,154 @@
+:root {
+    --size: 1.5vw;
+    --bx-zero: inset 0 0 0 var(--size) white, 0px var(--size) white,
+    0px calc(var(--size) * 2) white, 0px calc(var(--size) * 3) white,
+    0px calc(var(--size) * 4) white, var(--size) 0 white,
+    calc(var(--size) * 2) 0 white, calc(var(--size) * 3) 0 white,
+    calc(var(--size) * 3) var(--size) white,
+    calc(var(--size) * 3) calc(var(--size) * 2) white,
+    calc(var(--size) * 3) calc(var(--size) * 3) white,
+    calc(var(--size) * 3) calc(var(--size) * 4) white,
+    var(--size) calc(var(--size) * 4) white,
+    calc(var(--size) * 2) calc(var(--size) * 4) white;
+
+    --hue: 270deg;
+    --saturation: 100%;
+    --light: 15%;
+    --theme: hsl(var(--hue) var(--saturation) var(--light));
+
+    --transition: none;
+}
+
+.clock {
+    --saturation: 65%;
+    --light: 25%;
+    --theme: hsl(var(--hue) var(--saturation) var(--light));
+
+    --shadow-light: 10%;
+    --bottom-shadow: hsl(var(--hue) var(--saturation) var(--shadow-light));
+
+    --outline-light: 20%;
+    --outline-saturation: 80%;
+    --outline-color: hsl(
+            var(--hue) var(--outline-saturation) var(--outline-light)
+    );
+
+    --outer-border: var(--size) / 4;
+
+    --transition-easing: ease;
+    --transition-timing: 0.2s;
+
+    position: relative;
+    width: calc(var(--size) * 33);
+    height: calc(var(--size) * 9);
+    border: calc(var(--outer-border)) solid var(--theme);
+    border-radius: calc(var(--size) / 1.5);
+    background-image: conic-gradient(
+            from 90deg at calc(var(--size) / 15) calc(var(--size) / 15),
+            #000 90deg,
+            rgb(255 255 255 / 10%) 0
+    );
+    background-blend-mode: multiply;
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: var(--size) var(--size);
+    box-shadow: inset 0 0 50px rgb(0 0 0 / 1), inset 0 0 30px rgb(0 0 0 / 1),
+    inset 0 0 10px rgb(0 0 0 / 1), 0 calc(var(--size) / 4) var(--bottom-shadow);
+    outline: calc(var(--size) / 4) dashed var(--outline-color);
+    outline-offset: calc(var(--size) * -0.52);
+}
+
+.clock:nth-of-type(1) {
+    --saturation: 65%;
+    --light: 35%;
+    --theme: hsl(var(--hue) var(--saturation) var(--light));
+}
+
+.clock:nth-of-type(2) {
+    --hue: 0deg;
+    --saturation: 65%;
+    --light: 70%;
+    --shadow-light: 20%;
+    --theme: hsl(var(--hue) var(--saturation) var(--light));
+    --transition: 0;
+}
+
+.clock:nth-of-type(3) {
+    --hue: 120deg;
+    --saturation: 85%;
+    --light: 70%;
+    --shadow-light: 20%;
+    --theme: hsl(var(--hue) var(--saturation) var(--light));
+    --transition: 0;
+    --transition-timing: 1s;
+    --transition-easing: ease-in-out;
+}
+
+.clock:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+            to right,
+            transparent,
+            rgb(255 255 255 / 60%),
+            transparent
+    );
+    top: calc(calc(var(--outer-border)) * -1);
+    border-radius: calc(var(--size) / 1.5);
+}
+
+.clock:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--theme);
+    z-index: 0;
+    mix-blend-mode: hue;
+    border-radius: calc(var(--size) / 1.5);
+}
+
+.clock span {
+    --color: var(--theme);
+
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    top: calc(var(--size) * 2);
+    left: calc(var(--size) * 2);
+    border-radius: calc(var(--size));
+    box-shadow: var(--bx-zero);
+    transition: box-shadow var(--transition-timing) var(--transition-easing);
+    transition-property: var(--transition);
+}
+
+.clock .light span {
+    --color: rgb(255 255 255 / 100%);
+    z-index: 2;
+    opacity: 0.65;
+    filter: blur(3px);
+}
+
+.clock span:nth-child(2) {
+    left: calc(var(--size) * 7);
+}
+
+.clock span:nth-child(3) {
+    left: calc(var(--size) * 12);
+}
+
+.clock span:nth-child(4) {
+    left: calc(var(--size) * 17);
+}
+
+.clock span:nth-child(5) {
+    left: calc(var(--size) * 22);
+}
+
+.clock span:nth-child(6) {
+    left: calc(var(--size) * 27);
+}
