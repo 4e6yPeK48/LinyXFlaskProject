@@ -596,16 +596,14 @@ def internal_error():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--vps', type=bool, default=False)
+    parser.add_argument('--host', type=str, default='localhost')
+    parser.add_argument('--port', type=int, default=5000)
     args = parser.parse_args()
 
     with ThreadPoolExecutor() as executor:
         # Site only start
 
-        if args.vps:
-            executor.submit(serve, app=app, host='46.174.48.78', port=5000)  # Fuck warnings
-        else:
-            executor.submit(serve, app=app, host='localhost', port=5000)  # Fuck warnings
+        executor.submit(serve, app=app, host=args.host, port=args.port)  # Fuck warnings
 
         # Simple site starting:
         #    app.run(
