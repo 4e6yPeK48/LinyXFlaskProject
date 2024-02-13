@@ -41,7 +41,7 @@
         <div id="section2" class="container product-container section rounded">
             <div class="product-table">
                 <div class="black-white-text community-choice rounded p-1">
-                    <h3 class="text-start">Чаще всего берут:</h3>
+                    <h3 class="text-start">Выбор сообщества</h3>
                     <div class="stick-light-sm rounded"></div>
                 </div>
                 <div class="row product-grid-pc" id="productGrid">
@@ -66,7 +66,7 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <p>{{ product['price'] }} р.</p>
+                                <p>{{ product['price'] }} ₽</p>
                                 <div class="shine"></div>
                                 <button type="button" class="btn btn-outline-light more-info change-color mt-3">
                                     Подробнее
@@ -114,7 +114,7 @@
                                 </svg>
                             </span>
                                 <h4>{{ product['name'] }}</h4>
-                                <p>{{ product['price'] }} р.</p>
+                                <p>{{ product['price'] }} ₽</p>
                                 <div class="shine"></div>
                                 <button type="button" class="btn btn-outline-light more-info change-color mt-3">
                                     Подробнее
@@ -142,7 +142,7 @@
                 </div>
                 <div id="productDetails" class="hidden product-details index"></div>
             </div>
-            <div class="all-products-self d-flex justify-content-center">
+            <div class="all-products-button d-flex justify-content-center">
                 <button class="change-color btn mx-auto btn-lg"
                         onclick="window.location.href='{{ url_for('products') }}'">Ко всем товарам
                 </button>
@@ -210,7 +210,7 @@
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
                 <li class="ms-3 icon-link tg">
-                    <a class="svg-link" href="https://t.me/m4estro48"> <!-- ? what ? -->
+                    <a class="svg-link" href="https://t.me/m4estro48">
                         <svg viewBox="0 0 80 80"
                              fill="none"
                              stroke="currentColor"
