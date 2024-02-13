@@ -5,7 +5,7 @@ from functools import lru_cache
 
 import requests
 from flask import Flask, render_template, url_for, redirect, flash, jsonify, request
-from flask_login import UserMixin, logout_user, login_required, login_user, current_user, LoginManager
+from flask_login import UserMixin, logout_user, login_required, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from jinja2.exceptions import TemplateNotFound, UndefinedError
@@ -18,10 +18,19 @@ from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, MethodNotAl
 from forms.login import LoginForm, ChangePasswordForm
 
 # Liny start
-import random
-# import argparse
-# from ProtocolClient.client import MessagingChannelHandler
-# from ProtocolClient.Types.PacketType import PacketType
+
+# For features start
+# from flask_login import login_user
+# For features end
+
+from concurrent.futures import ThreadPoolExecutor
+import argparse
+import discord
+import asyncio
+import datetime
+from waitress import serve
+import mysql.connector
+
 # Liny end
 
 # TODO: добавить последние покупки
@@ -37,45 +46,186 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
     f'mysql+mysqlconnector://u11944_HjaF3FL0R2:{encoded_password}@d4.aurorix.net:3306/s11944_anarchy'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
+discord_token = 'MTE5ODAxNjU2NTI3NTI3MTE2OA.G1vWTl.TTMeTsKBddR1x4fS9RF5aFrO7JybGMxw9mXixU'
 app.app_context().push()
-
-handled: dict[str, tuple[bool, str]] = {}
 
 db = SQLAlchemy(app)
 logmanager = LoginManager()
 logmanager.init_app(app)
 
-
 # Liny start
-def get_random_bool():
-    random_number = random.random()
-    if random_number < 0.2:
-        return True
-    else:
-        return False
+table_namespace = ["DISCORD_ID", "SOCIAL", "LOWERCASENICKNAME"]
+
+connection = mysql.connector.connect(
+    host="d6.aurorix.net",
+    port=3306,
+    user="u16757_3kOuywUod7",
+    password="GmO!Rv0M+AFy+vBIGMnlQh@7",
+    database="s16757_limboauth"
+)
+
+if not connection:
+    print("Error while connect to MariaDB")
+    quit()
 
 
-def is_complete_user(nickname: str = ""):
-    is_completed = get_random_bool()  # for debug | replace this to check operation
-    if is_completed:
-        print(f"Okay, redirecting player {nickname}")
-    else:
-        print(f"Okay, wait more time")
-    return get_random_bool()
+def get_current_time() -> float:
+    current_time = datetime.datetime.now()
+    return (current_time - current_time.replace(
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0
+    )).total_seconds()
+
+
+async def get_discord_id(nickname):
+    if not connection:
+        print("Error while connect to MariaDB")
+        quit()
+    if not connection.is_connected():
+        print("Error while connect to MariaDB")
+        quit()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        f"SELECT {table_namespace[0]} FROM {table_namespace[1]} WHERE {table_namespace[2]} = %s",
+        (nickname.lower(),)
+    )
+
+    row = cursor.fetchone()
+    if row:
+        cursor.close()
+        return row[0]
+
+
+for_bot: list[str] = []  # Containing all nickname's of player's to 2fa
+for_site: dict[str, tuple[bool, str]] = {}  # Containing 2fa result
+
+client = discord.Client(intents=discord.Intents.all())
+
+
+async def check_tags():
+    while True:
+        for _ in range(len(for_bot)):
+            last_nickname = for_bot.pop()
+            await send_confirmation_ticket(last_nickname)
+        await asyncio.sleep(1)
+
+
+@client.event
+async def on_ready() -> None:
+    asyncio.create_task(check_tags())
+    print('Logged on as', client.user)
+
+
+@client.event
+async def on_message(message) -> None:
+    if message.author == client.user:
+        return
+    if message.content.startswith('$test'):
+        await message.channel.send(f'Application working. Len of param for_bot: {len(for_bot)}')
+
+
+async def send_confirmation_ticket(player: str):
+    if not player:
+        print("Player can't be None!")
+
+    discord_id = await get_discord_id(player)
+
+    if not discord_id:
+        print(f"Can't find discord id for nickname {player}")
+        return
+
+    class ConfirmationTicket(discord.ui.View):
+        @discord.ui.button(label="Подтвердить", style=discord.ButtonStyle.success,
+                           custom_id=str(discord_id) + player + "Accept")
+        async def first_button_callback(self, ctx, ignored):
+            user_name = ctx.user.name
+            if player in for_site.keys():
+                denied = discord.Embed(title="Вы уже подтверждали запрос", color=0xe100ff)
+                denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+                await ctx.response.send_message(embed=denied)  # Already accepted
+            else:
+                success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
+                success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+                for_site[player] = (True, "")
+                await ctx.response.send_message(embed=success)  # Accepting
+
+        @discord.ui.button(label="Отклонить", style=discord.ButtonStyle.red,
+                           custom_id=str(discord_id) + player + "Denied")
+        async def second_button_callback(self, ctx, ignored):
+            user_name = ctx.user.name
+            if player in for_site.keys():
+                denied = discord.Embed(title="Вы уже отклоняли подтверждение входа", color=0xe100ff)
+                denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+                await ctx.response.send_message(embed=denied)  # Already nope
+            else:
+                success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
+                success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+                for_site[player] = (False, "Discord integration")
+                await ctx.response.send_message(embed=success)  # Nope
+
+    confirmation = discord.Embed(title="Подтверждение для входа на сайт", color=0xe100ff)
+    confirmation.add_field(
+        name="",
+        value="Если вы не пытались войти на сайт, пожалуйста, обратите на это " +
+              "внимание."
+    )
+    confirmation.set_footer(text="LinyX Technology Group")
+
+    try:
+        user = await client.fetch_user(discord_id)
+        await user.send(embed=confirmation, view=ConfirmationTicket())
+    except discord.errors.Forbidden:  # Nope
+        for_site[player] = (False, "Permission error: Бот не может отправить сообщение этому пользователю. Скорее "
+                                   "всего личные сообщения закрыты")
+        print("Permission error: Cannot send messages to this user.")
+    except discord.errors.NotFound:  # Nope
+        for_site[player] = (False, "NotFound error: Пользователя нет на канале LinyX(?), поэтому бот не может "
+                                   "отправить ему сообщение.")
+        print("User not found on this server.")
+
+
+# Debug only start
+# def get_random_bool():
+#     random_number = random.random()
+#     if random_number < 0.2:
+#         return True
+#     else:
+#         return False
+
+
+# def is_complete_user(nickname: str = ""):
+#     is_completed = get_random_bool()
+#     if is_completed:
+#         print(f"Okay, redirecting player {nickname}")
+#     else:
+#         print(f"Okay, wait more time")
+#     return get_random_bool()
+# Debug only end
 
 
 @app.route('/confirm_login', methods=['GET'])
 def confirm_login():
+    for_bot.append(request.args.get('nickname'))
+    print(f"Appending param for_bot, len: {len(for_bot)}")
     return render_template('confirm_login.html', nickname=request.args.get('nickname'))
 
 
 @app.route('/operation_status', methods=['GET'])
 def operation_status():
-    operation_completed = is_complete_user(nickname=request.args.get('nickname'))
-    if operation_completed:
-        return redirect(url_for('index'))
+    if request.args.get('nickname') in for_site.keys():
+        is_authed, reason = for_site.pop(request.args.get('nickname'))
+        if is_authed:
+            return jsonify({'status': 'complete'})
+        else:
+            return jsonify({'status': 'error', 'error_content': reason})
     else:
-        return jsonify({'redirect': '/'})
+        return jsonify({'status': 'processing'})
+
+
+# Liny end
 
 
 class Player(UserMixin, db.Model):
@@ -153,7 +303,7 @@ def preload_product_descriptions():
         def send_requests_periodically():
             for product_id in product_ids:
                 send_product_request(product_id)
-                threading.Event().wait(1)  # 0.5 секунды
+                threading.Event().wait(1)  # 0.5 secs
 
         thread = threading.Thread(target=send_requests_periodically)
         thread.start()
@@ -268,55 +418,6 @@ def buy_product(product_id):
         return jsonify({'error': 'Ошибка при создании платежа'}), 500
 
 
-# Liny start
-# parser = argparse.ArgumentParser()
-#
-# parser.add_argument('--host', type=str, default="localhost")
-# parser.add_argument('--port', type=int, default=12345)
-# parser.add_argument('--debug', type=bool, default=False)
-# parser.add_argument('--messaging', type=bool, default=False)
-# parser.add_argument('--passw', type=str, default="?thisIsPassword?")
-# parser.add_argument('--forceProtocol', type=str, default=PacketType.PROTOCOL_VERSION)
-#
-# args = parser.parse_args()
-#
-#
-# def fa_response_handler(packet: dict, client: MessagingChannelHandler) -> None:
-#     if args.debug:
-#         print(f'Received response from server {packet}')
-#
-#     if packet["status"] == PacketType.SUCCESS:
-#         handled[packet["nickname"]] = (True, packet["reason"])
-#         print(handled, True)
-#     else:
-#         if args.debug:
-#             print(f'Denied 2FA from nickname {packet["nickname"]} for reason {packet["reason"]}')
-#             handled[packet["nickname"]] = (False, packet["reason"])
-#             print(handled, False)
-#
-#
-# messagingChannel: MessagingChannelHandler = MessagingChannelHandler(
-#     address=(args.host, args.port), side=PacketType.SITESIDE,
-#     isDebug=args.debug
-# )
-#
-# messagingChannel.registrateExecutor(fa_response_handler, PacketType.SITESIDE_2FA_RESPONSE)
-# if args.messaging:
-#     messagingChannel.start(args.passw, args.forceProtocol)
-#
-#
-# def send_packet(packet: dict) -> None:
-#     messagingChannel.sendPacket(packet=packet)
-#
-#
-# def _containsAll(data, values):
-#     try:
-#         return all(key in data for key in values)
-#     except TypeError as e:
-#         print("Generated TypeError: " + str(e) + " from data " + str(data) + " and values " + str(values))
-# Liny end
-
-
 @logmanager.user_loader
 def load_user(user_id):
     return db.session.get(Player, user_id)
@@ -369,7 +470,6 @@ def login():
     if form.validate_on_submit():
         nickname = form.name.data
         # Liny start
-        # send_packet(PacketType.get_BOTSIDE_2FA_NEEDED(nickname))
         return redirect(url_for('confirm_login', nickname=nickname))
         # Liny end
 
@@ -495,17 +595,33 @@ def internal_error():
 
 
 if __name__ == '__main__':
-    import os
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--vps', type=bool, default=False)
+    args = parser.parse_args()
 
-    os.environ['FLASK_ENV'] = 'production'
-    db.create_all()
-    preload_product_descriptions()
+    with ThreadPoolExecutor() as executor:
+        # Site only start
 
-    from waitress import serve
+        if args.vps:
+            executor.submit(serve, app=app, host='46.174.48.78', port=5000)  # Fuck warnings
+        else:
+            executor.submit(serve, app=app, host='localhost', port=5000)  # Fuck warnings
 
-    serve(app, host='localhost', port=5000)
-    # serve(app, host='46.174.48.78', port=5000)
+        # Simple site starting:
+        #    app.run(
+        #        debug=True,
+        #        host='localhost',
+        #        port=5000
+        #    )
 
-# if __name__ == '__main__':
-#     db.create_all()
-#     app.run(debug=True)
+        # Site only end
+        #
+
+        #
+        # Bot Only start
+        executor.submit(client.run, token=discord_token)
+
+        # Simple bot starting:
+        #    client.run(token=discord_token)
+
+        # Bot Only end

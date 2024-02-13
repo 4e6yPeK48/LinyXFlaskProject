@@ -22,7 +22,7 @@
         </div>
 
         {% if current_user and current_user.is_authenticated %}
-            <div class="cart-button mt-auto mb-auto" id="all-products-svg-btn">
+            <div class="cart-self mt-auto mb-auto" id="all-products-svg-btn">
                 <svg
                         viewBox="0 0 25 25"
                         fill="none"
@@ -298,7 +298,7 @@
                 let productDetails = document.getElementById('productDetails');
                 productDetails.innerHTML = '';
                 let productHTML = `
-                    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+                    <self class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</self>
                     <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
                 `;
                 if (product_info['response']['name'] === 'Shulker') {

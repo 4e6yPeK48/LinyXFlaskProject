@@ -21,16 +21,22 @@
                 type: "GET",
                 data: {nickname: '{{ nickname }}'},
                 success: function (response) {
-                    if (response.redirect) {
-                        console.log('редиректим');
-                        window.location.href = response.redirect;
+                    if (response.status==='complete') {
+                        window.location.href = '{{ url_for('index') }}';
                     } else {
-                        setTimeout(checkStatus, 2000);
+                        if (response.status==='processing') {
+                            setTimeout(checkStatus, 1000);
+                        } else {
+                            if (response==='error') {
+                                window.location.href = '{{ url_for('index') }}';
+                                console.error("Auth denied with reason: "+response.error_content)
+                            }
+                        }
                     }
                 }
             });
         }
 
-        setTimeout(checkStatus, 2000);
+        setTimeout(checkStatus, 1000);
     </script>
 {% endblock %}
