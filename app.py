@@ -19,10 +19,6 @@ from forms.login import LoginForm, ChangePasswordForm
 
 # Liny start
 
-# For features start
-# from flask_login import login_user
-# For features end
-
 from concurrent.futures import ThreadPoolExecutor
 import argparse
 import discord
@@ -102,6 +98,8 @@ async def get_discord_id(nickname):
 for_bot: list[str] = []  # Containing all nickname's of player's to 2fa
 for_site: dict[str, tuple[bool, str]] = {}  # Containing 2fa result
 
+user_timings: dict[str, float] = {}
+
 client = discord.Client(intents=discord.Intents.all())
 
 
@@ -109,7 +107,18 @@ async def check_tags():
     while True:
         for _ in range(len(for_bot)):
             last_nickname = for_bot.pop()
-            await send_confirmation_ticket(last_nickname)
+
+            if await send_confirmation_ticket(last_nickname):
+                user_timings[last_nickname] = get_current_time()
+
+        for player in user_timings.copy().keys():
+            time: float = user_timings[player]
+            if get_current_time() - time > 30.0:
+                for_site[player] = (False, "TimeOut error: вышло время авторизации")
+                user_timings.pop(player)
+
+        ignored = await get_discord_id("overdrive1")  # for prevent connection closing by timeout 14400 secs
+
         await asyncio.sleep(1)
 
 
@@ -127,10 +136,11 @@ async def on_message(message) -> None:
         await message.channel.send(f'Application working. Len of param for_bot: {len(for_bot)}')
 
 
-async def send_confirmation_ticket(player: str):
+async def send_confirmation_ticket(player: str) -> bool:
     if not player:
         for_site[player] = (False, "Type error: Имя пользователя не может быть пустым!")
         print(f"Player can't be None! Data: {player}")
+        return False
 
     discord_id = await get_discord_id(player)
 
@@ -138,36 +148,48 @@ async def send_confirmation_ticket(player: str):
         print(f"Can't find discord id for nickname {player}")
         for_site[player] = (False, "NotFound error: Не найден дискорд аккаунт игрока. Напишите нашему боту LinyX#8503 "
                                    "!аккаунт связать <никнейм> и следуйте дальнейшим указаниям!")
-        return
+        return False
 
     class ConfirmationTicket(discord.ui.View):
         @discord.ui.button(label="Подтвердить", style=discord.ButtonStyle.success,
                            custom_id=str(discord_id) + player + "Accept")
         async def first_button_callback(self, ctx, ignored):
             user_name = ctx.user.name
-            if player in for_site.keys():
-                denied = discord.Embed(title="Вы уже подтверждали запрос", color=0xe100ff)
-                denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
-                await ctx.response.send_message(embed=denied)  # Already accepted
+            if player in user_timings.keys():
+                if player in for_site.keys():
+                    denied = discord.Embed(title="Вы уже подтверждали запрос", color=0xe100ff)
+                    denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+                    await ctx.response.send_message(embed=denied)  # Already accepted
+                else:
+                    success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
+                    success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+                    user_timings.pop(player)
+                    for_site[player] = (True, "")
+                    await ctx.response.send_message(embed=success)  # Accepting
             else:
-                success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
-                success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
-                for_site[player] = (True, "")
-                await ctx.response.send_message(embed=success)  # Accepting
+                denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
+                denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
+                await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
 
         @discord.ui.button(label="Отклонить", style=discord.ButtonStyle.red,
                            custom_id=str(discord_id) + player + "Denied")
         async def second_button_callback(self, ctx, ignored):
             user_name = ctx.user.name
-            if player in for_site.keys():
-                denied = discord.Embed(title="Вы уже отклоняли подтверждение входа", color=0xe100ff)
-                denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
-                await ctx.response.send_message(embed=denied)  # Already nope
+            if player in user_timings.keys():
+                if player in for_site.keys():
+                    denied = discord.Embed(title="Вы уже отклоняли подтверждение входа", color=0xe100ff)
+                    denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+                    await ctx.response.send_message(embed=denied)  # Already nope
+                else:
+                    success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
+                    success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+                    for_site[player] = (False, "Discord integration")
+                    user_timings.pop(player)
+                    await ctx.response.send_message(embed=success)  # Nope
             else:
-                success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
-                success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
-                for_site[player] = (False, "Discord integration")
-                await ctx.response.send_message(embed=success)  # Nope
+                denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
+                denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
+                await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
 
     confirmation = discord.Embed(title="Подтверждение для входа на сайт", color=0xe100ff)
     confirmation.add_field(
@@ -180,14 +202,17 @@ async def send_confirmation_ticket(player: str):
     try:
         user = await client.fetch_user(discord_id)
         await user.send(embed=confirmation, view=ConfirmationTicket())
+        return True
     except discord.errors.Forbidden:  # Nope
         for_site[player] = (False, "Permission error: Бот не может отправить сообщение этому пользователю. Скорее "
                                    "всего личные сообщения закрыты")
         print("Permission error: Cannot send messages to this user.")
+        return False
     except discord.errors.NotFound:  # Nope
         for_site[player] = (False, "NotFound error: Пользователя нет на канале LinyX(?), поэтому бот не может "
                                    "отправить ему сообщение.")
         print("User not found on this server.")
+        return False
 
 
 # Debug only start
@@ -230,6 +255,8 @@ def operation_status():
             return jsonify({'status': 'error', 'error_content': reason})
     else:
         return jsonify({'status': 'processing'})
+
+
 # Liny end
 
 

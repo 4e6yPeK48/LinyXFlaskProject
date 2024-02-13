@@ -29,8 +29,8 @@
                             setTimeout(checkStatus, 1000);
                         } else {
                             if (response.status === 'error') {
+                                console.debug("Auth denied with reason: " + response.error_content);
                                 window.location.href = '{{ url_for('login') }}';
-                                alert("Auth denied with reason: " + response.error_content);
                             }
                         }
                     }
