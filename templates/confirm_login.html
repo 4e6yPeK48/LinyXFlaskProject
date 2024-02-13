@@ -2,17 +2,26 @@
 {% extends 'base.html' %}
 {% block title %}Принять{% endblock %}
 {% block content %}
-    <div class="container">
-        <a class="black-white-text confirm-text">Ожидание подтверждения</a>
-    </div>
-    <div class="container">
-        <a class="black-white-text confirm-text">После подтверждения в Дискорде обновите страницу</a>
-    </div>
-    <div class="container">
-        <a class="black-white-text confirm-text">Время подтверждения истечёт через 30 секунд. По истечении этого времени
-            вы либо
-            войдете в аккаунт (при
-            подтверждении в Дискорде), либо выйдете на главную страницу</a>
+    <div class="container mt-5 text-center">
+        <div class="w-100 d-flex align-items-center justify-content-center waiting-pic">
+            <img src="../static/img/waiting.jpg" class="shadow-sm rounded" alt="">
+        </div>
+        <div>
+            <a class="black-white-text confirm-text-a mt-5 mb-2">Ожидание подтверждения</a>
+        </div>
+
+        <div>
+            <a class="black-white-text confirm-text mb-5">После подтверждения в Дискорде обновите страницу</a>
+        </div>
+
+        <div>
+            <a class="black-white-text confirm-text-gray mt-3">Время подтверждения истечёт через 30 секунд. По истечении
+                этого
+                времени
+                вы либо
+                войдете в аккаунт (при
+                подтверждении в Дискорде), либо выйдете на главную страницу</a>
+        </div>
     </div>
     <script>
         function checkStatus() {
