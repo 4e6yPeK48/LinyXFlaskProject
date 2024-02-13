@@ -129,12 +129,15 @@ async def on_message(message) -> None:
 
 async def send_confirmation_ticket(player: str):
     if not player:
-        print("Player can't be None!")
+        for_site[player] = (False, "Type error: Имя пользователя не может быть пустым!")
+        print(f"Player can't be None! Data: {player}")
 
     discord_id = await get_discord_id(player)
 
     if not discord_id:
         print(f"Can't find discord id for nickname {player}")
+        for_site[player] = (False, "NotFound error: Не найден дискорд аккаунт игрока. Напишите нашему боту LinyX#8503 "
+                                   "!аккаунт связать <никнейм> и следуйте дальнейшим указаниям!")
         return
 
     class ConfirmationTicket(discord.ui.View):
@@ -209,7 +212,6 @@ async def send_confirmation_ticket(player: str):
 @app.route('/confirm_login', methods=['GET'])
 def confirm_login():
     for_bot.append(request.args.get('nickname'))
-    print(f"Appending param for_bot, len: {len(for_bot)}")
     return render_template('confirm_login.html', nickname=request.args.get('nickname'))
 
 
@@ -223,8 +225,6 @@ def operation_status():
             return jsonify({'status': 'error', 'error_content': reason})
     else:
         return jsonify({'status': 'processing'})
-
-
 # Liny end
 
 
