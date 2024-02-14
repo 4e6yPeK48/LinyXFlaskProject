@@ -1124,7 +1124,7 @@
                                         <div class="line line-3"></div>
                                     </div>
                                 </div>
-                            {% else %}
+                            {% elif 'Shulker' not in product['name'] and 'Vega' not in product['name'] and 'Eola' not in product['name'] and 'Chorus' not in product['name'] and 'Hydra' not in product['name'] and 'Fenix' not in product['name'] and 'Leviathan' not in product['name'] and 'Satira' not in product['name'] %}
                                 <div class="card ms-2 mb-3 product-card white-hover"
                                      onclick="showProductDetails(); openProductDialog('{{ product['id'] }}'); "
                                      data-description="{{ product['description'] }}">
