@@ -288,8 +288,19 @@
                 let productDetails = document.getElementById('productDetails');
                 productDetails.innerHTML = '';
                 let productHTML = `
-                    <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
-                    <p class="black-white-text description-card-price mt-auto mb-auto ms-3 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+                    <div class="product-name-price d-flex flex-row">
+                        <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50" onclick="buyProduct(${product_id})">Купить</button>
+                        <p class="black-white-text description-card-price mt-auto mb-auto ms-2 "><b>Цена: </b>${product_info['response']['price']} ₽</p>
+                    </div>
+                    `;
+                let noRegProductHTML = `
+                    <div class="product-name-price-main d-flex flex-column">
+                        <div class="product-name-price d-flex flex-row mb-1">
+                            <button class="change-color btn btn-outline-light btn-lg mt-auto mb-auto w-50 me-1" onclick="buyProduct(${product_id})">Купить</button>
+                            <p class="black-white-text description-card-price mt-auto mb-auto ms-2"><b>Цена: </b>${product_info['response']['price']} ₽</p>
+                        </div>
+                        <input type="text" class="nickname-input mt-auto mb-auto w-100" id="usernameInput" placeholder="Введите никнейм или войдите в аккаунт">
+                    </div>
                 `;
                 if (product_info['response']['name'] === 'Shulker') {
                     productDetails.innerHTML = `
@@ -335,8 +346,8 @@
         </p>
     </div>
 </div>
-<div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+<div class="d-flex flex-row w-100 mt-auto product-bottom">
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Vega') {
@@ -386,7 +397,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Eola') {
@@ -438,7 +449,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Chorus') {
@@ -490,7 +501,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Hydra') {
@@ -542,7 +553,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Fenix') {
@@ -594,7 +605,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Leviathan') {
@@ -647,7 +658,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else if (product_info['response']['name'] === 'Satira') {
@@ -700,7 +711,7 @@
     </div>
     </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 } else {
@@ -729,7 +740,7 @@
     <div class="d-flex ms-auto product-image product-image-main mb-2 p-2 align-items-center "><img src="${product_info['response']['image']}" loading="lazy" class="" alt=""></div>
 </div>
 <div class="d-flex flex-row w-100 mt-auto">
-    ${isAuthenticated ? productHTML : '<p class="black-white-text">Для покупки авторизуйтесь</p>'}
+    ${isAuthenticated ? productHTML : noRegProductHTML}
 </div>
                 `;
                 }
@@ -757,7 +768,39 @@
 
 {# создание платежа #}
 <script>
-    function buyProduct(product_id) {
+    function validateUsername(username) {
+    const regex = /^[a-zA-Zа-яА-ЯёЁ0-9_-]{1,16}$/;
+    return regex.test(username);
+}
+
+function buyProduct(product_id) {
+    let isAuthenticated = {% if current_user and current_user.is_authenticated %} true {% else %} false {% endif %};
+    let usernameInput = document.getElementById('usernameInput').value;
+    if (!validateUsername(usernameInput)) {
+        alert('Некорректный никнейм. Проверьте правила для ввода.');
+        return;
+    }
+    if (!isAuthenticated) {
+        fetch(`/buy_product/${product_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'username': usernameInput })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.top.location.href = data['payment_url'];
+                } else {
+                    alert('Ошибка при создании платежа');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка. Попробуйте еще раз.');
+            });
+    } else {
         fetch(`/buy_product/${product_id}`, {
             method: 'POST',
             headers: {
@@ -778,6 +821,7 @@
                 alert('Произошла ошибка. Попробуйте еще раз.');
             });
     }
+}
 </script>
 </body>
 </html>

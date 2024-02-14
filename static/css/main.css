@@ -996,7 +996,7 @@ footer li a {
 }
 
 .product-info {
-    height: 90%;
+    height: 85%;
     overflow: hidden;
 }
 
@@ -1064,6 +1064,10 @@ footer li a {
 }
 
 @media (min-width: 577px) {
+    .nickname-input{
+        width: 50% !important;
+    }
+
     .stick-light-sm-m {
         display: none !important;
     }
@@ -2074,4 +2078,19 @@ body.light .white-hover {
 .waiting-pic img {
     height: 30vh;
     width: auto;
+}
+
+.nickname-input {
+    display: block;
+    height: 50px;
+    background-color: var(--form-input-color);
+    border-radius: 5px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.product-name-price, .product-name-price-main {
+    width: 100%;
 }

@@ -441,7 +441,19 @@ def product_info_json(product_id):
 
 @app.route('/buy_product/<int:product_id>', methods=['POST'])
 def buy_product(product_id):
-    customer = current_user.name if current_user.is_authenticated else 'Anonymous'
+    data = request.get_json()
+    username = data['username'] if data and 'username' in data else None
+
+    if not current_user.is_authenticated and username is None:
+        return jsonify({'error': 'Вы не авторизованы и не ввели никнейм'}), 403
+
+    if username:
+        customer = username
+    elif current_user.is_authenticated:
+        customer = current_user.name
+    else:
+        customer = 'Anonymous'
+
     payment_info = easydonate_create_payment(customer, '79936', {product_id: 1})
 
     if payment_info and payment_info.get('success'):
