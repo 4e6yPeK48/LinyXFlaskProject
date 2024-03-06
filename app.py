@@ -32,14 +32,14 @@ import mysql.connector
 # TODO: добавить последние покупки
 
 csrf = CSRFProtect()
-password = 'SbDwFqC@+iD5erM7QAYHE@Jo'
+password = 'GmO!Rv0M+AFy+vBIGMnlQh@7'
 encoded_password = quote_plus(password)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'LinyX_secret_key'
 app.config['FLASK_DEBUG'] = 1
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    f'mysql+mysqlconnector://u11944_HjaF3FL0R2:{encoded_password}@d4.aurorix.net:3306/s11944_anarchy'
+    f'mysql+mysqlconnector://u16757_3kOuywUod7:{encoded_password}@d6.aurorix.net:3306/s16757_limboauth'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
 discord_token = 'MTE5ODAxNjU2NTI3NTI3MTE2OA.G1vWTl.TTMeTsKBddR1x4fS9RF5aFrO7JybGMxw9mXixU'
@@ -246,7 +246,7 @@ def operation_status():
     if nickname in for_site.keys():
         is_authed, reason = for_site.pop(request.args.get('nickname'))
         if is_authed:
-            player = Player.query.filter_by(name=nickname).first()
+            player = Player.query.filter_by(LOWERCASENICKNAME=nickname.lower()).first()
             login_user(player)
             flash('Вы успешно вошли в аккаунт', 'success')
             return jsonify({'status': 'complete'})
@@ -261,33 +261,34 @@ def operation_status():
 
 
 class Player(UserMixin, db.Model):
-    __tablename__ = 'players'
-    id = Column(Integer, autoincrement=True, primary_key=True, default=0)
-    uuid = Column(String(36), nullable=False, unique=True, default='none')
-    name = Column(String, nullable=False, unique=True, default='none')
-    ip = Column(String(255))
+    __tablename__ = 'AUTH'
+    LOWERCASENICKNAME = Column(Integer, primary_key=True, nullable=False, unique=True)
+    NICKNAME = Column(String)
 
-    password = relationship('Password', back_populates='player')
-    purchases = relationship('Purchase', back_populates='player')
+    def get_id(self):
+        return self.LOWERCASENICKNAME
 
-
-class Password(db.Model):
-    __tablename__ = 'passwords'
-    id = Column(Integer, autoincrement=True, primary_key=True, default=0)
-    player_name = Column(String, ForeignKey('players.name'), unique=True, nullable=False)
-    password = Column(String, nullable=False, default='none')
-
-    player = relationship('Player', back_populates='password')
+    # password = relationship('Password', back_populates='player')
+    # purchases = relationship('Purchase', back_populates='player')
 
 
-class Purchase(db.Model):
-    __tablename__ = 'purchases'
-    id = Column(Integer, autoincrement=True, primary_key=True, default=0)
-    player_name = Column(String, ForeignKey('players.name'), nullable=False, default='none')
-    donation_name = Column(String, nullable=False, default='none')
-    purchase_date = Column(DateTime(timezone=True), server_default=func.now())
-
-    player = relationship('Player', back_populates='purchases')
+# class Password(db.Model):
+#     __tablename__ = 'passwords'
+#     id = Column(Integer, autoincrement=True, primary_key=True, default=0)
+#     player_name = Column(String, ForeignKey('players.name'), unique=True, nullable=False)
+#     password = Column(String, nullable=False, default='none')
+#
+#     player = relationship('Player', back_populates='password')
+#
+#
+# class Purchase(db.Model):
+#     __tablename__ = 'purchases'
+#     id = Column(Integer, autoincrement=True, primary_key=True, default=0)
+#     player_name = Column(String, ForeignKey('players.name'), nullable=False, default='none')
+#     donation_name = Column(String, nullable=False, default='none')
+#     purchase_date = Column(DateTime(timezone=True), server_default=func.now())
+#
+#     player = relationship('Player', back_populates='purchases')
 
 
 def easydonate_get_shop_info():
@@ -531,11 +532,11 @@ def logout():
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    purchases = Purchase.query.filter_by(player_name=current_user.name).all()
+    # purchases = Purchase.query.filter_by(player_name=current_user.name).all()
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-        player = Player.query.filter_by(name=current_user.name).first()
+        player = Player.query.filter_by(LOWERCASENICKNAME=current_user.name.lower()).first()
 
         if player.password[0].password == form.current_password.data:
             player.password[0].password = form.new_password.data
@@ -545,7 +546,8 @@ def account():
         else:
             flash('Неверный текущий пароль.', 'error')
 
-    return render_template('account.html', purchases=purchases, form=form)
+    return render_template('account.html', purchases=[], form=form)
+    # return render_template('account.html', purchases=purchases, form=form)
 
 
 @app.errorhandler(OperationalError)
