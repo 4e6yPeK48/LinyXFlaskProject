@@ -50,169 +50,169 @@ logmanager = LoginManager()
 logmanager.init_app(app)
 
 # Liny start
-table_namespace = ["DISCORD_ID", "SOCIAL", "LOWERCASENICKNAME"]
-
-connection = mysql.connector.connect(
-    host="d6.aurorix.net",
-    port=3306,
-    user="u16757_3kOuywUod7",
-    password="GmO!Rv0M+AFy+vBIGMnlQh@7",
-    database="s16757_limboauth"
-)
-
-if not connection:
-    print("Error while connect to MariaDB")
-    quit()
-
-
-def get_current_time() -> float:
-    current_time = datetime.datetime.now()
-    return (current_time - current_time.replace(
-        hour=0,
-        minute=0,
-        second=0,
-        microsecond=0
-    )).total_seconds()
-
-
-async def get_discord_id(nickname):
-    if not connection:
-        print("Error while connect to MariaDB")
-        quit()
-    if not connection.is_connected():
-        print("Error while connect to MariaDB")
-        quit()
-    cursor = connection.cursor()
-
-    cursor.execute(
-        f"SELECT {table_namespace[0]} FROM {table_namespace[1]} WHERE {table_namespace[2]} = %s",
-        (nickname.lower(),)
-    )
-
-    row = cursor.fetchone()
-    if row:
-        cursor.close()
-        return row[0]
-
-
-for_bot: list[str] = []  # Containing all nickname's of player's to 2fa
-for_site: dict[str, tuple[bool, str]] = {}  # Containing 2fa result
-
-user_timings: dict[str, float] = {}
-
-client = discord.Client(intents=discord.Intents.all())
-
-
-async def check_tags():
-    while True:
-        for _ in range(len(for_bot)):
-            last_nickname = for_bot.pop()
-
-            if await send_confirmation_ticket(last_nickname):
-                user_timings[last_nickname] = get_current_time()
-
-        for player in user_timings.copy().keys():
-            time: float = user_timings[player]
-            if get_current_time() - time > 30.0:
-                for_site[player] = (False, "TimeOut error: вышло время авторизации")
-                user_timings.pop(player)
-
-        ignored = await get_discord_id("overdrive1")  # for prevent connection closing by timeout 14400 secs
-
-        await asyncio.sleep(1)
-
-
-@client.event
-async def on_ready() -> None:
-    asyncio.create_task(check_tags())
-    print('Logged on as', client.user)
+# table_namespace = ["DISCORD_ID", "SOCIAL", "LOWERCASENICKNAME"]
+#
+# connection = mysql.connector.connect(
+#     host="d6.aurorix.net",
+#     port=3306,
+#     user="u16757_3kOuywUod7",
+#     password="GmO!Rv0M+AFy+vBIGMnlQh@7",
+#     database="s16757_limboauth"
+# )
+#
+# if not connection:
+#     print("Error while connect to MariaDB")
+#     quit()
+#
+#
+# def get_current_time() -> float:
+#     current_time = datetime.datetime.now()
+#     return (current_time - current_time.replace(
+#         hour=0,
+#         minute=0,
+#         second=0,
+#         microsecond=0
+#     )).total_seconds()
+#
+#
+# async def get_discord_id(nickname):
+#     if not connection:
+#         print("Error while connect to MariaDB")
+#         quit()
+#     if not connection.is_connected():
+#         print("Error while connect to MariaDB")
+#         quit()
+#     cursor = connection.cursor()
+#
+#     cursor.execute(
+#         f"SELECT {table_namespace[0]} FROM {table_namespace[1]} WHERE {table_namespace[2]} = %s",
+#         (nickname.lower(),)
+#     )
+#
+#     row = cursor.fetchone()
+#     if row:
+#         cursor.close()
+#         return row[0]
+#
+#
+# for_bot: list[str] = []  # Containing all nickname's of player's to 2fa
+# for_site: dict[str, tuple[bool, str]] = {}  # Containing 2fa result
+#
+# user_timings: dict[str, float] = {}
+#
+# client = discord.Client(intents=discord.Intents.all())
+#
+#
+# async def check_tags():
+#     while True:
+#         for _ in range(len(for_bot)):
+#             last_nickname = for_bot.pop()
+#
+#             if await send_confirmation_ticket(last_nickname):
+#                 user_timings[last_nickname] = get_current_time()
+#
+#         for player in user_timings.copy().keys():
+#             time: float = user_timings[player]
+#             if get_current_time() - time > 30.0:
+#                 for_site[player] = (False, "TimeOut error: вышло время авторизации")
+#                 user_timings.pop(player)
+#
+#         ignored = await get_discord_id("overdrive1")  # for prevent connection closing by timeout 14400 secs
+#
+#         await asyncio.sleep(1)
 
 
-@client.event
-async def on_message(message) -> None:
-    if message.author == client.user:
-        return
-    if message.content.startswith('$test'):
-        await message.channel.send(f'Application working. Len of param for_bot: {len(for_bot)}')
-
-
-async def send_confirmation_ticket(player: str) -> bool:
-    if not player:
-        for_site[player] = (False, "Type error: Имя пользователя не может быть пустым!")
-        print(f"Player can't be None! Data: {player}")
-        return False
-
-    discord_id = await get_discord_id(player)
-
-    if not discord_id:
-        print(f"Can't find discord id for nickname {player}")
-        for_site[player] = (False, "NotFound error: Не найден дискорд аккаунт игрока. Напишите нашему боту LinyX#8503 "
-                                   "!аккаунт связать <никнейм> и следуйте дальнейшим указаниям!")
-        return False
-
-    class ConfirmationTicket(discord.ui.View):
-        @discord.ui.button(label="Подтвердить", style=discord.ButtonStyle.success,
-                           custom_id=str(discord_id) + player + "Accept")
-        async def first_button_callback(self, ctx, ignored):
-            user_name = ctx.user.name
-            if player in user_timings.keys():
-                if player in for_site.keys():
-                    denied = discord.Embed(title="Вы уже подтверждали запрос", color=0xe100ff)
-                    denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
-                    await ctx.response.send_message(embed=denied)  # Already accepted
-                else:
-                    success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
-                    success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
-                    user_timings.pop(player)
-                    for_site[player] = (True, "")
-                    await ctx.response.send_message(embed=success)  # Accepting
-            else:
-                denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
-                denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
-                await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
-
-        @discord.ui.button(label="Отклонить", style=discord.ButtonStyle.red,
-                           custom_id=str(discord_id) + player + "Denied")
-        async def second_button_callback(self, ctx, ignored):
-            user_name = ctx.user.name
-            if player in user_timings.keys():
-                if player in for_site.keys():
-                    denied = discord.Embed(title="Вы уже отклоняли подтверждение входа", color=0xe100ff)
-                    denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
-                    await ctx.response.send_message(embed=denied)  # Already nope
-                else:
-                    success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
-                    success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
-                    for_site[player] = (False, "Discord integration")
-                    user_timings.pop(player)
-                    await ctx.response.send_message(embed=success)  # Nope
-            else:
-                denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
-                denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
-                await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
-
-    confirmation = discord.Embed(title="Подтверждение для входа на сайт", color=0xe100ff)
-    confirmation.add_field(
-        name="",
-        value="Если вы не пытались войти на сайт, пожалуйста, обратите на это " +
-              "внимание."
-    )
-    confirmation.set_footer(text="LinyX Technology Group")
-
-    try:
-        user = await client.fetch_user(discord_id)
-        await user.send(embed=confirmation, view=ConfirmationTicket())
-        return True
-    except discord.errors.Forbidden:  # Nope
-        for_site[player] = (False, "Permission error: Бот не может отправить сообщение этому пользователю. Скорее "
-                                   "всего личные сообщения закрыты")
-        print("Permission error: Cannot send messages to this user.")
-        return False
-    except discord.errors.NotFound:  # Nope
-        for_site[player] = (False, "NotFound error: Пользователя нет на канале LinyX(?), поэтому бот не может "
-                                   "отправить ему сообщение.")
-        print("User not found on this server.")
-        return False
+# @client.event
+# async def on_ready() -> None:
+#     asyncio.create_task(check_tags())
+#     print('Logged on as', client.user)
+#
+#
+# @client.event
+# async def on_message(message) -> None:
+#     if message.author == client.user:
+#         return
+#     if message.content.startswith('$test'):
+#         await message.channel.send(f'Application working. Len of param for_bot: {len(for_bot)}')
+#
+#
+# async def send_confirmation_ticket(player: str) -> bool:
+#     if not player:
+#         for_site[player] = (False, "Type error: Имя пользователя не может быть пустым!")
+#         print(f"Player can't be None! Data: {player}")
+#         return False
+#
+#     discord_id = await get_discord_id(player)
+#
+#     if not discord_id:
+#         print(f"Can't find discord id for nickname {player}")
+#         for_site[player] = (False, "NotFound error: Не найден дискорд аккаунт игрока. Напишите нашему боту LinyX#8503 "
+#                                    "!аккаунт связать <никнейм> и следуйте дальнейшим указаниям!")
+#         return False
+#
+#     class ConfirmationTicket(discord.ui.View):
+#         @discord.ui.button(label="Подтвердить", style=discord.ButtonStyle.success,
+#                            custom_id=str(discord_id) + player + "Accept")
+#         async def first_button_callback(self, ctx, ignored):
+#             user_name = ctx.user.name
+#             if player in user_timings.keys():
+#                 if player in for_site.keys():
+#                     denied = discord.Embed(title="Вы уже подтверждали запрос", color=0xe100ff)
+#                     denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+#                     await ctx.response.send_message(embed=denied)  # Already accepted
+#                 else:
+#                     success = discord.Embed(title="Вы подтвердили запрос на вход", color=0xe100ff)
+#                     success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+#                     user_timings.pop(player)
+#                     for_site[player] = (True, "")
+#                     await ctx.response.send_message(embed=success)  # Accepting
+#             else:
+#                 denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
+#                 denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
+#                 await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
+#
+#         @discord.ui.button(label="Отклонить", style=discord.ButtonStyle.red,
+#                            custom_id=str(discord_id) + player + "Denied")
+#         async def second_button_callback(self, ctx, ignored):
+#             user_name = ctx.user.name
+#             if player in user_timings.keys():
+#                 if player in for_site.keys():
+#                     denied = discord.Embed(title="Вы уже отклоняли подтверждение входа", color=0xe100ff)
+#                     denied.set_footer(text=f"Дейстиве не выполнено, {user_name}!")
+#                     await ctx.response.send_message(embed=denied)  # Already nope
+#                 else:
+#                     success = discord.Embed(title="Вы отклонили подтверждение входа", color=0xe100ff)
+#                     success.set_footer(text=f"Дейстиве выполнено, {user_name}!")
+#                     for_site[player] = (False, "Discord integration")
+#                     user_timings.pop(player)
+#                     await ctx.response.send_message(embed=success)  # Nope
+#             else:
+#                 denied_by_2fa_no_processing = discord.Embed(title="Вы не находитесь на этапе авторизации!", color=0xe100ff)
+#                 denied_by_2fa_no_processing.set_footer(text="LinyX Technology Group")
+#                 await ctx.response.send_message(embed=denied_by_2fa_no_processing)  # Already accepted
+#
+#     confirmation = discord.Embed(title="Подтверждение для входа на сайт", color=0xe100ff)
+#     confirmation.add_field(
+#         name="",
+#         value="Если вы не пытались войти на сайт, пожалуйста, обратите на это " +
+#               "внимание."
+#     )
+#     confirmation.set_footer(text="LinyX Technology Group")
+#
+#     try:
+#         user = await client.fetch_user(discord_id)
+#         await user.send(embed=confirmation, view=ConfirmationTicket())
+#         return True
+#     except discord.errors.Forbidden:  # Nope
+#         for_site[player] = (False, "Permission error: Бот не может отправить сообщение этому пользователю. Скорее "
+#                                    "всего личные сообщения закрыты")
+#         print("Permission error: Cannot send messages to this user.")
+#         return False
+#     except discord.errors.NotFound:  # Nope
+#         for_site[player] = (False, "NotFound error: Пользователя нет на канале LinyX(?), поэтому бот не может "
+#                                    "отправить ему сообщение.")
+#         print("User not found on this server.")
+#         return False
 
 
 # Debug only start
@@ -236,25 +236,25 @@ async def send_confirmation_ticket(player: str) -> bool:
 
 @app.route('/confirm_login', methods=['GET'])
 def confirm_login():
-    for_bot.append(request.args.get('nickname'))
+    # for_bot.append(request.args.get('nickname'))
     return render_template('confirm_login.html', nickname=request.args.get('nickname'))
 
 
-@app.route('/operation_status', methods=['GET'])
-def operation_status():
-    nickname = request.args.get('nickname')
-    if nickname in for_site.keys():
-        is_authed, reason = for_site.pop(request.args.get('nickname'))
-        if is_authed:
-            player = Player.query.filter_by(LOWERCASENICKNAME=nickname.lower()).first()
-            login_user(player)
-            flash('Вы успешно вошли в аккаунт', 'success')
-            return jsonify({'status': 'complete'})
-        else:
-            flash(f'Невозможно войти по причине {reason}', 'error')
-            return jsonify({'status': 'error', 'error_content': reason})
-    else:
-        return jsonify({'status': 'processing'})
+# @app.route('/operation_status', methods=['GET'])
+# def operation_status():
+#     nickname = request.args.get('nickname')
+#     if nickname in for_site.keys():
+#         is_authed, reason = for_site.pop(request.args.get('nickname'))
+#         if is_authed:
+#             player = Player.query.filter_by(LOWERCASENICKNAME=nickname.lower()).first()
+#             login_user(player)
+#             flash('Вы успешно вошли в аккаунт', 'success')
+#             return jsonify({'status': 'complete'})
+#         else:
+#             flash(f'Невозможно войти по причине {reason}', 'error')
+#             return jsonify({'status': 'error', 'error_content': reason})
+#     else:
+#         return jsonify({'status': 'processing'})
 
 
 # Liny end
@@ -664,7 +664,7 @@ if __name__ == '__main__':
 
         #
         # Bot Only start
-        executor.submit(client.run, token=discord_token)
+        # executor.submit(client.run, token=discord_token)
 
         # Simple bot starting:
         #    client.run(token=discord_token)
