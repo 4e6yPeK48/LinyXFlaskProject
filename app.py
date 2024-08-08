@@ -42,6 +42,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
     f'mysql+mysqlconnector://u16757_3kOuywUod7:{encoded_password}@d6.aurorix.net:3306/s16757_limboauth'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
+# monst EASYDONATE_KEY = '4cfe1e3f68bf693b0b1f27f4284ac138'
 discord_token = 'MTE5ODAxNjU2NTI3NTI3MTE2OA.G1vWTl.TTMeTsKBddR1x4fS9RF5aFrO7JybGMxw9mXixU'
 app.app_context().push()
 
