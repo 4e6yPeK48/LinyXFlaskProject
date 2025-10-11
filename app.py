@@ -32,17 +32,17 @@ import mysql.connector
 # TODO: добавить последние покупки
 
 csrf = CSRFProtect()
-password = 'GmO!Rv0M+AFy+vBIGMnlQh@7'
+password = 'replace_me'
 encoded_password = quote_plus(password)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'LinyX_secret_key'
+app.config['SECRET_KEY'] = 'replace_me'
 app.config['FLASK_DEBUG'] = 1
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    f'mysql+mysqlconnector://u16757_3kOuywUod7:{encoded_password}@d6.aurorix.net:3306/s16757_limboauth'
+    f'mysql+mysqlconnector://xxxx:{encoded_password}@xxx.xxx.xxx:0000/xxxx'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-EASYDONATE_KEY = '3db0d5db2d1b5ac794aa3e6edca6a414'
-discord_token = 'MTE5ODAxNjU2NTI3NTI3MTE2OA.G1vWTl.TTMeTsKBddR1x4fS9RF5aFrO7JybGMxw9mXixU'
+EASYDONATE_KEY = 'replace_me'
+discord_token = 'replace_me'
 app.app_context().push()
 
 db = SQLAlchemy(app)
@@ -53,11 +53,11 @@ logmanager.init_app(app)
 # table_namespace = ["DISCORD_ID", "SOCIAL", "LOWERCASENICKNAME"]
 #
 # connection = mysql.connector.connect(
-#     host="d6.aurorix.net",
-#     port=3306,
-#     user="u16757_3kOuywUod7",
-#     password="GmO!Rv0M+AFy+vBIGMnlQh@7",
-#     database="s16757_limboauth"
+#     host="xxxx",
+#     port=0000,
+#     user="xxxx",
+#     password="replace_me",
+#     database="xxxx"
 # )
 #
 # if not connection:
